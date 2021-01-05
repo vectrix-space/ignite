@@ -1,5 +1,5 @@
 plugins {
-  id "java"
+  id "java-library"
   id "com.github.johnrengelman.shadow" version "5.2.0"
 }
 
@@ -11,13 +11,22 @@ sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 
 repositories {
+  mavenCentral()
   maven {
-    url "https://oss.sonatype.org/content/repositories/snapshots"
+    url "https://oss.sonatype.org/content/repositories/snapshots/"
+  }
+  maven {
+    url "https://repo.spongepowered.org/maven/"
+  }
+  maven {
+    url "https://files.minecraftforge.net/maven/"
   }
 }
 
 dependencies {
-
+  api "org.checkerframework:checker-qual:3.7.0"
+  api "org.spongepowered:mixin:0.8.2"
+  api "cpw.mods:modlauncher:8.0.6"
 }
 
 tasks.withType(JavaCompile) {
