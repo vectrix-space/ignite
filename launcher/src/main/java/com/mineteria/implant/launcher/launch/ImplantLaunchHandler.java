@@ -1,5 +1,7 @@
 package com.mineteria.implant.launcher.launch;
 
+import com.mineteria.implant.launcher.ImplantCore;
+import com.mineteria.implant.launcher.mod.locator.ModResource;
 import cpw.mods.gross.Java9ClassLoaderUtil;
 import cpw.mods.modlauncher.api.ILaunchHandlerService;
 import cpw.mods.modlauncher.api.ITransformingClassLoader;
@@ -8,12 +10,17 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
+import java.util.function.Function;
 
 public final class ImplantLaunchHandler implements ILaunchHandlerService {
   private final Logger logger = LogManager.getLogger("ImplantLaunch");
@@ -23,12 +30,14 @@ public final class ImplantLaunchHandler implements ILaunchHandlerService {
    * transforming classes.
    */
   protected static final List<String> EXCLUDED_PACKAGES = Arrays.asList(
-    // TODO: Add excluded packages.
+    "org.mineteria.implant.launcher.launch.",
+    "org.mineteria.implant.launcher.mod."
+    // TODO: Figure out which ones we need here.
   );
 
   @Override
   public String name() {
-    return "mineteria";
+    return "implant";
   }
 
   @Override
@@ -45,8 +54,7 @@ public final class ImplantLaunchHandler implements ILaunchHandlerService {
       }
     }
 
-    // TODO: Add resource resolver for class bytes locator.
-    //builder.setClassBytesLocator();
+    builder.setClassBytesLocator(this.getResourceLocator());
   }
 
   @Override
@@ -63,6 +71,23 @@ public final class ImplantLaunchHandler implements ILaunchHandlerService {
     return () -> {
       this.launchService0(arguments, launchClassLoader);
       return null;
+    };
+  }
+
+  protected Function<String, Optional<URL>> getResourceLocator() {
+    return string -> {
+      for (final ModResource resource : ImplantCore.INSTANCE.getModEngine().getCandidates()) {
+        final Path resolved = resource.getFileSystem().getPath(string);
+        if (Files.exists(resolved)) {
+          try {
+            return Optional.of(resolved.toUri().toURL());
+          } catch (final MalformedURLException exception) {
+            throw new RuntimeException(exception);
+          }
+        }
+      }
+
+      return Optional.empty();
     };
   }
 

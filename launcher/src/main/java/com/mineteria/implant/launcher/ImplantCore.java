@@ -1,5 +1,6 @@
 package com.mineteria.implant.launcher;
 
+import com.mineteria.implant.launcher.mod.ModEngine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.launch.MixinBootstrap;
@@ -10,7 +11,22 @@ public final class ImplantCore {
 
   private final Logger logger = LogManager.getLogger("ImplantCore");
 
+  private final ModEngine modEngine = new ModEngine();
+
   /* package */ ImplantCore() {
+    this.setupMixins();
+    this.setupMods();
+  }
+
+  public Logger getLogger() {
+    return this.logger;
+  }
+
+  public ModEngine getModEngine() {
+    return this.modEngine;
+  }
+
+  private void setupMixins() {
     this.logger.info("Starting Mixin");
     MixinBootstrap.init();
 
@@ -22,7 +38,7 @@ public final class ImplantCore {
     this.logger.info("Started Mixin");
   }
 
-  public Logger getLogger() {
-    return this.logger;
+  private void setupMods() {
+    // TODO: locate candidates in the mod engine.
   }
 }

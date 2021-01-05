@@ -10,11 +10,11 @@ import java.util.List;
 public final class ImplantBlackboard {
   private static final TypesafeMap BLACKBOARD = new TypesafeMap();
 
-  public static TypesafeMap.Key<List> LAUNCH_ARGUMENTS = key("mineteria.launch.arguments", List.class);
-  public static TypesafeMap.Key<String> LAUNCH_TARGET  = key("mineteria.launch.target", String.class);
+  public static TypesafeMap.Key<List> LAUNCH_ARGUMENTS = key("implant.launch.arguments", List.class);
+  public static TypesafeMap.Key<String> LAUNCH_TARGET  = key("implant.launch.target", String.class);
 
-  public static TypesafeMap.Key<Path> MOD_TARGET_PATH = key("mineteria.mod.target", Path.class);
-  public static TypesafeMap.Key<Path> MOD_CONFIG_PATH = key("mineteria.mod.config", Path.class);
+  public static TypesafeMap.Key<Path> MOD_TARGET_PATH = key("implant.mod.target", Path.class);
+  public static TypesafeMap.Key<Path> MOD_CONFIG_PATH = key("implant.mod.config", Path.class);
 
   public static ImplantBlackboard INSTANCE;
 

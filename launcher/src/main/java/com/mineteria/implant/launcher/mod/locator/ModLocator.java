@@ -3,8 +3,6 @@ package com.mineteria.implant.launcher.mod.locator;
 import com.mineteria.implant.launcher.ImplantCore;
 import com.mineteria.implant.launcher.launch.ImplantBlackboard;
 import com.mineteria.implant.launcher.util.JVMConstants;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,7 +14,7 @@ import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
 public final class ModLocator {
-  public static final String DEFAULT_METADATA_FILENAME = "mods.json";
+  public static final String DEFAULT_METADATA_FILENAME = "mod.json";
 
   private static final String NAME = "java_directory";
 
