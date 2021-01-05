@@ -1,0 +1,30 @@
+dependencies {
+  api "org.apache.logging.log4j:log4j-api:2.8.1"
+  api "org.checkerframework:checker-qual:3.7.0"
+
+  // Core
+  api "org.spongepowered:mixin:0.8.2"
+  api "cpw.mods:modlauncher:8.0.6"
+  api "cpw.mods:grossjava9hacks:1.3.0"
+}
+
+javadoc {
+  options.encoding = "UTF-8"
+  options.charSet = "UTF-8"
+  options.links(
+
+  )
+
+  // Disable the crazy super-strict doclint tool in Java 8
+  options.addStringOption("Xdoclint:none", "-quiet")
+}
+
+task sourcesJar(type: Jar) {
+  from sourceSets.main.allJava
+  classifier = 'sources'
+}
+
+task javadocsJar(type: Jar) {
+  from javadoc
+  classifier = "javadoc"
+}

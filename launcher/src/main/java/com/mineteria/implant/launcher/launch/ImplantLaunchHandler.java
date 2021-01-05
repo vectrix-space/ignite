@@ -1,16 +1,23 @@
-package com.mineteria.bootstrapper.launch;
+package com.mineteria.implant.launcher.launch;
 
+import cpw.mods.gross.Java9ClassLoaderUtil;
 import cpw.mods.modlauncher.api.ILaunchHandlerService;
 import cpw.mods.modlauncher.api.ITransformingClassLoader;
 import cpw.mods.modlauncher.api.ITransformingClassLoaderBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-public abstract class AbstractLaunchHandlerService implements ILaunchHandlerService {
+public final class ImplantLaunchHandler implements ILaunchHandlerService {
+  private final Logger logger = LogManager.getLogger("ImplantLaunch");
+
   /**
    * A list of class loader exclusions to ignore when
    * transforming classes.
@@ -20,19 +27,36 @@ public abstract class AbstractLaunchHandlerService implements ILaunchHandlerServ
   );
 
   @Override
+  public String name() {
+    return "mineteria";
+  }
+
+  @Override
   public void configureTransformationClassLoader(final @NonNull ITransformingClassLoaderBuilder builder) {
+    for (final URL url : Java9ClassLoaderUtil.getSystemClassPathURLs()) {
+      if (url.toString().contains("mixin") && url.toString().endsWith(".jar")) {
+        continue;
+      }
+
+      try {
+        builder.addTransformationPath(Paths.get(url.toURI()));
+      } catch (final URISyntaxException exception) {
+        this.logger.error("Failed to add Mixin transformation path.", exception);
+      }
+    }
+
     // TODO: Add resource resolver for class bytes locator.
+    //builder.setClassBytesLocator();
   }
 
   @Override
   public @NonNull Callable<Void> launchService(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
-    launchClassLoader.addTargetPackageFilter(other -> {
-      for (final String pkg : AbstractLaunchHandlerService.EXCLUDED_PACKAGES) {
-        if (other.startsWith(pkg)) {
-          return false;
-        }
-      }
+    this.logger.info("Transitioning to Minecraft launcher, please wait...");
 
+    launchClassLoader.addTargetPackageFilter(other -> {
+      for (final String pkg : ImplantLaunchHandler.EXCLUDED_PACKAGES) {
+        if (other.startsWith(pkg)) return false;
+      }
       return true;
     });
 
@@ -51,5 +75,7 @@ public abstract class AbstractLaunchHandlerService implements ILaunchHandlerServ
    * @param arguments The arguments to launch the service with
    * @param launchClassLoader The transforming class loader to load classes with
    */
-  protected abstract void launchService0(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader);
+  protected void launchService0(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
+
+  }
 }

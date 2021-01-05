@@ -1,1 +1,4 @@
-rootProject.name = "MixinBootstrapper"
+rootProject.name = "Implant"
+
+include("api")
+include("launcher")
