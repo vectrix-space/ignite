@@ -1,7 +1,7 @@
-package com.mineteria.implant.launcher.launch;
+package com.mineteria.implant.launch;
 
-import com.mineteria.implant.launcher.ImplantCore;
-import com.mineteria.implant.launcher.mod.ModResource;
+import com.mineteria.implant.ImplantCore;
+import com.mineteria.implant.mod.ModResource;
 import cpw.mods.gross.Java9ClassLoaderUtil;
 import cpw.mods.modlauncher.api.ILaunchHandlerService;
 import cpw.mods.modlauncher.api.ITransformingClassLoader;

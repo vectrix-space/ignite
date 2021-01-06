@@ -1,4 +1,4 @@
-package com.mineteria.implant.launcher.util;
+package com.mineteria.implant.util;
 
 public final class JVMConstants {
   public static final String META_INF_LOCATION = "META-INF";

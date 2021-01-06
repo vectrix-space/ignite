@@ -1,7 +1,7 @@
-package com.mineteria.implant.launcher;
+package com.mineteria.implant;
 
 import com.google.gson.Gson;
-import com.mineteria.implant.launcher.mod.ModEngine;
+import com.mineteria.implant.mod.ModEngine;
 import cpw.mods.modlauncher.api.ITransformingClassLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

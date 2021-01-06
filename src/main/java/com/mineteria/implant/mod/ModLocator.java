@@ -1,8 +1,8 @@
-package com.mineteria.implant.launcher.mod;
+package com.mineteria.implant.mod;
 
-import com.mineteria.implant.launcher.ImplantCore;
-import com.mineteria.implant.launcher.launch.ImplantBlackboard;
-import com.mineteria.implant.launcher.util.JVMConstants;
+import com.mineteria.implant.ImplantCore;
+import com.mineteria.implant.launch.ImplantBlackboard;
+import com.mineteria.implant.util.JVMConstants;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,7 +24,7 @@ public final class ModLocator {
 
     final List<ModResource> modResources = new ArrayList<>();
 
-    final Path modDirectory = ImplantBlackboard.INSTANCE.getProperty(ImplantBlackboard.MOD_DIRECTORY_PATH);
+    final Path modDirectory = ImplantBlackboard.getProperty(ImplantBlackboard.MOD_DIRECTORY_PATH);
     if (modDirectory == null || Files.notExists(modDirectory)) {
       core.getLogger().warn("Mod directory '{}' does not exist for mod locator. Skipping...", modDirectory);
       return modResources;

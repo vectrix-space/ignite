@@ -1,8 +1,8 @@
-package com.mineteria.implant.launcher.mod;
+package com.mineteria.implant.mod;
 
 import com.google.gson.stream.JsonReader;
-import com.mineteria.implant.launcher.ImplantCore;
-import com.mineteria.implant.launcher.util.ClassLoaderUtil;
+import com.mineteria.implant.ImplantCore;
+import com.mineteria.implant.util.ClassLoaderUtil;
 import cpw.mods.modlauncher.api.ITransformingClassLoader;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.asm.mixin.Mixins;
@@ -14,8 +14,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 

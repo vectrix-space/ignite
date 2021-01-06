@@ -1,4 +1,4 @@
-package com.mineteria.implant.launcher.util;
+package com.mineteria.implant.util;
 
 import java.net.MalformedURLException;
 import java.net.URL;
