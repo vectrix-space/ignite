@@ -21,8 +21,6 @@ public final class ModLocator {
 
   public @NonNull List<ModResource> locateResources() {
     final ImplantCore core = ImplantCore.INSTANCE;
-    core.getLogger().info("Locating mod resources...");
-
     final List<ModResource> modResources = new ArrayList<>();
 
     final Path modDirectory = ImplantBlackboard.getProperty(ImplantBlackboard.MOD_DIRECTORY_PATH);
@@ -51,7 +49,6 @@ public final class ModLocator {
       core.getLogger().error("Error walking mods directory '{}'.", modDirectory, exception);
     }
 
-    core.getLogger().info("Located [{}] mod(s).", modResources.size());
     return modResources;
   }
 

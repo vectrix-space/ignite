@@ -30,13 +30,19 @@ public final class ModEngine {
    * Locates and populates the mod resources list.
    */
   public void locateResources() {
+    this.core.getLogger().info("Locating mod resources...");
+
     this.modResources.addAll(this.locator.locateResources());
+
+    this.core.getLogger().info("Located [{}] mod(s).", this.modResources.size());
   }
 
   /**
    * Load the mods and initializes them from the resources list.
    */
   public void loadCandidates() {
+    this.core.getLogger().info("Loading mod candidates...");
+
     for (final ModResource resource : this.modResources) {
       final Path resourcePath = resource.getPath();
 
@@ -63,9 +69,13 @@ public final class ModEngine {
         this.core.getLogger().warn("Failed to open '{}'!", resourcePath);
       }
     }
+
+    this.core.getLogger().info("Loaded [{}] mod(s).", this.modContainers.size());
   }
 
   public void loadContainers() {
+    this.core.getLogger().info("Applying mod transformations...");
+
     for (final ModContainer container : this.modContainers) {
       final ModConfig config = container.getConfig();
 
