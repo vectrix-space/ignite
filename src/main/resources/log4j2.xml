@@ -9,7 +9,7 @@
       </PatternLayout>
     </TerminalConsole>
     <RollingRandomAccessFile name="File" fileName="logs/latest.log" filePattern="logs/%d{yyyy-MM-dd}-%i.log.gz">
-      <PatternLayout pattern="[%d{ddMMMyyyy HH:mm:ss} %level]: %msg%n"/>
+      <PatternLayout pattern="[%d{ddMMMyyyy HH:mm:ss}] [%t/%level]: %msg%n"/>
       <Policies>
         <TimeBasedTriggeringPolicy/>
         <OnStartupTriggeringPolicy/>
@@ -17,7 +17,7 @@
       <DefaultRolloverStrategy max="1000"/>
     </RollingRandomAccessFile>
     <RollingRandomAccessFile name="DebugFile" fileName="logs/debug.log" filePattern="logs/debug-%i.log.gz">
-      <PatternLayout pattern="[%d{ddMMMyyyy HH:mm:ss} %level] [%logger]: %msg%n"/>
+      <PatternLayout pattern="[%d{ddMMMyyyy HH:mm:ss}] [%t/%level] [%logger]: %msg%n"/>
       <Policies>
         <OnStartupTriggeringPolicy/>
         <SizeBasedTriggeringPolicy size="200MB"/>
