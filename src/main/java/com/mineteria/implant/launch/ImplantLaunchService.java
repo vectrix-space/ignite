@@ -2,6 +2,7 @@ package com.mineteria.implant.launch;
 
 import com.mineteria.implant.ImplantCore;
 import com.mineteria.implant.mod.ModResource;
+import com.mineteria.implant.util.ClassLoaderUtil;
 import cpw.mods.gross.Java9ClassLoaderUtil;
 import cpw.mods.modlauncher.api.ILaunchHandlerService;
 import cpw.mods.modlauncher.api.ITransformingClassLoader;
@@ -31,8 +32,9 @@ public final class ImplantLaunchService implements ILaunchHandlerService {
    */
   protected static final List<String> EXCLUDED_PACKAGES = Arrays.asList(
     // Implant
-    "org.mineteria.implant.launcher.launch.",
-    "org.mineteria.implant.launcher.mod.",
+    "org.mineteria.implant.launch.",
+    "org.mineteria.implant.mod.",
+    "org.mineteria.implant.mixin.",
 
     // Libraries
     "ninja.leaping.configurate.",
@@ -120,8 +122,19 @@ public final class ImplantLaunchService implements ILaunchHandlerService {
    * @param launchClassLoader The transforming class loader to load classes with
    */
   protected void launchService0(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) throws Exception {
-    Class.forName("org.bukkit.craftbukkit.Main", true, launchClassLoader.getInstance())
-      .getMethod("main", String[].class)
-      .invoke(null, (Object) arguments);
+    final ClassLoader classLoader = launchClassLoader.getInstance();
+
+    final Path launchJar = ImplantBlackboard.getProperty(ImplantBlackboard.LAUNCH_JAR);
+    if (launchJar == null || !Files.exists(launchJar)) {
+      throw new IllegalStateException("No launch jar was found!");
+    } else {
+      final ClassLoader childLoader = ClassLoaderUtil.toUrl(launchJar)
+        .map(url -> (ClassLoader) ClassLoaderUtil.loadJar(classLoader, url))
+        .orElse(classLoader);
+
+      Class.forName("org.bukkit.craftbukkit.Main", true, childLoader)
+        .getMethod("main", String[].class)
+        .invoke(null, (Object) arguments);
+    }
   }
 }

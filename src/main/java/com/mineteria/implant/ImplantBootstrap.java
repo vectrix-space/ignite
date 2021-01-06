@@ -1,7 +1,6 @@
 package com.mineteria.implant;
 
 import com.mineteria.implant.launch.ImplantBlackboard;
-import com.mineteria.implant.util.ClassLoaderUtil;
 import cpw.mods.modlauncher.Launcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -38,13 +38,15 @@ public final class ImplantBootstrap {
    */
   public static void main(String[] args) {
     final List<String> arguments = Arrays.asList(args);
+    final List<String> launchArguments = new ArrayList<>(arguments);
+
+    // Launch Arguments
+    launchArguments.add("--launchTarget");
+    launchArguments.add("implant_launch");
 
     // Target Loading
-    final ClassLoader classLoader = ClassLoader.getSystemClassLoader();
     if (!Files.exists(ImplantBootstrap.LAUNCH_JAR)) {
       throw new IllegalStateException("Unable to locate launch jar at '" + ImplantBootstrap.LAUNCH_JAR + "'.");
-    } else {
-      ClassLoaderUtil.toUrl(ImplantBootstrap.LAUNCH_JAR).ifPresent(url -> ClassLoaderUtil.loadJar(classLoader, url));
     }
 
     // Logger
@@ -58,7 +60,7 @@ public final class ImplantBootstrap {
     ImplantBlackboard.setProperty(ImplantBlackboard.MOD_DIRECTORY_PATH, ImplantBootstrap.MOD_TARGET_PATH);
 
     // Modlauncher
-    logger.info("Preparing ModLauncher with arguments {}", arguments);
-    Launcher.main(arguments.toArray(new String[0]));
+    logger.info("Preparing ModLauncher with arguments {}", launchArguments);
+    Launcher.main(launchArguments.toArray(new String[0]));
   }
 }

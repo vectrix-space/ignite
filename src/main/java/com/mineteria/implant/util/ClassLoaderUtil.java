@@ -17,7 +17,7 @@ public final class ClassLoaderUtil {
     }
   }
 
-  public static void loadJar(final @NonNull ClassLoader classLoader, final @NonNull URL target) {
-    URLClassLoader.newInstance(new URL[] { target }, classLoader);
+  public static URLClassLoader loadJar(final @NonNull ClassLoader classLoader, final @NonNull URL target) {
+    return URLClassLoader.newInstance(new URL[] { target }, classLoader);
   }
 }
