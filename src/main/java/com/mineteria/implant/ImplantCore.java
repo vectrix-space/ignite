@@ -2,7 +2,6 @@ package com.mineteria.implant;
 
 import com.google.gson.Gson;
 import com.mineteria.implant.mod.ModEngine;
-import cpw.mods.modlauncher.api.ITransformingClassLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -17,8 +16,6 @@ public final class ImplantCore {
 
   private final ModEngine modEngine;
 
-  private boolean initialized = false;
-
   /* package */ ImplantCore() {
     this.modEngine = new ModEngine(this);
 
@@ -31,28 +28,15 @@ public final class ImplantCore {
     this.logger.info("Started Mixin");
   }
 
-  public void initialize() {
-    if (this.initialized) return;
-    this.initialized = true;
-
-    this.modEngine.loadCandidates();
-  }
-
-  public void load(final @NonNull ITransformingClassLoader classLoader) {
-    this.logger.info("Initializing Mods");
-    this.modEngine.loadMods();
-    this.modEngine.transformMods(classLoader);
-  }
-
-  public Logger getLogger() {
+  public @NonNull Logger getLogger() {
     return this.logger;
   }
 
-  public Gson getGson() {
+  public @NonNull Gson getGson() {
     return this.gson;
   }
 
-  public ModEngine getModEngine() {
+  public @NonNull ModEngine getEngine() {
     return this.modEngine;
   }
 }

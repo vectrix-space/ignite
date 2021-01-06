@@ -2,8 +2,6 @@ package com.mineteria.implant.mod;
 
 import com.google.gson.stream.JsonReader;
 import com.mineteria.implant.ImplantCore;
-import com.mineteria.implant.util.ClassLoaderUtil;
-import cpw.mods.modlauncher.api.ITransformingClassLoader;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.asm.mixin.Mixins;
 
@@ -19,27 +17,27 @@ import java.util.zip.ZipFile;
 
 public final class ModEngine {
   private final ModLocator locator = new ModLocator();
-  private final List<ModResource> modCandidates = new ArrayList<>();
+  private final List<ModResource> modResources = new ArrayList<>();
   private final List<ModContainer> modContainers = new ArrayList<>();
 
   private final ImplantCore core;
 
-  public ModEngine(final ImplantCore core) {
+  public ModEngine(final @NonNull ImplantCore core) {
     this.core = core;
   }
 
   /**
-   * Locates and populates the mod candidates list.
+   * Locates and populates the mod resources list.
    */
-  public void loadCandidates() {
-    this.modCandidates.addAll(this.locator.locateResources());
+  public void locateResources() {
+    this.modResources.addAll(this.locator.locateResources());
   }
 
   /**
-   * Load the mods and initializes them from the candidates list.
+   * Load the mods and initializes them from the resources list.
    */
-  public void loadMods() {
-    for (final ModResource resource : this.modCandidates) {
+  public void loadCandidates() {
+    for (final ModResource resource : this.modResources) {
       final Path resourcePath = resource.getPath();
 
       this.core.getLogger().debug("Scanning mod candidate '{}' for mod configuration!", resourcePath);
@@ -58,7 +56,7 @@ public final class ModEngine {
             final JsonReader reader = new JsonReader(new InputStreamReader(zipFile.getInputStream(entry), StandardCharsets.UTF_8));
             final ModConfig config = this.core.getGson().fromJson(reader, ModConfig.class);
 
-            this.modContainers.add(new ModContainer(resource, config));
+            this.modContainers.add(new ModContainer(config.getId(), resource, config));
           }
         }
       } catch (final IOException exception) {
@@ -67,32 +65,22 @@ public final class ModEngine {
     }
   }
 
-  public void transformMods(final @NonNull ITransformingClassLoader classLoader) {
+  public void loadContainers() {
     for (final ModContainer container : this.modContainers) {
-      final ModResource resource = container.getResource();
       final ModConfig config = container.getConfig();
-      final Path resourcePath = resource.getPath();
-
-      // Load the target resource.
-      ClassLoaderUtil.toUrl(resourcePath).ifPresent(url -> ClassLoaderUtil.loadJar(classLoader.getInstance(), url));
 
       // Add the mixin configurations.
       for (final String mixinConfig : config.getMixins()) {
         Mixins.addConfiguration(mixinConfig);
       }
-
-//      try (final JarFile jarFile = new JarFile(resourcePath.toFile())) {
-//      } catch (final IOException exception) {
-//        this.core.getLogger().warn("Failed to open '{}'!", resourcePath);
-//      }
     }
   }
 
   public @NonNull List<ModResource> getCandidates() {
-    return this.modCandidates;
+    return this.modResources;
   }
 
   public @NonNull List<ModContainer> getContainers() {
-    return modContainers;
+    return this.modContainers;
   }
 }

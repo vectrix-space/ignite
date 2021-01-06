@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public final class Implant {
+public final class Main {
   /**
    * The launch jar path.
    */
@@ -46,22 +46,22 @@ public final class Implant {
 
     // Target Loading
     final ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-    if (!Files.exists(Implant.LAUNCH_JAR)) {
-      throw new IllegalStateException("Unable to locate launch jar at '" + Implant.LAUNCH_JAR + "'.");
+    if (!Files.exists(Main.LAUNCH_JAR)) {
+      throw new IllegalStateException("Unable to locate launch jar at '" + Main.LAUNCH_JAR + "'.");
     } else {
-      ClassLoaderUtil.toUrl(Implant.LAUNCH_JAR).ifPresent(url -> ClassLoaderUtil.loadJar(classLoader, url));
+      ClassLoaderUtil.toUrl(Main.LAUNCH_JAR).ifPresent(url -> ClassLoaderUtil.loadJar(classLoader, url));
     }
 
     // Logger
     final Logger logger = LogManager.getLogger("ImplantMain");
-    logger.info("Implant Launcher version {}", Implant.LAUNCHER_VERSION);
+    logger.info("Implant Launcher version {}", Main.LAUNCHER_VERSION);
 
     // Blackboard
     ImplantBlackboard.setProperty(ImplantBlackboard.LAUNCH_ARGUMENTS, Collections.unmodifiableList(arguments));
-    ImplantBlackboard.setProperty(ImplantBlackboard.LAUNCH_JAR, Implant.LAUNCH_JAR);
-    ImplantBlackboard.setProperty(ImplantBlackboard.LAUNCH_TARGET, Implant.LAUNCH_TARGET);
-    ImplantBlackboard.setProperty(ImplantBlackboard.MOD_DIRECTORY_PATH, Implant.MOD_TARGET_PATH);
-    ImplantBlackboard.setProperty(ImplantBlackboard.MOD_CONFIG_PATH, Implant.MOD_CONFIG_PATH);
+    ImplantBlackboard.setProperty(ImplantBlackboard.LAUNCH_JAR, Main.LAUNCH_JAR);
+    ImplantBlackboard.setProperty(ImplantBlackboard.LAUNCH_TARGET, Main.LAUNCH_TARGET);
+    ImplantBlackboard.setProperty(ImplantBlackboard.MOD_DIRECTORY_PATH, Main.MOD_TARGET_PATH);
+    ImplantBlackboard.setProperty(ImplantBlackboard.MOD_CONFIG_PATH, Main.MOD_CONFIG_PATH);
 
     // Modlauncher
     logger.info("Preparing ModLauncher with arguments {}", arguments);

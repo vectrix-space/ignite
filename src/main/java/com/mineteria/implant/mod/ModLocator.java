@@ -2,7 +2,8 @@ package com.mineteria.implant.mod;
 
 import com.mineteria.implant.ImplantCore;
 import com.mineteria.implant.launch.ImplantBlackboard;
-import com.mineteria.implant.util.JVMConstants;
+import com.mineteria.implant.util.ImplantConstants;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,7 +19,7 @@ public final class ModLocator {
 
   private static final String NAME = "java_directory";
 
-  public List<ModResource> locateResources() {
+  public @NonNull List<ModResource> locateResources() {
     final ImplantCore core = ImplantCore.INSTANCE;
     core.getLogger().info("Locating mod resources...");
 
@@ -43,7 +44,7 @@ public final class ModLocator {
             continue;
           }
 
-          modResources.add(new ModResource(ModLocator.NAME, childDirectory));
+          modResources.add(new ModResource(ModLocator.NAME, childDirectory, jarFile.getManifest()));
         }
       }
     } catch (final IOException exception) {
@@ -54,7 +55,7 @@ public final class ModLocator {
     return modResources;
   }
 
-  public String getMetadataPath() {
-    return JVMConstants.META_INF_LOCATION + "/" + ModLocator.DEFAULT_METADATA_FILENAME;
+  public @NonNull String getMetadataPath() {
+    return ImplantConstants.META_INF + "/" + ModLocator.DEFAULT_METADATA_FILENAME;
   }
 }

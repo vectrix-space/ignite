@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
-public final class ImplantLaunchHandler implements ILaunchHandlerService {
+public final class ImplantLaunchService implements ILaunchHandlerService {
   private final Logger logger = LogManager.getLogger("ImplantLaunch");
 
   /**
@@ -30,20 +30,38 @@ public final class ImplantLaunchHandler implements ILaunchHandlerService {
    * transforming classes.
    */
   protected static final List<String> EXCLUDED_PACKAGES = Arrays.asList(
+    // Implant
     "org.mineteria.implant.launcher.launch.",
-    "org.mineteria.implant.launcher.mod."
-    // TODO: Figure out which ones we need here.
+    "org.mineteria.implant.launcher.mod.",
+
+    // Libraries
+    "ninja.leaping.configurate.",
+    "javax.inject.",
+    "joptsimple.",
+    "gnu.trove.",
+    "it.unimi.dsi.fastutil.",
+    "org.apache.logging.log4j.",
+    "org.yaml.snakeyaml.",
+    "com.google.inject.",
+    "com.google.common.",
+    "com.google.gson.",
+    "javax.annotation.",
+    "org.apache.commons.",
+
+    // Note: Fix for logging.
+    "net.minecrell.terminalconsole.",
+    "com.sun.jna.",
+    "org.fusesource.jansi.",
+    "org.jline."
   );
 
   @Override
-  public String name() {
-    return "implant";
+  public @NonNull String name() {
+    return "implant_launch";
   }
 
   @Override
   public void configureTransformationClassLoader(final @NonNull ITransformingClassLoaderBuilder builder) {
-    ImplantCore.INSTANCE.initialize();
-
     for (final URL url : Java9ClassLoaderUtil.getSystemClassPathURLs()) {
       if (url.toString().contains("mixin") && url.toString().endsWith(".jar")) {
         continue;
@@ -61,12 +79,12 @@ public final class ImplantLaunchHandler implements ILaunchHandlerService {
 
   @Override
   public @NonNull Callable<Void> launchService(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
-    ImplantCore.INSTANCE.load(launchClassLoader);
+    ImplantCore.INSTANCE.getEngine().loadContainers();
 
     this.logger.info("Transitioning to Minecraft launcher, please wait...");
 
     launchClassLoader.addTargetPackageFilter(other -> {
-      for (final String pkg : ImplantLaunchHandler.EXCLUDED_PACKAGES) {
+      for (final String pkg : ImplantLaunchService.EXCLUDED_PACKAGES) {
         if (other.startsWith(pkg)) return false;
       }
       return true;
@@ -78,9 +96,9 @@ public final class ImplantLaunchHandler implements ILaunchHandlerService {
     };
   }
 
-  protected Function<String, Optional<URL>> getResourceLocator() {
+  protected @NonNull Function<String, Optional<URL>> getResourceLocator() {
     return string -> {
-      for (final ModResource resource : ImplantCore.INSTANCE.getModEngine().getCandidates()) {
+      for (final ModResource resource : ImplantCore.INSTANCE.getEngine().getCandidates()) {
         final Path resolved = resource.getFileSystem().getPath(string);
         if (Files.exists(resolved)) {
           try {

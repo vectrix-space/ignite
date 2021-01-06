@@ -28,6 +28,7 @@ dependencies {
   api "org.checkerframework:checker-qual:3.7.0"
 
   // Core
+  api "net.minecraftforge:accesstransformers:2.2.0"
   api "com.google.guava:guava:21.0"
   api "com.google.code.gson:gson:2.8.0"
   api "org.spongepowered:mixin:0.8.2"

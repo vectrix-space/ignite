@@ -1,5 +1,7 @@
 package com.mineteria.implant.util;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -7,7 +9,7 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 public final class ClassLoaderUtil {
-  public static Optional<URL> toUrl(final Path path) {
+  public static @NonNull Optional<URL> toUrl(final @NonNull Path path) {
     try {
       return Optional.of(path.toUri().toURL());
     } catch (final MalformedURLException exception) {
@@ -15,7 +17,7 @@ public final class ClassLoaderUtil {
     }
   }
 
-  public static void loadJar(final ClassLoader classLoader, final URL target) {
+  public static void loadJar(final @NonNull ClassLoader classLoader, final @NonNull URL target) {
     URLClassLoader.newInstance(new URL[] { target }, classLoader);
   }
 }

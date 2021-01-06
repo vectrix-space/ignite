@@ -19,11 +19,15 @@ public final class ModConfig {
     this.transformers = transformers;
   }
 
-  public List<String> getMixins() {
+  public @NonNull String getId() {
+    return id;
+  }
+
+  public @NonNull List<String> getMixins() {
     return this.mixins;
   }
 
-  public List<String> getTransformers() {
+  public @NonNull List<String> getTransformers() {
     return this.transformers;
   }
 }
