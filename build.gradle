@@ -63,8 +63,14 @@ shadowJar {
   classifier = "shaded"
 
   dependencies {
+    // Logging
+    include dependency('org.apache.logging.log4j:log4j-api:2.11.2')
+    include dependency('org.apache.logging.log4j:log4j-core:2.11.2')
+
     // General
     include dependency('org.checkerframework:checker-qual')
+    include dependency('com.google.code.gson:gson')
+    include dependency('com.google.guava:guava')
 
     // Modlauncher
     include dependency('cpw.mods:grossjava9hacks')
@@ -73,6 +79,7 @@ shadowJar {
     include dependency('org.ow2.asm:asm-analysis')
     include dependency('org.ow2.asm:asm-commons')
     include dependency('org.ow2.asm:asm-tree')
+    include dependency('net.sf.jopt-simple:jopt-simple')
 
     // Access Transformers
     include dependency('net.minecraftforge:accesstransformers')
@@ -80,4 +87,6 @@ shadowJar {
     // Mixin
     include dependency('org.spongepowered:mixin')
   }
+
+  relocate 'com.google', 'com.mineteria.implant.relocate.google'
 }

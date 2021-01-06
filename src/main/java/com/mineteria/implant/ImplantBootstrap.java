@@ -48,7 +48,7 @@ public final class ImplantBootstrap {
     }
 
     // Logger
-    final Logger logger = LogManager.getLogger("ImplantMain");
+    final Logger logger = LogManager.getLogger("ImplantBootstrap");
     logger.info("Implant Launcher version {}", ImplantBootstrap.LAUNCHER_VERSION);
 
     // Blackboard
