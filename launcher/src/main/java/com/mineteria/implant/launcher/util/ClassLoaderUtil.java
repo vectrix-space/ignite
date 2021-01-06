@@ -6,7 +6,7 @@ import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.util.Optional;
 
-public final class ClassLoaderUtility {
+public final class ClassLoaderUtil {
   public static Optional<URL> toUrl(final Path path) {
     try {
       return Optional.of(path.toUri().toURL());

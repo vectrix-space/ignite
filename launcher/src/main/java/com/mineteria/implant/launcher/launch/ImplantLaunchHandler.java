@@ -43,8 +43,6 @@ public final class ImplantLaunchHandler implements ILaunchHandlerService {
 
   @Override
   public void configureTransformationClassLoader(final @NonNull ITransformingClassLoaderBuilder builder) {
-    // TODO: Setup ImplantCore here.
-
     for (final URL url : Java9ClassLoaderUtil.getSystemClassPathURLs()) {
       if (url.toString().contains("mixin") && url.toString().endsWith(".jar")) {
         continue;
@@ -62,6 +60,8 @@ public final class ImplantLaunchHandler implements ILaunchHandlerService {
 
   @Override
   public @NonNull Callable<Void> launchService(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
+    ImplantCore.INSTANCE.initialize();
+
     this.logger.info("Transitioning to Minecraft launcher, please wait...");
 
     launchClassLoader.addTargetPackageFilter(other -> {

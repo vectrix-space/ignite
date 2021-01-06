@@ -1,14 +1,11 @@
 package com.mineteria.implant;
 
 import com.mineteria.implant.launcher.launch.ImplantBlackboard;
-import com.mineteria.implant.launcher.util.ClassLoaderUtility;
-import cpw.mods.gross.Java9ClassLoaderUtil;
+import com.mineteria.implant.launcher.util.ClassLoaderUtil;
 import cpw.mods.modlauncher.Launcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -52,7 +49,7 @@ public final class Main {
     if (!Files.exists(Main.LAUNCH_JAR)) {
       throw new IllegalStateException("Unable to locate launch jar at '" + Main.LAUNCH_JAR + "'.");
     } else {
-      ClassLoaderUtility.toUrl(Main.LAUNCH_JAR).ifPresent(url -> ClassLoaderUtility.loadJar(classLoader, url));
+      ClassLoaderUtil.toUrl(Main.LAUNCH_JAR).ifPresent(url -> ClassLoaderUtil.loadJar(classLoader, url));
     }
 
     // Logger
