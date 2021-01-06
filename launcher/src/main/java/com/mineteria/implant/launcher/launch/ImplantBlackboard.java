@@ -11,9 +11,10 @@ public final class ImplantBlackboard {
   private static final TypesafeMap BLACKBOARD = new TypesafeMap();
 
   public static TypesafeMap.Key<List> LAUNCH_ARGUMENTS = key("implant.launch.arguments", List.class);
+  public static TypesafeMap.Key<Path> LAUNCH_JAR       = key("implant.launch.jar", Path.class);
   public static TypesafeMap.Key<String> LAUNCH_TARGET  = key("implant.launch.target", String.class);
 
-  public static TypesafeMap.Key<Path> MOD_TARGET_PATH = key("implant.mod.target", Path.class);
+  public static TypesafeMap.Key<Path> MOD_DIRECTORY_PATH = key("implant.mod.directory", Path.class);
   public static TypesafeMap.Key<Path> MOD_CONFIG_PATH = key("implant.mod.config", Path.class);
 
   public static ImplantBlackboard INSTANCE;

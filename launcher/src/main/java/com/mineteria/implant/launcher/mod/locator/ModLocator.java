@@ -24,7 +24,7 @@ public final class ModLocator {
 
     final List<ModResource> modResources = new ArrayList<>();
 
-    final Path modDirectory = ImplantBlackboard.INSTANCE.getProperty(ImplantBlackboard.MOD_TARGET_PATH);
+    final Path modDirectory = ImplantBlackboard.INSTANCE.getProperty(ImplantBlackboard.MOD_DIRECTORY_PATH);
     if (modDirectory == null || Files.notExists(modDirectory)) {
       core.getLogger().warn("Mod directory '{}' does not exist for mod locator. Skipping...", modDirectory);
       return modResources;
