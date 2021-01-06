@@ -17,7 +17,6 @@ public final class ImplantBlackboard {
   public static final TypesafeMap.Key<String>       LAUNCH_TARGET    = key("implant.launch.target", TypeToken.of(String.class));
 
   public static final TypesafeMap.Key<Path> MOD_DIRECTORY_PATH = key("implant.mod.directory", TypeToken.of(Path.class));
-  public static final TypesafeMap.Key<Path> MOD_CONFIG_PATH    = key("implant.mod.config", TypeToken.of(Path.class));
 
   public static <T> @Nullable T getProperty(final TypesafeMap.@NonNull Key<T> key) {
     return ImplantBlackboard.getProperty(key, null);

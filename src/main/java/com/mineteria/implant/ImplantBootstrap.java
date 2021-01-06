@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public final class Main {
+public final class ImplantBootstrap {
   /**
    * The launch jar path.
    */
@@ -29,11 +29,6 @@ public final class Main {
    */
   public static final Path MOD_TARGET_PATH = Paths.get(System.getProperty(ImplantBlackboard.MOD_DIRECTORY_PATH.name(), "./mods"));
 
-  /**
-   * The mods configuration directory.
-   */
-  public static final Path MOD_CONFIG_PATH = Paths.get(System.getProperty(ImplantBlackboard.MOD_CONFIG_PATH.name(), "./modconfigs"));
-
   private static final String LAUNCHER_VERSION = "0.1.0";
 
   /**
@@ -46,22 +41,21 @@ public final class Main {
 
     // Target Loading
     final ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-    if (!Files.exists(Main.LAUNCH_JAR)) {
-      throw new IllegalStateException("Unable to locate launch jar at '" + Main.LAUNCH_JAR + "'.");
+    if (!Files.exists(ImplantBootstrap.LAUNCH_JAR)) {
+      throw new IllegalStateException("Unable to locate launch jar at '" + ImplantBootstrap.LAUNCH_JAR + "'.");
     } else {
-      ClassLoaderUtil.toUrl(Main.LAUNCH_JAR).ifPresent(url -> ClassLoaderUtil.loadJar(classLoader, url));
+      ClassLoaderUtil.toUrl(ImplantBootstrap.LAUNCH_JAR).ifPresent(url -> ClassLoaderUtil.loadJar(classLoader, url));
     }
 
     // Logger
     final Logger logger = LogManager.getLogger("ImplantMain");
-    logger.info("Implant Launcher version {}", Main.LAUNCHER_VERSION);
+    logger.info("Implant Launcher version {}", ImplantBootstrap.LAUNCHER_VERSION);
 
     // Blackboard
     ImplantBlackboard.setProperty(ImplantBlackboard.LAUNCH_ARGUMENTS, Collections.unmodifiableList(arguments));
-    ImplantBlackboard.setProperty(ImplantBlackboard.LAUNCH_JAR, Main.LAUNCH_JAR);
-    ImplantBlackboard.setProperty(ImplantBlackboard.LAUNCH_TARGET, Main.LAUNCH_TARGET);
-    ImplantBlackboard.setProperty(ImplantBlackboard.MOD_DIRECTORY_PATH, Main.MOD_TARGET_PATH);
-    ImplantBlackboard.setProperty(ImplantBlackboard.MOD_CONFIG_PATH, Main.MOD_CONFIG_PATH);
+    ImplantBlackboard.setProperty(ImplantBlackboard.LAUNCH_JAR, ImplantBootstrap.LAUNCH_JAR);
+    ImplantBlackboard.setProperty(ImplantBlackboard.LAUNCH_TARGET, ImplantBootstrap.LAUNCH_TARGET);
+    ImplantBlackboard.setProperty(ImplantBlackboard.MOD_DIRECTORY_PATH, ImplantBootstrap.MOD_TARGET_PATH);
 
     // Modlauncher
     logger.info("Preparing ModLauncher with arguments {}", arguments);
