@@ -1,4 +1,4 @@
-package com.mineteria.implant.launcher.mod.locator;
+package com.mineteria.implant.launcher.mod;
 
 import com.mineteria.implant.launcher.ImplantCore;
 import com.mineteria.implant.launcher.launch.ImplantBlackboard;
@@ -18,7 +18,7 @@ public final class ModLocator {
 
   private static final String NAME = "java_directory";
 
-  public List<ModResource> locateModResources() {
+  public List<ModResource> locateResources() {
     final ImplantCore core = ImplantCore.INSTANCE;
     core.getLogger().info("Locating mod resources...");
 

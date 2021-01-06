@@ -3,6 +3,7 @@ dependencies {
   api "org.checkerframework:checker-qual:3.7.0"
 
   // Core
+  api "com.google.code.gson:gson:2.8.0"
   api "org.spongepowered:mixin:0.8.2"
   api "cpw.mods:modlauncher:8.0.6"
   api "cpw.mods:grossjava9hacks:1.3.0"

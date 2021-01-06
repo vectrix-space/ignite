@@ -1,4 +1,4 @@
-package com.mineteria.implant.launcher.mod.locator;
+package com.mineteria.implant.launcher.mod;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 

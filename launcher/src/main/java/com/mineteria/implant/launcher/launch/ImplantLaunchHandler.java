@@ -1,9 +1,8 @@
 package com.mineteria.implant.launcher.launch;
 
 import com.mineteria.implant.launcher.ImplantCore;
-import com.mineteria.implant.launcher.mod.locator.ModResource;
+import com.mineteria.implant.launcher.mod.ModResource;
 import cpw.mods.gross.Java9ClassLoaderUtil;
-import cpw.mods.modlauncher.Launcher;
 import cpw.mods.modlauncher.api.ILaunchHandlerService;
 import cpw.mods.modlauncher.api.ITransformingClassLoader;
 import cpw.mods.modlauncher.api.ITransformingClassLoaderBuilder;
@@ -43,6 +42,8 @@ public final class ImplantLaunchHandler implements ILaunchHandlerService {
 
   @Override
   public void configureTransformationClassLoader(final @NonNull ITransformingClassLoaderBuilder builder) {
+    ImplantCore.INSTANCE.initialize();
+
     for (final URL url : Java9ClassLoaderUtil.getSystemClassPathURLs()) {
       if (url.toString().contains("mixin") && url.toString().endsWith(".jar")) {
         continue;
@@ -60,7 +61,7 @@ public final class ImplantLaunchHandler implements ILaunchHandlerService {
 
   @Override
   public @NonNull Callable<Void> launchService(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
-    ImplantCore.INSTANCE.initialize();
+    ImplantCore.INSTANCE.load(launchClassLoader);
 
     this.logger.info("Transitioning to Minecraft launcher, please wait...");
 
