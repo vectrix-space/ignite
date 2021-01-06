@@ -3,6 +3,7 @@ package com.mineteria.implant.launcher.launch;
 import com.mineteria.implant.launcher.ImplantCore;
 import com.mineteria.implant.launcher.mod.locator.ModResource;
 import cpw.mods.gross.Java9ClassLoaderUtil;
+import cpw.mods.modlauncher.Launcher;
 import cpw.mods.modlauncher.api.ILaunchHandlerService;
 import cpw.mods.modlauncher.api.ITransformingClassLoader;
 import cpw.mods.modlauncher.api.ITransformingClassLoaderBuilder;
@@ -94,13 +95,12 @@ public final class ImplantLaunchHandler implements ILaunchHandlerService {
   /**
    * Launch the service (Minecraft).
    *
-   * <p>Take care to ONLY load classes on the provided {@link ClassLoader},
-   * which can be retrieved with </p>
-   *
    * @param arguments The arguments to launch the service with
    * @param launchClassLoader The transforming class loader to load classes with
    */
-  protected void launchService0(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
-
+  protected void launchService0(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) throws Exception {
+    Class.forName("org.bukkit.craftbukkit.Main", true, launchClassLoader.getInstance())
+      .getMethod("main", String[].class)
+      .invoke(null, (Object) arguments);
   }
 }
