@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn">
   <Appenders>
-    <Console name="SysOut" target="SYSTEM_OUT">
-      <PatternLayout pattern="%highlight{[%d{HH:mm:ss}] [%t/%level] [%c{1.3}/%markerSimpleName]: %msg%n}"/>
-    </Console>
+    <TerminalConsole name="TerminalConsole">
+      <PatternLayout>
+        <LoggerNamePatternSelector defaultPattern="%highlightError{[%d{HH:mm:ss} %level]: [%logger] %minecraftFormatting{%msg}%n%xEx}">
+          <PatternMatch key=",net.minecraft.,Minecraft,com.mojang.,com.sk89q." pattern="%highlightError{[%d{HH:mm:ss} %level]: %minecraftFormatting{%msg}%n%xEx}" />
+        </LoggerNamePatternSelector>
+      </PatternLayout>
+    </TerminalConsole>
     <RollingRandomAccessFile name="File" fileName="logs/latest.log" filePattern="logs/%d{yyyy-MM-dd}-%i.log.gz">
-      <PatternLayout pattern="[%d{ddMMMyyyy HH:mm:ss}] [%t/%level]: %msg%n"/>
+      <PatternLayout pattern="[%d{ddMMMyyyy HH:mm:ss} %level]: %msg%n"/>
       <Policies>
         <TimeBasedTriggeringPolicy/>
         <OnStartupTriggeringPolicy/>
       </Policies>
+      <DefaultRolloverStrategy max="1000"/>
     </RollingRandomAccessFile>
     <RollingRandomAccessFile name="DebugFile" fileName="logs/debug.log" filePattern="logs/debug-%i.log.gz">
-      <PatternLayout pattern="[%d{ddMMMyyyy HH:mm:ss}] [%t/%level] [%c{1.3}/%markerSimpleName]: %msg%n"/>
+      <PatternLayout pattern="[%d{ddMMMyyyy HH:mm:ss} %level] [%logger]: %msg%n"/>
       <Policies>
         <OnStartupTriggeringPolicy/>
         <SizeBasedTriggeringPolicy size="200MB"/>
@@ -22,9 +27,9 @@
   </Appenders>
   <Loggers>
     <Root level="all">
-      <AppenderRef ref="SysOut" level="INFO"/>
       <AppenderRef ref="File" level="INFO"/>
       <AppenderRef ref="DebugFile" level="DEBUG"/>
+      <AppenderRef ref="TerminalConsole" level="INFO"/>
     </Root>
   </Loggers>
 </Configuration>

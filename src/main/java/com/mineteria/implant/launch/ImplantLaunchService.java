@@ -9,8 +9,12 @@ import cpw.mods.modlauncher.api.ITransformingClassLoader;
 import cpw.mods.modlauncher.api.ITransformingClassLoaderBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.ConfigurationSource;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.io.FileInputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -22,6 +26,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public final class ImplantLaunchService implements ILaunchHandlerService {
   private final Logger logger = LogManager.getLogger("ImplantLaunch");
@@ -128,10 +134,12 @@ public final class ImplantLaunchService implements ILaunchHandlerService {
     if (launchJar == null || !Files.exists(launchJar)) {
       throw new IllegalStateException("No launch jar was found!");
     } else {
+      // Load the server jar on the provided ClassLoader.
       final ClassLoader childLoader = ClassLoaderUtil.toUrl(launchJar)
         .map(url -> (ClassLoader) ClassLoaderUtil.loadJar(classLoader, url))
         .orElse(classLoader);
 
+      // Invoke the main method on the provided ClassLoader.
       Class.forName("org.bukkit.craftbukkit.Main", true, childLoader)
         .getMethod("main", String[].class)
         .invoke(null, (Object) arguments);

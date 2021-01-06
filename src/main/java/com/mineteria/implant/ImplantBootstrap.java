@@ -40,14 +40,14 @@ public final class ImplantBootstrap {
     final List<String> arguments = Arrays.asList(args);
     final List<String> launchArguments = new ArrayList<>(arguments);
 
-    // Launch Arguments
-    launchArguments.add("--launchTarget");
-    launchArguments.add("implant_launch");
-
-    // Target Loading
+    // Target Check
     if (!Files.exists(ImplantBootstrap.LAUNCH_JAR)) {
       throw new IllegalStateException("Unable to locate launch jar at '" + ImplantBootstrap.LAUNCH_JAR + "'.");
     }
+
+    // Launch Target
+    launchArguments.add("--launchTarget");
+    launchArguments.add("implant_launch");
 
     // Logger
     final Logger logger = LogManager.getLogger("ImplantBootstrap");

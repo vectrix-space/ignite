@@ -25,9 +25,8 @@ repositories {
 
 dependencies {
   // API
-  api "org.apache.logging.log4j:log4j-api:2.8.1"
-  api "org.apache.logging.log4j:log4j-core:2.8.1"
   api "org.checkerframework:checker-qual:3.9.0"
+  api "net.minecrell:terminalconsoleappender:1.1.1"
 
   // Common
   api("com.google.guava:guava:21.0") {
@@ -91,31 +90,40 @@ task sourcesJar(type: Jar) {
 shadowJar {
   classifier = "shaded"
 
+  transform(com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer)
+
   dependencies {
-    // Logging
+    // API
     include dependency('org.apache.logging.log4j:log4j-api')
     include dependency('org.apache.logging.log4j:log4j-core')
-
-    // General
     include dependency('org.checkerframework:checker-qual')
-    include dependency('com.google.code.gson:gson')
-    include dependency('com.google.guava:guava')
+    include dependency('net.minecrell:terminalconsoleappender')
+    include dependency('org.jline:jline-reader')
+    include dependency('org.jline:jline-terminal')
+    include dependency('org.jline:jline-terminal-jna')
+    include dependency('net.java.dev.jna:jna')
 
-    // Modlauncher
-    include dependency('cpw.mods:grossjava9hacks')
-    include dependency('cpw.mods:modlauncher')
+    // Common
+    include dependency('com.google.guava:guava')
+    include dependency('com.google.code.gson:gson')
+
+    // ASM
     include dependency('org.ow2.asm:asm')
     include dependency('org.ow2.asm:asm-analysis')
     include dependency('org.ow2.asm:asm-commons')
     include dependency('org.ow2.asm:asm-tree')
     include dependency('org.ow2.asm:asm-util')
-    include dependency('net.sf.jopt-simple:jopt-simple')
+
+    // Mixin
+    include dependency('org.spongepowered:mixin')
 
     // Access Transformers
     include dependency('net.minecraftforge:accesstransformers')
 
-    // Mixin
-    include dependency('org.spongepowered:mixin')
+    // Core
+    include dependency('cpw.mods:modlauncher')
+    include dependency('cpw.mods:grossjava9hacks')
+    include dependency('net.sf.jopt-simple:jopt-simple')
   }
 
   relocate 'com.google', 'com.mineteria.implant.relocate.google'
