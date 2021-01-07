@@ -151,8 +151,10 @@ public final class ImplantLaunchService implements ILaunchHandlerService {
     if (launchJar == null || !Files.exists(launchJar)) {
       throw new IllegalStateException("No launch jar was found!");
     } else {
+      final String launchTarget = ImplantBlackboard.getProperty(ImplantBlackboard.LAUNCH_TARGET, "org.bukkit.craftbukkit.Main");
+
       // Invoke the main method on the provided ClassLoader.
-      Class.forName("org.bukkit.craftbukkit.Main", true, classLoader)
+      Class.forName(launchTarget, true, classLoader)
         .getMethod("main", String[].class)
         .invoke(null, (Object) arguments);
     }
