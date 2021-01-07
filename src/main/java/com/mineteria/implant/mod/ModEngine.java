@@ -10,10 +10,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public final class ModEngine {
   private final ModLocator locator = new ModLocator();
@@ -48,23 +47,17 @@ public final class ModEngine {
 
       this.core.getLogger().debug("Scanning mod candidate '{}' for mod configuration!", resourcePath);
 
-      try (final ZipFile zipFile = new ZipFile(resourcePath.toFile())) {
-        final Enumeration<? extends ZipEntry> entries = zipFile.entries();
-
-        while (entries.hasMoreElements()) {
-          final ZipEntry entry = entries.nextElement();
-
-          // Skip directories.
-          if (entry.isDirectory()) continue;
-
-          // Look for the config.
-          if (entry.getName().equalsIgnoreCase("mod.json")) {
-            final JsonReader reader = new JsonReader(new InputStreamReader(zipFile.getInputStream(entry), StandardCharsets.UTF_8));
-            final ModConfig config = this.core.getGson().fromJson(reader, ModConfig.class);
-
-            this.modContainers.add(new ModContainer(config.getId(), resource, config));
-          }
+      try (final JarFile jarFile = new JarFile(resourcePath.toFile())) {
+        final JarEntry jarEntry = jarFile.getJarEntry(this.locator.getMetadataPath());
+        if (jarEntry == null) {
+          core.getLogger().debug("'{}' does not contain any mod metadata so it is not a mod. Skipping...", jarFile);
+          continue;
         }
+
+        final JsonReader reader = new JsonReader(new InputStreamReader(jarFile.getInputStream(jarEntry), StandardCharsets.UTF_8));
+        final ModConfig config = this.core.getGson().fromJson(reader, ModConfig.class);
+
+        this.modContainers.add(new ModContainer(config.getId(), resource, config));
       } catch (final IOException exception) {
         this.core.getLogger().warn("Failed to open '{}'!", resourcePath);
       }

@@ -67,6 +67,7 @@ public final class ImplantTransformationService implements ITransformationServic
   }
 
   @Override
+  @SuppressWarnings("rawtypes")
   public @NonNull List<ITransformer> transformers() {
     return ImmutableList.of();
   }
