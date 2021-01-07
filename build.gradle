@@ -1,5 +1,6 @@
 plugins {
   id "java-library"
+  id "net.minecrell.licenser" version "0.4.1"
   id "com.github.johnrengelman.shadow" version "5.2.0"
 }
 
@@ -62,6 +63,18 @@ dependencies {
   api("cpw.mods:grossjava9hacks:1.3.0") {
     exclude group: "org.apache.logging.log4j"
   }
+}
+
+license {
+  header = file("header.txt")
+  newLine = false
+  ext {
+    name = "Implant"
+    organization = "Mineteria"
+    url = "https://mineteria.com/"
+  }
+
+  include("**/*.java", "**/*.groovy", "**/*.kt")
 }
 
 tasks.withType(JavaCompile) {
