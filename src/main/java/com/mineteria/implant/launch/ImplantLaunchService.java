@@ -2,7 +2,6 @@ package com.mineteria.implant.launch;
 
 import com.mineteria.implant.ImplantCore;
 import com.mineteria.implant.mod.ModResource;
-import com.mineteria.implant.util.ClassLoaderUtil;
 import cpw.mods.gross.Java9ClassLoaderUtil;
 import cpw.mods.modlauncher.api.ILaunchHandlerService;
 import cpw.mods.modlauncher.api.ITransformingClassLoader;
@@ -128,13 +127,8 @@ public final class ImplantLaunchService implements ILaunchHandlerService {
     if (launchJar == null || !Files.exists(launchJar)) {
       throw new IllegalStateException("No launch jar was found!");
     } else {
-      // Load the server jar on the provided ClassLoader.
-      final ClassLoader childLoader = ClassLoaderUtil.toUrl(launchJar)
-        .map(url -> (ClassLoader) ClassLoaderUtil.loadJar(classLoader, url))
-        .orElse(classLoader);
-
       // Invoke the main method on the provided ClassLoader.
-      Class.forName("org.bukkit.craftbukkit.Main", true, childLoader)
+      Class.forName("org.bukkit.craftbukkit.Main", true, classLoader)
         .getMethod("main", String[].class)
         .invoke(null, (Object) arguments);
     }

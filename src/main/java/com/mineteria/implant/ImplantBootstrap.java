@@ -1,6 +1,7 @@
 package com.mineteria.implant;
 
 import com.mineteria.implant.launch.ImplantBlackboard;
+import com.mineteria.implant.util.ClassLoaderUtil;
 import cpw.mods.modlauncher.Launcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,6 +49,9 @@ public final class ImplantBootstrap {
     // Launch Target
     launchArguments.add("--launchTarget");
     launchArguments.add("implant_launch");
+
+    // Load the server jar on the provided ClassLoader.
+    ClassLoaderUtil.toUrl(ImplantBootstrap.LAUNCH_JAR).ifPresent(url -> ClassLoaderUtil.loadJar(ClassLoader.getSystemClassLoader(), url));
 
     // Logger
     final Logger logger = LogManager.getLogger("ImplantBootstrap");
