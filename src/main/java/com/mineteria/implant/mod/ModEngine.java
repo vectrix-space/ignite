@@ -34,14 +34,17 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public final class ModEngine {
-  private final ModLocator locator = new ModLocator();
+  private final Set<String> mods = new HashSet<>();
   private final List<ModResource> modResources = new ArrayList<>();
   private final List<ModContainer> modContainers = new ArrayList<>();
+  private final ModLocator locator = new ModLocator();
 
   private final ImplantCore core;
 
@@ -81,7 +84,13 @@ public final class ModEngine {
         final JsonReader reader = new JsonReader(new InputStreamReader(jarFile.getInputStream(jarEntry), StandardCharsets.UTF_8));
         final ModConfig config = this.core.getGson().fromJson(reader, ModConfig.class);
 
+        if (this.mods.contains(config.getId())) {
+          this.core.getLogger().warn("The mod '" + config.getId() + "' is already loaded! Skipping...");
+          continue;
+        }
+
         this.modContainers.add(new ModContainer(resource, config));
+        this.mods.add(config.getId());
       } catch (final IOException exception) {
         this.core.getLogger().warn("Failed to open '{}'!", resourcePath);
       }
