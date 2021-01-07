@@ -25,22 +25,26 @@
 package com.mineteria.implant.mod;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.util.Objects;
 
 public final class ModContainer {
-  private final String id;
   private final ModResource resource;
   private final ModConfig config;
 
-  public ModContainer(final @NonNull String id,
-                      final @NonNull ModResource resource,
+  public ModContainer(final @NonNull ModResource resource,
                       final @NonNull ModConfig config) {
-    this.id = id;
     this.resource = resource;
     this.config = config;
   }
 
-  public String getId() {
-    return this.id;
+  public @NonNull String getId() {
+    return this.config.getId();
+  }
+
+  public @NonNull String getVersion() {
+    return this.config.getVersion();
   }
 
   public @NonNull ModResource getResource() {
@@ -49,5 +53,24 @@ public final class ModContainer {
 
   public @NonNull ModConfig getConfig() {
     return this.config;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.resource, this.config);
+  }
+
+  @Override
+  public boolean equals(final @Nullable Object other) {
+    if (this == other) return true;
+    if (!(other instanceof ModContainer)) return false;
+    final ModContainer that = (ModContainer) other;
+    return Objects.equals(this.resource, that.resource)
+      && Objects.equals(this.config, that.config);
+  }
+
+  @Override
+  public String toString() {
+    return this.getId() + "@" + this.getVersion();
   }
 }

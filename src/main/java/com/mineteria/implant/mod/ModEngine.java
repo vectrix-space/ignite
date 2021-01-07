@@ -81,7 +81,7 @@ public final class ModEngine {
         final JsonReader reader = new JsonReader(new InputStreamReader(jarFile.getInputStream(jarEntry), StandardCharsets.UTF_8));
         final ModConfig config = this.core.getGson().fromJson(reader, ModConfig.class);
 
-        this.modContainers.add(new ModContainer(config.getId(), resource, config));
+        this.modContainers.add(new ModContainer(resource, config));
       } catch (final IOException exception) {
         this.core.getLogger().warn("Failed to open '{}'!", resourcePath);
       }
@@ -101,7 +101,7 @@ public final class ModEngine {
         Mixins.addConfiguration(mixinConfig);
       }
 
-      this.core.getLogger().info("Applied [{}] transformations.", container.getId());
+      this.core.getLogger().info("Applied [{}] transformations.", container);
     }
   }
 

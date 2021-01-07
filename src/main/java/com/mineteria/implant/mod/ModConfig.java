@@ -25,26 +25,59 @@
 package com.mineteria.implant.mod;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public final class ModConfig {
   private String id;
+  private String version;
   private List<String> mixins;
 
   public ModConfig() {}
 
   public ModConfig(final @NonNull String id,
+                   final @NonNull String version,
                    final @NonNull List<String> mixins) {
     this.id = id;
+    this.version = version;
     this.mixins = mixins;
   }
 
   public @NonNull String getId() {
-    return id;
+    return this.id;
+  }
+
+  public @NonNull String getVersion() {
+    return this.version;
   }
 
   public @NonNull List<String> getMixins() {
     return this.mixins;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.id, this.version, this.mixins);
+  }
+
+  @Override
+  public boolean equals(final @Nullable Object other) {
+    if (this == other) return true;
+    if (!(other instanceof ModConfig)) return false;
+    final ModConfig that = (ModConfig) other;
+    return Objects.equals(this.id, that.id)
+      && Objects.equals(this.version, that.version)
+      && Objects.equals(this.mixins, that.mixins);
+  }
+
+  @Override
+  public String toString() {
+    return "ModConfig{id=" + this.id +
+      ", version=" + this.version +
+      ", mixins=" + Arrays.toString(mixins.toArray(new String[0])) +
+      "}";
   }
 }

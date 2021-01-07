@@ -25,11 +25,13 @@
 package com.mineteria.implant.mod;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.jar.Manifest;
 
 public final class ModResource {
@@ -69,6 +71,21 @@ public final class ModResource {
     }
 
     return this.fileSystem;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.locator, this.path, this.manifest);
+  }
+
+  @Override
+  public boolean equals(final @Nullable Object other) {
+    if (this == other) return true;
+    if (!(other instanceof ModResource)) return false;
+    final ModResource that = (ModResource) other;
+    return Objects.equals(this.locator, that.locator)
+      && Objects.equals(this.path, that.path)
+      && Objects.equals(this.manifest, that.manifest);
   }
 
   @Override
