@@ -43,7 +43,7 @@ public final class ModEngine {
   public void loadCandidates() {
     this.core.getLogger().info("Loading mod candidates...");
 
-    for (final ModResource resource : this.modResources) {
+    for (final ModResource resource : this.getCandidates()) {
       final Path resourcePath = resource.getPath();
 
       this.core.getLogger().debug("Scanning mod candidate '{}' for mod configuration!", resourcePath);
@@ -70,19 +70,21 @@ public final class ModEngine {
       }
     }
 
-    this.core.getLogger().info("Loaded [{}] mod(s).", this.modContainers.size());
+    this.core.getLogger().info("Loaded [{}] mod(s).", this.getContainers().size());
   }
 
   public void loadContainers() {
     this.core.getLogger().info("Applying mod transformations...");
 
-    for (final ModContainer container : this.modContainers) {
+    for (final ModContainer container : this.getContainers()) {
       final ModConfig config = container.getConfig();
 
       // Add the mixin configurations.
       for (final String mixinConfig : config.getMixins()) {
         Mixins.addConfiguration(mixinConfig);
       }
+
+      this.core.getLogger().info("Applied [{}] transformations.", container.getId());
     }
   }
 

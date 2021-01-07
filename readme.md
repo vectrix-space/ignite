@@ -12,7 +12,7 @@ In order to build Implant you simply need to run the `gradle` command. You can f
 
 ## Usage
 
-Implant must be executed instead of the Minecraft Server Jar. Implant will bootstrap mixins scan the mod directory to apply any mixins, then proceed with launching the Minecraft Server Jar itself.
+Implant must be executed instead of the Minecraft Server Jar. Implant will bootstrap mixins, scan the mod directory to apply any mixins, then proceed with launching the Minecraft Server Jar itself.
 
 `java -Dimplant.launch.jar=./spigot.jar -Dimplant.launch.target=org.bukkit.craftbukkit.Main -Dimplant.mod.directory=./plugins -jar Implant-0.1.0-SNAPSHOT-shaded.jar`
 

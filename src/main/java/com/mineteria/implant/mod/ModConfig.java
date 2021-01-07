@@ -7,16 +7,13 @@ import java.util.List;
 public final class ModConfig {
   private String id;
   private List<String> mixins;
-  private List<String> transformers;
 
   public ModConfig() {}
 
   public ModConfig(final @NonNull String id,
-                   final @NonNull List<String> mixins,
-                   final @NonNull List<String> transformers) {
+                   final @NonNull List<String> mixins) {
     this.id = id;
     this.mixins = mixins;
-    this.transformers = transformers;
   }
 
   public @NonNull String getId() {
@@ -25,9 +22,5 @@ public final class ModConfig {
 
   public @NonNull List<String> getMixins() {
     return this.mixins;
-  }
-
-  public @NonNull List<String> getTransformers() {
-    return this.transformers;
   }
 }
