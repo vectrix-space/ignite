@@ -51,7 +51,7 @@ dependencies {
   api "org.spongepowered:mixin:0.8.2"
 
   // Access Transformers
-  api("net.minecraftforge:accesstransformers:2.2.0") {
+  api("net.minecraftforge:accesstransformers:2.2.0:service") {
     exclude group: "org.apache.logging.log4j"
   }
 
@@ -133,6 +133,7 @@ shadowJar {
 
     // Access Transformers
     include dependency('net.minecraftforge:accesstransformers')
+    include dependency('org.antlr:antlr4-runtime')
 
     // Core
     include dependency('cpw.mods:modlauncher')

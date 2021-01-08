@@ -32,7 +32,7 @@ Example `META-INF/mod.json`:
 }
 ```
 
-The mods will need to be placed in the directory the launcher will be targeting to be loaded.
+The mods will need to be placed in the directory the launcher will be targeting to load.
 
 #### Mixins
 
