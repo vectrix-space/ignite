@@ -8,7 +8,7 @@ sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 
 group = "com.mineteria"
-version = "0.1.0-SNAPSHOT"
+version = "0.1.0"
 description = "Allows the application of mixins provided by plugins on Mineteria."
 
 repositories {

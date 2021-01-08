@@ -14,7 +14,7 @@ In order to build Implant you simply need to run the `gradle` command. You can f
 
 The Implant launcher must be executed instead of the Minecraft Server. Implant will launch the Minecraft Server itself, additionally passing in any extra arguments you provide it.
 
-`java -agentjar:./Implant-0.1.0-SNAPSHOT-shaded.jar -Dimplant.launch.jar=./paper.jar -Dimplant.launch.target=org.bukkit.craftbukkit.Main -Dimplant.mod.directory=./plugins -jar Implant-0.1.0-SNAPSHOT-shaded.jar`
+`java -agentjar:./Implant-0.1.0-shaded.jar -Dimplant.launch.jar=./paper.jar -Dimplant.launch.target=org.bukkit.craftbukkit.Main -Dimplant.mod.directory=./plugins -jar Implant-0.1.0-shaded.jar`
 
 **Note:** You must use the `-agentjar` flag pointing to the launcher in order for it to start.
 

@@ -106,7 +106,7 @@ public final class ImplantLaunchService implements ILaunchHandlerService {
   public @NonNull Callable<Void> launchService(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
     ImplantCore.INSTANCE.getEngine().loadContainers();
 
-    this.logger.info("Transitioning to Minecraft launcher, please wait...");
+    this.logger.info("Transitioning to launch target, please wait...");
 
     launchClassLoader.addTargetPackageFilter(other -> {
       for (final String pkg : ImplantLaunchService.EXCLUDED_PACKAGES) {
