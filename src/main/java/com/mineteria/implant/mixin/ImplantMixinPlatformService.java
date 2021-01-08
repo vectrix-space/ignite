@@ -22,38 +22,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.implant;
+package com.mineteria.implant.mixin;
 
-import com.google.gson.Gson;
-import com.mineteria.implant.mod.ModEngine;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.spongepowered.asm.launch.MixinBootstrap;
+import org.spongepowered.asm.launch.platform.IMixinPlatformServiceAgent;
+import org.spongepowered.asm.launch.platform.MixinPlatformAgentAbstract;
+import org.spongepowered.asm.launch.platform.MixinPlatformManager;
+import org.spongepowered.asm.launch.platform.container.IContainerHandle;
 
-public final class ImplantCore {
-  public static final ImplantCore INSTANCE = new ImplantCore();
+import java.util.Collection;
 
-  private final Logger logger = LogManager.getLogger("ImplantCore");
-  private final Gson gson = new Gson();
+@SuppressWarnings("unused")
+public final class ImplantMixinPlatformService extends MixinPlatformAgentAbstract implements IMixinPlatformServiceAgent {
+  @Override
+  public void init() {}
 
-  private final ModEngine modEngine;
-
-  /* package */ ImplantCore() {
-    this.modEngine = new ModEngine(this);
-
-    MixinBootstrap.init();
+  @Override
+  public AcceptResult accept(final @NonNull MixinPlatformManager manager, final @NonNull IContainerHandle handle) {
+    return AcceptResult.REJECTED;
   }
 
-  public @NonNull Logger getLogger() {
-    return this.logger;
+  @Override
+  public String getSideName() {
+    return "SERVER";
   }
 
-  public @NonNull Gson getGson() {
-    return this.gson;
-  }
-
-  public @NonNull ModEngine getEngine() {
-    return this.modEngine;
+  @Override
+  public Collection<IContainerHandle> getMixinContainers() {
+    return null;
   }
 }

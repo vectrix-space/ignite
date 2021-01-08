@@ -24,9 +24,12 @@
  */
 package com.mineteria.implant.mixin;
 
+import com.google.common.collect.ImmutableList;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.asm.launch.platform.container.ContainerHandleModLauncher;
 import org.spongepowered.asm.service.modlauncher.MixinServiceModLauncher;
+
+import java.util.Collection;
 
 public final class ImplantMixinService extends MixinServiceModLauncher {
   @Override
@@ -37,6 +40,13 @@ public final class ImplantMixinService extends MixinServiceModLauncher {
   @Override
   public ContainerHandleModLauncher getPrimaryContainer() {
     return new LauncherContainer(this.getName());
+  }
+
+  @Override
+  public Collection<String> getPlatformAgents() {
+    return ImmutableList.<String>of(
+      "com.mineteria.implant.mixin.ImplantMixinPlatformService"
+    );
   }
 
   private static final class LauncherContainer extends ContainerHandleModLauncher {
