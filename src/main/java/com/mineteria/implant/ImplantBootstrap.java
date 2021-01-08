@@ -24,12 +24,13 @@
  */
 package com.mineteria.implant;
 
+import com.mineteria.implant.agent.Agent;
 import com.mineteria.implant.launch.ImplantBlackboard;
-import com.mineteria.implant.util.ClassLoaderUtil;
 import cpw.mods.modlauncher.Launcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -74,8 +75,12 @@ public final class ImplantBootstrap {
     launchArguments.add("--launchTarget");
     launchArguments.add("implant_launch");
 
-    // Load the server jar on the provided ClassLoader.
-    ClassLoaderUtil.toUrl(ImplantBootstrap.LAUNCH_JAR).ifPresent(url -> ClassLoaderUtil.loadJar(ClassLoader.getSystemClassLoader(), url));
+    // Load the server jar on the provided ClassLoader via the Agent.
+    try {
+      Agent.addJar(ImplantBootstrap.LAUNCH_JAR);
+    } catch (final IOException exception) {
+      throw new IllegalStateException("Unable to add launch jar to classpath!");
+    }
 
     // Logger
     final Logger logger = LogManager.getLogger("ImplantBootstrap");

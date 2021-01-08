@@ -87,6 +87,7 @@ tasks.withType(JavaCompile) {
 jar {
   manifest.attributes(
     "Main-Class": "com.mineteria.implant.ImplantBootstrap",
+    "Premain-Class": "com.mineteria.implant.agent.Agent",
     "Specification-Title": "Implant",
     "Specification-Vendor": "Mineteria",
     "Specification-Version": 1,
