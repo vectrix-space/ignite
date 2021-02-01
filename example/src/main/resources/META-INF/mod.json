@@ -1,0 +1,7 @@
+{
+  "id": "example",
+  "version": "1.0.0",
+  "mixins": [
+    "mixins.example.core.json"
+  ]
+}

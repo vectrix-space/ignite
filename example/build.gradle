@@ -1,0 +1,28 @@
+plugins {
+  id "java-library"
+}
+
+repositories {
+  mavenCentral()
+  maven {
+    url "https://oss.sonatype.org/content/repositories/snapshots/"
+  }
+  maven {
+    url "https://repo.spongepowered.org/maven/"
+  }
+}
+
+dependencies {
+  // Mixins
+  api "org.spongepowered:mixin:0.8.2"
+}
+
+
+jar {
+  manifest.attributes(
+    "Specification-Title": "example",
+    "Specification-Vendor": "Mineteria",
+    "Specification-Version": 1,
+    "AT": "example_at.cfg"
+  )
+}

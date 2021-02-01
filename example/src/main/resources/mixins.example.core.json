@@ -1,0 +1,10 @@
+{
+  "required": true,
+  "minVersion": "0.6.15",
+  "package": "com.mineteria.example.mixins",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8",
+  "server": [
+    "MixinCraftServer"
+  ]
+}
