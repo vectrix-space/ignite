@@ -8,7 +8,7 @@ sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 
 group = "com.mineteria"
-version = "0.1.0"
+version = "0.1.1-SNAPSHOT"
 description = "Allows the application of mixins provided by plugins on Mineteria."
 
 repositories {
@@ -26,7 +26,7 @@ repositories {
 
 dependencies {
   // API
-  api "org.checkerframework:checker-qual:3.9.0"
+  api "org.checkerframework:checker-qual:3.9.1"
   api "net.minecrell:terminalconsoleappender:1.1.1"
 
   // Common
@@ -51,12 +51,12 @@ dependencies {
   api "org.spongepowered:mixin:0.8.2"
 
   // Access Transformers
-  api("net.minecraftforge:accesstransformers:2.2.0:service") {
+  api("net.minecraftforge:accesstransformers:2.2.1:service") {
     exclude group: "org.apache.logging.log4j"
   }
 
   // Core
-  api("cpw.mods:modlauncher:8.0.6") {
+  api("cpw.mods:modlauncher:8.0.9") {
     exclude group: "org.apache.logging.log4j"
   }
 
