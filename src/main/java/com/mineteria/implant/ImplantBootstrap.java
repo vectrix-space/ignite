@@ -55,7 +55,7 @@ public final class ImplantBootstrap {
    */
   private static final Path MOD_TARGET_PATH = Paths.get(System.getProperty(ImplantBlackboard.MOD_DIRECTORY_PATH.name(), "./mods"));
 
-  private static final String LAUNCHER_VERSION = "0.1.0";
+  private static final String LAUNCHER_VERSION = "@version@";
 
   /**
    * The main launch target to boostrap from.
