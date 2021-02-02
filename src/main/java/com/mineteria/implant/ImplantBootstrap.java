@@ -55,8 +55,6 @@ public final class ImplantBootstrap {
    */
   private static final Path MOD_TARGET_PATH = Paths.get(System.getProperty(ImplantBlackboard.MOD_DIRECTORY_PATH.name(), "./mods"));
 
-  private static final String LAUNCHER_VERSION = "@version@";
-
   /**
    * The main launch target to boostrap from.
    *
@@ -84,7 +82,7 @@ public final class ImplantBootstrap {
 
     // Logger
     final Logger logger = LogManager.getLogger("ImplantBootstrap");
-    logger.info("Implant Launcher version {}", ImplantBootstrap.LAUNCHER_VERSION);
+    logger.info("Implant Launcher version {}", ImplantBootstrap.class.getPackage().getImplementationVersion());
 
     // Blackboard
     ImplantBlackboard.setProperty(ImplantBlackboard.LAUNCH_ARGUMENTS, Collections.unmodifiableList(arguments));
