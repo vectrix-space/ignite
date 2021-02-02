@@ -1,6 +1,5 @@
 plugins {
   id "java-library"
-  id "net.kyori.blossom" version "1.1.0"
   id "net.minecrell.licenser" version "0.4.1"
   id "com.github.johnrengelman.shadow" version "5.2.0"
 }
@@ -64,12 +63,6 @@ dependencies {
   compile("cpw.mods:grossjava9hacks:1.3.0") {
     exclude group: "org.apache.logging.log4j"
   }
-}
-
-blossom {
-  def target = "src/main/java/com/mineteria/implant/ImplantBootstrap.java"
-
-  replaceToken "@version@", project.version, target
 }
 
 license {
