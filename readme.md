@@ -1,8 +1,6 @@
 Implant
 =======
 
-**Under development and not stable!**
-
 Bootstraps the Minecraft Server with [ModLauncher] to apply [Mixins] and [Access Transformers] from mods.
 
 ## Building
