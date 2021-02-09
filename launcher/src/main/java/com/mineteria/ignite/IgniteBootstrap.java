@@ -29,6 +29,7 @@ import com.mineteria.ignite.launch.IgniteBlackboard;
 import cpw.mods.modlauncher.Launcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -60,7 +61,7 @@ public final class IgniteBootstrap {
    *
    * @param args The launch arguments
    */
-  public static void main(String[] args) {
+  public static void main(final @NonNull String[] args) {
     final List<String> arguments = Arrays.asList(args);
     final List<String> launchArguments = new ArrayList<>(arguments);
 

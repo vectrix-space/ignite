@@ -54,7 +54,7 @@ public final class IgniteBlackboard {
     IgniteBlackboard.BLACKBOARD.computeIfAbsent(key, k -> value);
   }
 
-  private static <T> TypesafeMap.Key<T> key(final @NonNull String key, final @NonNull TypeToken<T> type) {
+  private static <T> TypesafeMap.@NonNull Key<T> key(final @NonNull String key, final @NonNull TypeToken<T> type) {
     return TypesafeMap.Key.getOrCreate(IgniteBlackboard.BLACKBOARD, key, type.getRawType());
   }
 }

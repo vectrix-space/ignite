@@ -26,6 +26,10 @@ package com.mineteria.ignite.mod;
 
 import com.google.gson.stream.JsonReader;
 import com.mineteria.ignite.IgniteCore;
+import com.mineteria.ignite.api.mod.ModConfig;
+import com.mineteria.ignite.api.mod.ModContainer;
+import com.mineteria.ignite.api.mod.ModEngine;
+import com.mineteria.ignite.api.mod.ModResource;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.asm.mixin.Mixins;
 
@@ -40,7 +44,7 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public final class ModEngine {
+public final class IgniteModEngine implements ModEngine {
   private final Set<String> mods = new HashSet<>();
   private final List<ModResource> modResources = new ArrayList<>();
   private final List<ModContainer> modContainers = new ArrayList<>();
@@ -48,13 +52,14 @@ public final class ModEngine {
 
   private final IgniteCore core;
 
-  public ModEngine(final @NonNull IgniteCore core) {
+  public IgniteModEngine(final @NonNull IgniteCore core) {
     this.core = core;
   }
 
   /**
    * Locates and populates the mod resources list.
    */
+  @Override
   public void locateResources() {
     this.core.getLogger().info("Locating mod resources...");
 
@@ -66,6 +71,7 @@ public final class ModEngine {
   /**
    * Load the mods and initializes them from the resources list.
    */
+  @Override
   public void loadCandidates() {
     this.core.getLogger().info("Loading mod candidates...");
 
@@ -99,6 +105,7 @@ public final class ModEngine {
     this.core.getLogger().info("Loaded [{}] mod(s).", this.getContainers().size());
   }
 
+  @Override
   public void loadContainers() {
     this.core.getLogger().info("Applying mod transformations...");
 
@@ -114,10 +121,12 @@ public final class ModEngine {
     }
   }
 
+  @Override
   public @NonNull List<ModResource> getCandidates() {
     return this.modResources;
   }
 
+  @Override
   public @NonNull List<ModContainer> getContainers() {
     return this.modContainers;
   }

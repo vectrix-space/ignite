@@ -25,7 +25,7 @@
 package com.mineteria.ignite.launch;
 
 import com.mineteria.ignite.IgniteCore;
-import com.mineteria.ignite.mod.ModResource;
+import com.mineteria.ignite.api.mod.ModResource;
 import cpw.mods.gross.Java9ClassLoaderUtil;
 import cpw.mods.modlauncher.api.ILaunchHandlerService;
 import cpw.mods.modlauncher.api.ITransformingClassLoader;

@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.ignite.mod;
+package com.mineteria.ignite.api.mod;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -89,7 +89,7 @@ public final class ModResource {
   }
 
   @Override
-  public String toString() {
+  public @NonNull String toString() {
     return "ModResource{name=" + this.locator + ", path=" + this.path + ", fileSystem=" + this.fileSystem + "}";
   }
 }

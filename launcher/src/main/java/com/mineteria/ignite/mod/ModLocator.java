@@ -25,6 +25,7 @@
 package com.mineteria.ignite.mod;
 
 import com.mineteria.ignite.IgniteCore;
+import com.mineteria.ignite.api.mod.ModResource;
 import com.mineteria.ignite.launch.IgniteBlackboard;
 import com.mineteria.ignite.util.IgniteConstants;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -39,7 +40,7 @@ import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
 public final class ModLocator {
-  public static final String DEFAULT_METADATA_FILENAME = "mod.json";
+  public static final String DEFAULT_METADATA_FILENAME = "ignite-mod.json";
 
   private static final String NAME = "java_directory";
 

@@ -22,33 +22,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.ignite.mixin;
+package com.mineteria.ignite;
 
+import com.google.gson.Gson;
+import com.mineteria.ignite.api.mod.ModEngine;
+import com.mineteria.ignite.mod.IgniteModEngine;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.spongepowered.asm.launch.platform.IMixinPlatformServiceAgent;
-import org.spongepowered.asm.launch.platform.MixinPlatformAgentAbstract;
-import org.spongepowered.asm.launch.platform.MixinPlatformManager;
-import org.spongepowered.asm.launch.platform.container.IContainerHandle;
+import org.spongepowered.asm.launch.MixinBootstrap;
 
-import java.util.Collection;
+public final class IgniteCore {
+  public static final IgniteCore INSTANCE = new IgniteCore();
 
-@SuppressWarnings("unused")
-public final class IgniteMixinPlatformService extends MixinPlatformAgentAbstract implements IMixinPlatformServiceAgent {
-  @Override
-  public void init() {}
+  private final Logger logger = LogManager.getLogger("IgniteCore");
+  private final Gson gson = new Gson();
 
-  @Override
-  public AcceptResult accept(final @NonNull MixinPlatformManager manager, final @NonNull IContainerHandle handle) {
-    return AcceptResult.REJECTED;
+  private final ModEngine modEngine;
+
+  /* package */ IgniteCore() {
+    this.modEngine = new IgniteModEngine(this);
+
+    MixinBootstrap.init();
   }
 
-  @Override
-  public String getSideName() {
-    return "SERVER";
+  public @NonNull Logger getLogger() {
+    return this.logger;
   }
 
-  @Override
-  public Collection<IContainerHandle> getMixinContainers() {
-    return null;
+  public @NonNull Gson getGson() {
+    return this.gson;
+  }
+
+  public @NonNull ModEngine getEngine() {
+    return this.modEngine;
   }
 }

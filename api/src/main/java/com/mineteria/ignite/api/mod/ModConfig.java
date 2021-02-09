@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.ignite.mod;
+package com.mineteria.ignite.api.mod;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -74,7 +74,7 @@ public final class ModConfig {
   }
 
   @Override
-  public String toString() {
+  public @NonNull String toString() {
     return "ModConfig{id=" + this.id +
       ", version=" + this.version +
       ", mixins=" + Arrays.toString(mixins.toArray(new String[0])) +

@@ -27,15 +27,13 @@ package com.mineteria.ignite.launch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.mineteria.ignite.IgniteCore;
-import com.mineteria.ignite.mod.ModResource;
+import com.mineteria.ignite.api.mod.ModResource;
 import com.mineteria.ignite.util.IgniteConstants;
 import cpw.mods.modlauncher.api.IEnvironment;
 import cpw.mods.modlauncher.api.ITransformationService;
 import cpw.mods.modlauncher.api.ITransformer;
 import cpw.mods.modlauncher.api.IncompatibleEnvironmentException;
 import net.minecraftforge.accesstransformer.AccessTransformerEngine;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.nio.file.Path;

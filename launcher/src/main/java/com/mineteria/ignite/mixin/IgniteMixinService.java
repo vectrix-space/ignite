@@ -22,55 +22,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.ignite.mod;
+package com.mineteria.ignite.mixin;
 
+import com.google.common.collect.ImmutableList;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.spongepowered.asm.launch.platform.container.ContainerHandleModLauncher;
+import org.spongepowered.asm.service.modlauncher.MixinServiceModLauncher;
 
-import java.util.Objects;
+import java.util.Collection;
 
-public final class ModContainer {
-  private final ModResource resource;
-  private final ModConfig config;
-
-  public ModContainer(final @NonNull ModResource resource,
-                      final @NonNull ModConfig config) {
-    this.resource = resource;
-    this.config = config;
-  }
-
-  public @NonNull String getId() {
-    return this.config.getId();
-  }
-
-  public @NonNull String getVersion() {
-    return this.config.getVersion();
-  }
-
-  public @NonNull ModResource getResource() {
-    return this.resource;
-  }
-
-  public @NonNull ModConfig getConfig() {
-    return this.config;
+public final class IgniteMixinService extends MixinServiceModLauncher {
+  @Override
+  public boolean isValid() {
+    return true;
   }
 
   @Override
-  public int hashCode() {
-    return Objects.hash(this.resource, this.config);
+  public @NonNull ContainerHandleModLauncher getPrimaryContainer() {
+    return new LauncherContainer(this.getName());
   }
 
   @Override
-  public boolean equals(final @Nullable Object other) {
-    if (this == other) return true;
-    if (!(other instanceof ModContainer)) return false;
-    final ModContainer that = (ModContainer) other;
-    return Objects.equals(this.resource, that.resource)
-      && Objects.equals(this.config, that.config);
+  public @NonNull Collection<String> getPlatformAgents() {
+    return ImmutableList.<String>of(
+      "com.mineteria.ignite.mixin.IgniteMixinPlatformService"
+    );
   }
 
-  @Override
-  public String toString() {
-    return this.getId() + "@" + this.getVersion();
+  private static final class LauncherContainer extends ContainerHandleModLauncher {
+    public LauncherContainer(final @NonNull String name) {
+      super(name);
+    }
   }
 }

@@ -1,0 +1,88 @@
+apply plugin: "java-library"
+apply plugin: "com.github.johnrengelman.shadow"
+
+dependencies {
+  // API
+  api "org.checkerframework:checker-qual:3.9.1"
+  api "net.minecrell:terminalconsoleappender:1.1.1"
+
+  // Common
+  api("com.google.guava:guava:21.0") {
+    exclude group: "com.google.code.findbugs", module: "jsr305" // We don't want to use jsr305, use checkerframework
+    exclude group: "org.checkerframework", module: "checker-qual" // We use our own version
+    exclude group: "com.google.j2objc", module: "j2objc-annotations"
+    exclude group: "org.codehaus.mojo", module: "animal-sniffer-annotations"
+    exclude group: "com.google.errorprone", module: "error_prone_annotations"
+  }
+
+  api "com.google.code.gson:gson:2.8.0"
+
+  // Mixins
+  api "org.spongepowered:mixin:0.8.2"
+
+  // ASM
+  api "org.ow2.asm:asm:7.2"
+  api "org.ow2.asm:asm-analysis:7.2"
+  api "org.ow2.asm:asm-commons:7.2"
+  api "org.ow2.asm:asm-tree:7.2"
+  api "org.ow2.asm:asm-util:7.2"
+
+  // Access Transformers
+  api("net.minecraftforge:accesstransformers:2.2.1") {
+    exclude group: "org.apache.logging.log4j"
+  }
+}
+
+sourceSets {
+  ap {
+    compileClasspath += main.compileClasspath + main.output
+  }
+}
+
+javadoc {
+  options.encoding = "UTF-8"
+  options.charSet = "UTF-8"
+  options.source = "8"
+  options.links(
+    "https://docs.oracle.com/javase/8/docs/api/",
+    "https://google.github.io/guava/releases/25.1-jre/api/docs/",
+    "https://google.github.io/guice/api-docs/4.2/javadoc/"
+  )
+
+  // Disable the crazy super-strict doclint tool in Java 8
+  options.addStringOption("Xdoclint:none", "-quiet")
+
+  // Mark sources as Java 8 source compatible
+  options.source = "8"
+
+  // Remove 'undefined' from search paths when generating javadoc for a non-modular project (JDK-8215291)
+  if (JavaVersion.current() >= JavaVersion.VERSION_1_9 && JavaVersion.current() < JavaVersion.VERSION_12) {
+    options.addBooleanOption("-no-module-directories", true)
+  }
+}
+
+task javadocJar(type: Jar) {
+  classifier "javadoc"
+  from javadoc
+}
+
+task sourcesJar(type: Jar) {
+  classifier "sources"
+  from sourceSets.main.allSource
+  from sourceSets.ap.output
+}
+
+jar {
+  from sourceSets.ap.output
+}
+
+shadowJar {
+  classifier "shaded"
+  from sourceSets.ap.output
+}
+
+artifacts {
+  archives javadocJar
+  archives sourcesJar
+  archives shadowJar
+}
