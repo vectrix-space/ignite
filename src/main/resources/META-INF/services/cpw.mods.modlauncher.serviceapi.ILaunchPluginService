@@ -1,2 +1,0 @@
-net.minecraftforge.accesstransformer.service.AccessTransformerService
-org.spongepowered.asm.launch.MixinLaunchPlugin

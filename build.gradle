@@ -110,6 +110,7 @@ task sourcesJar(type: Jar) {
 shadowJar {
   classifier = "shaded"
 
+  mergeServiceFiles()
   transform(com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer)
 
   dependencies {
