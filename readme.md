@@ -1,18 +1,18 @@
-Implant
-=======
+Ignite
+======
 
 Bootstraps the Minecraft Server with [ModLauncher] to apply [Mixins] and [Access Transformers] from mods.
 
 ## Building
 __Note:__ If you do not have [Gradle] installed then use ./gradlew for Unix systems or Git Bash and gradlew.bat for Windows systems in place of any 'gradle' command.
 
-In order to build Implant you simply need to run the `gradle` command. You can find the compiled JAR file in `./build/libs` labeled similarly to 'Implant-x.x.x-SNAPSHOT-shaded.jar'.
+In order to build Ignite you simply need to run the `gradle` command. You can find the compiled JAR file in `./build/libs` labeled similarly to 'Ignite-x.x.x-SNAPSHOT-shaded.jar'.
 
 ## Launcher Usage
 
-The Implant launcher must be executed instead of the Minecraft Server. Implant will launch the Minecraft Server itself, additionally passing in any extra arguments you provide it.
+The Ignite launcher must be executed instead of the Minecraft Server. Ignite will launch the Minecraft Server itself, additionally passing in any extra arguments you provide it.
 
-`java -javaagent:./Implant-0.1.1-shaded.jar -Dimplant.launch.jar=./paper.jar -Dimplant.launch.target=org.bukkit.craftbukkit.Main -Dimplant.mod.directory=./plugins -jar Implant-0.1.1-shaded.jar`
+`java -javaagent:./Ignite-0.1.1-shaded.jar -Dignite.launch.jar=./paper.jar -Dignite.launch.target=org.bukkit.craftbukkit.Main -Dignite.mod.directory=./plugins -jar Ignite-0.1.1-shaded.jar`
 
 **Note:** You must use the `-javaagent` flag pointing to the launcher in order for it to start.
 

@@ -1,5 +1,5 @@
 /*
- * This file is part of Implant, licensed under the MIT License (MIT).
+ * This file is part of Ignite, licensed under the MIT License (MIT).
  *
  * Copyright (c) Mineteria <https://mineteria.com/>
  * Copyright (c) contributors
@@ -22,11 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.implant.mod;
+package com.mineteria.ignite.mod;
 
-import com.mineteria.implant.ImplantCore;
-import com.mineteria.implant.launch.ImplantBlackboard;
-import com.mineteria.implant.util.ImplantConstants;
+import com.mineteria.ignite.IgniteCore;
+import com.mineteria.ignite.launch.IgniteBlackboard;
+import com.mineteria.ignite.util.IgniteConstants;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.IOException;
@@ -44,10 +44,10 @@ public final class ModLocator {
   private static final String NAME = "java_directory";
 
   public @NonNull List<ModResource> locateResources() {
-    final ImplantCore core = ImplantCore.INSTANCE;
+    final IgniteCore core = IgniteCore.INSTANCE;
     final List<ModResource> modResources = new ArrayList<>();
 
-    final Path modDirectory = ImplantBlackboard.getProperty(ImplantBlackboard.MOD_DIRECTORY_PATH);
+    final Path modDirectory = IgniteBlackboard.getProperty(IgniteBlackboard.MOD_DIRECTORY_PATH);
     if (modDirectory == null || Files.notExists(modDirectory)) {
       core.getLogger().warn("Mod directory '{}' does not exist for mod locator. Skipping...", modDirectory);
       return modResources;
@@ -77,6 +77,6 @@ public final class ModLocator {
   }
 
   public @NonNull String getMetadataPath() {
-    return ImplantConstants.META_INF + "/" + ModLocator.DEFAULT_METADATA_FILENAME;
+    return IgniteConstants.META_INF + "/" + ModLocator.DEFAULT_METADATA_FILENAME;
   }
 }

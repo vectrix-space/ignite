@@ -1,5 +1,5 @@
 /*
- * This file is part of Implant, licensed under the MIT License (MIT).
+ * This file is part of Ignite, licensed under the MIT License (MIT).
  *
  * Copyright (c) Mineteria <https://mineteria.com/>
  * Copyright (c) contributors
@@ -22,38 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.implant;
+package com.mineteria.ignite.util;
 
-import com.google.gson.Gson;
-import com.mineteria.implant.mod.ModEngine;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.spongepowered.asm.launch.MixinBootstrap;
+public final class IgniteConstants {
+  public static final String META_INF = "META-INF";
+  public static final String AT = "AT";
 
-public final class ImplantCore {
-  public static final ImplantCore INSTANCE = new ImplantCore();
-
-  private final Logger logger = LogManager.getLogger("ImplantCore");
-  private final Gson gson = new Gson();
-
-  private final ModEngine modEngine;
-
-  /* package */ ImplantCore() {
-    this.modEngine = new ModEngine(this);
-
-    MixinBootstrap.init();
-  }
-
-  public @NonNull Logger getLogger() {
-    return this.logger;
-  }
-
-  public @NonNull Gson getGson() {
-    return this.gson;
-  }
-
-  public @NonNull ModEngine getEngine() {
-    return this.modEngine;
-  }
+  private IgniteConstants() {}
 }

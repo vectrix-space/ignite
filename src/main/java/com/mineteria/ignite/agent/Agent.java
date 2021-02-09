@@ -1,5 +1,5 @@
 /*
- * This file is part of Implant, licensed under the MIT License (MIT).
+ * This file is part of Ignite, licensed under the MIT License (MIT).
  *
  * Copyright (c) Mineteria <https://mineteria.com/>
  * Copyright (c) contributors
@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.implant.agent;
+package com.mineteria.ignite.agent;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
