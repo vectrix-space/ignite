@@ -1,5 +1,5 @@
 /*
- * This file is part of Implant, licensed under the MIT License (MIT).
+ * This file is part of Ignite, licensed under the MIT License (MIT).
  *
  * Copyright (c) Mineteria <https://mineteria.com/>
  * Copyright (c) contributors
@@ -22,33 +22,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.implant.mixin;
+package com.mineteria.ignite.mixin;
 
+import com.google.common.collect.ImmutableList;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.spongepowered.asm.launch.platform.IMixinPlatformServiceAgent;
-import org.spongepowered.asm.launch.platform.MixinPlatformAgentAbstract;
-import org.spongepowered.asm.launch.platform.MixinPlatformManager;
-import org.spongepowered.asm.launch.platform.container.IContainerHandle;
+import org.spongepowered.asm.launch.platform.container.ContainerHandleModLauncher;
+import org.spongepowered.asm.service.modlauncher.MixinServiceModLauncher;
 
 import java.util.Collection;
 
-@SuppressWarnings("unused")
-public final class ImplantMixinPlatformService extends MixinPlatformAgentAbstract implements IMixinPlatformServiceAgent {
+public final class IgniteMixinService extends MixinServiceModLauncher {
   @Override
-  public void init() {}
-
-  @Override
-  public AcceptResult accept(final @NonNull MixinPlatformManager manager, final @NonNull IContainerHandle handle) {
-    return AcceptResult.REJECTED;
+  public boolean isValid() {
+    return true;
   }
 
   @Override
-  public String getSideName() {
-    return "SERVER";
+  public ContainerHandleModLauncher getPrimaryContainer() {
+    return new LauncherContainer(this.getName());
   }
 
   @Override
-  public Collection<IContainerHandle> getMixinContainers() {
-    return null;
+  public Collection<String> getPlatformAgents() {
+    return ImmutableList.<String>of(
+      "com.mineteria.ignite.mixin.IgniteMixinPlatformService"
+    );
+  }
+
+  private static final class LauncherContainer extends ContainerHandleModLauncher {
+    public LauncherContainer(final @NonNull String name) {
+      super(name);
+    }
   }
 }

@@ -1,5 +1,5 @@
 /*
- * This file is part of Implant, licensed under the MIT License (MIT).
+ * This file is part of Ignite, licensed under the MIT License (MIT).
  *
  * Copyright (c) Mineteria <https://mineteria.com/>
  * Copyright (c) contributors
@@ -22,10 +22,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.implant.launch;
+package com.mineteria.ignite.launch;
 
-import com.mineteria.implant.ImplantCore;
-import com.mineteria.implant.mod.ModResource;
+import com.mineteria.ignite.IgniteCore;
+import com.mineteria.ignite.mod.ModResource;
 import cpw.mods.gross.Java9ClassLoaderUtil;
 import cpw.mods.modlauncher.api.ILaunchHandlerService;
 import cpw.mods.modlauncher.api.ITransformingClassLoader;
@@ -46,18 +46,18 @@ import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
-public final class ImplantLaunchService implements ILaunchHandlerService {
-  private final Logger logger = LogManager.getLogger("ImplantLaunch");
+public final class IgniteLaunchService implements ILaunchHandlerService {
+  private final Logger logger = LogManager.getLogger("IgniteLaunch");
 
   /**
    * A list of class loader exclusions to ignore when
    * transforming classes.
    */
   protected static final List<String> EXCLUDED_PACKAGES = Arrays.asList(
-    // Implant
-    "org.mineteria.implant.launch.",
-    "org.mineteria.implant.mod.",
-    "org.mineteria.implant.mixin.",
+    // Ignite
+    "org.mineteria.ignite.launch.",
+    "org.mineteria.ignite.mod.",
+    "org.mineteria.ignite.mixin.",
 
     // Libraries
     "ninja.leaping.configurate.",
@@ -82,7 +82,7 @@ public final class ImplantLaunchService implements ILaunchHandlerService {
 
   @Override
   public @NonNull String name() {
-    return "implant_launch";
+    return "ignite_launch";
   }
 
   @Override
@@ -104,12 +104,12 @@ public final class ImplantLaunchService implements ILaunchHandlerService {
 
   @Override
   public @NonNull Callable<Void> launchService(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
-    ImplantCore.INSTANCE.getEngine().loadContainers();
+    IgniteCore.INSTANCE.getEngine().loadContainers();
 
     this.logger.info("Transitioning to launch target, please wait...");
 
     launchClassLoader.addTargetPackageFilter(other -> {
-      for (final String pkg : ImplantLaunchService.EXCLUDED_PACKAGES) {
+      for (final String pkg : IgniteLaunchService.EXCLUDED_PACKAGES) {
         if (other.startsWith(pkg)) return false;
       }
       return true;
@@ -123,7 +123,7 @@ public final class ImplantLaunchService implements ILaunchHandlerService {
 
   protected @NonNull Function<String, Optional<URL>> getResourceLocator() {
     return string -> {
-      for (final ModResource resource : ImplantCore.INSTANCE.getEngine().getCandidates()) {
+      for (final ModResource resource : IgniteCore.INSTANCE.getEngine().getCandidates()) {
         final Path resolved = resource.getFileSystem().getPath(string);
         if (Files.exists(resolved)) {
           try {
@@ -147,11 +147,11 @@ public final class ImplantLaunchService implements ILaunchHandlerService {
   protected void launchService0(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) throws Exception {
     final ClassLoader classLoader = launchClassLoader.getInstance();
 
-    final Path launchJar = ImplantBlackboard.getProperty(ImplantBlackboard.LAUNCH_JAR);
+    final Path launchJar = IgniteBlackboard.getProperty(IgniteBlackboard.LAUNCH_JAR);
     if (launchJar == null || !Files.exists(launchJar)) {
       throw new IllegalStateException("No launch jar was found!");
     } else {
-      final String launchTarget = ImplantBlackboard.getProperty(ImplantBlackboard.LAUNCH_TARGET, "org.bukkit.craftbukkit.Main");
+      final String launchTarget = IgniteBlackboard.getProperty(IgniteBlackboard.LAUNCH_TARGET, "org.bukkit.craftbukkit.Main");
 
       // Invoke the main method on the provided ClassLoader.
       Class.forName(launchTarget, true, classLoader)

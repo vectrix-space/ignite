@@ -1,5 +1,5 @@
 /*
- * This file is part of Implant, licensed under the MIT License (MIT).
+ * This file is part of Ignite, licensed under the MIT License (MIT).
  *
  * Copyright (c) Mineteria <https://mineteria.com/>
  * Copyright (c) contributors
@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.implant.launch;
+package com.mineteria.ignite.launch;
 
 import com.google.common.reflect.TypeToken;
 import cpw.mods.modlauncher.api.TypesafeMap;
@@ -33,28 +33,28 @@ import java.nio.file.Path;
 import java.util.List;
 
 @SuppressWarnings("UnstableApiUsage")
-public final class ImplantBlackboard {
+public final class IgniteBlackboard {
   private static final TypesafeMap BLACKBOARD = new TypesafeMap();
 
-  public static final TypesafeMap.Key<List<String>> LAUNCH_ARGUMENTS = key("implant.launch.arguments", new TypeToken<List<String>>() {});
-  public static final TypesafeMap.Key<Path>         LAUNCH_JAR       = key("implant.launch.jar", TypeToken.of(Path.class));
-  public static final TypesafeMap.Key<String>       LAUNCH_TARGET    = key("implant.launch.target", TypeToken.of(String.class));
+  public static final TypesafeMap.Key<List<String>> LAUNCH_ARGUMENTS = key("ignite.launch.arguments", new TypeToken<List<String>>() {});
+  public static final TypesafeMap.Key<Path>         LAUNCH_JAR       = key("ignite.launch.jar", TypeToken.of(Path.class));
+  public static final TypesafeMap.Key<String>       LAUNCH_TARGET    = key("ignite.launch.target", TypeToken.of(String.class));
 
-  public static final TypesafeMap.Key<Path> MOD_DIRECTORY_PATH = key("implant.mod.directory", TypeToken.of(Path.class));
+  public static final TypesafeMap.Key<Path> MOD_DIRECTORY_PATH = key("ignite.mod.directory", TypeToken.of(Path.class));
 
   public static <T> @Nullable T getProperty(final TypesafeMap.@NonNull Key<T> key) {
-    return ImplantBlackboard.getProperty(key, null);
+    return IgniteBlackboard.getProperty(key, null);
   }
 
   public static <T> @Nullable T getProperty(final TypesafeMap.@NonNull Key<T> key, final @Nullable T defaultValue) {
-    return ImplantBlackboard.BLACKBOARD.get(key).orElse(defaultValue);
+    return IgniteBlackboard.BLACKBOARD.get(key).orElse(defaultValue);
   }
 
   public static <T> void setProperty(final TypesafeMap.@NonNull Key<T> key, final @Nullable T value) {
-    ImplantBlackboard.BLACKBOARD.computeIfAbsent(key, k -> value);
+    IgniteBlackboard.BLACKBOARD.computeIfAbsent(key, k -> value);
   }
 
   private static <T> TypesafeMap.Key<T> key(final @NonNull String key, final @NonNull TypeToken<T> type) {
-    return TypesafeMap.Key.getOrCreate(ImplantBlackboard.BLACKBOARD, key, type.getRawType());
+    return TypesafeMap.Key.getOrCreate(IgniteBlackboard.BLACKBOARD, key, type.getRawType());
   }
 }

@@ -1,5 +1,5 @@
 /*
- * This file is part of Implant, licensed under the MIT License (MIT).
+ * This file is part of Ignite, licensed under the MIT License (MIT).
  *
  * Copyright (c) Mineteria <https://mineteria.com/>
  * Copyright (c) contributors
@@ -22,10 +22,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.implant.mod;
+package com.mineteria.ignite.mod;
 
 import com.google.gson.stream.JsonReader;
-import com.mineteria.implant.ImplantCore;
+import com.mineteria.ignite.IgniteCore;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.asm.mixin.Mixins;
 
@@ -46,9 +46,9 @@ public final class ModEngine {
   private final List<ModContainer> modContainers = new ArrayList<>();
   private final ModLocator locator = new ModLocator();
 
-  private final ImplantCore core;
+  private final IgniteCore core;
 
-  public ModEngine(final @NonNull ImplantCore core) {
+  public ModEngine(final @NonNull IgniteCore core) {
     this.core = core;
   }
 

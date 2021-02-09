@@ -9,7 +9,7 @@ targetCompatibility = "1.8"
 
 group = "com.mineteria"
 version = "0.2.0-SNAPSHOT"
-description = "Allows the application of mixins provided by plugins on Mineteria."
+description = "Bootstraps the Minecraft Server with ModLauncher to apply Mixins and Access Transformers from mods."
 
 repositories {
   mavenCentral()
@@ -69,7 +69,7 @@ license {
   header = file("header.txt")
   newLine = false
   ext {
-    name = "Implant"
+    name = "Ignite"
     organization = "Mineteria"
     url = "https://mineteria.com/"
   }
@@ -86,17 +86,17 @@ tasks.withType(JavaCompile) {
 
 jar {
   manifest {
-    attributes "Main-Class": "com.mineteria.implant.ImplantBootstrap"
-    attributes "Premain-Class": "com.mineteria.implant.agent.Agent"
+    attributes "Main-Class": "com.mineteria.ignite.IgniteBootstrap"
+    attributes "Premain-Class": "com.mineteria.ignite.agent.Agent"
 
     attributes([
-      "Specification-Title": "Implant",
+      "Specification-Title": "Ignite",
       "Specification-Vendor": "Mineteria",
       "Specification-Version": 1.0,
       "Implementation-Title": project.name,
       "Implementation-Version": project.version,
       "Implementation-Vendor": "Mineteria"
-    ], "com/mineteria/implant/")
+    ], "com/mineteria/ignite/")
 
     from { zipTree { configurations.compile.files.find { entry -> entry.name.contains("modlauncher") } }.matching { include "**/MANIFEST.MF" }.singleFile }
   }
@@ -147,5 +147,5 @@ shadowJar {
     include dependency('net.sf.jopt-simple:jopt-simple')
   }
 
-  relocate 'com.google', 'com.mineteria.implant.relocate.google'
+  relocate 'com.google', 'com.mineteria.ignite.relocate.google'
 }

@@ -1,5 +1,5 @@
 /*
- * This file is part of Implant, licensed under the MIT License (MIT).
+ * This file is part of Ignite, licensed under the MIT License (MIT).
  *
  * Copyright (c) Mineteria <https://mineteria.com/>
  * Copyright (c) contributors
@@ -22,10 +22,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.implant;
+package com.mineteria.ignite;
 
-import com.mineteria.implant.agent.Agent;
-import com.mineteria.implant.launch.ImplantBlackboard;
+import com.mineteria.ignite.agent.Agent;
+import com.mineteria.ignite.launch.IgniteBlackboard;
 import cpw.mods.modlauncher.Launcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,21 +39,21 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public final class ImplantBootstrap {
+public final class IgniteBootstrap {
   /**
    * The launch jar path.
    */
-  private static final Path LAUNCH_JAR = Paths.get(System.getProperty(ImplantBlackboard.LAUNCH_JAR.name(), "./server.jar"));
+  private static final Path LAUNCH_JAR = Paths.get(System.getProperty(IgniteBlackboard.LAUNCH_JAR.name(), "./server.jar"));
 
   /**
    * The launch target class path.
    */
-  private static final String LAUNCH_TARGET = System.getProperty(ImplantBlackboard.LAUNCH_TARGET.name(), "org.bukkit.craftbukkit.Main");
+  private static final String LAUNCH_TARGET = System.getProperty(IgniteBlackboard.LAUNCH_TARGET.name(), "org.bukkit.craftbukkit.Main");
 
   /**
    * The mods directory.
    */
-  private static final Path MOD_TARGET_PATH = Paths.get(System.getProperty(ImplantBlackboard.MOD_DIRECTORY_PATH.name(), "./mods"));
+  private static final Path MOD_TARGET_PATH = Paths.get(System.getProperty(IgniteBlackboard.MOD_DIRECTORY_PATH.name(), "./mods"));
 
   /**
    * The main launch target to boostrap from.
@@ -65,30 +65,30 @@ public final class ImplantBootstrap {
     final List<String> launchArguments = new ArrayList<>(arguments);
 
     // Target Check
-    if (!Files.exists(ImplantBootstrap.LAUNCH_JAR)) {
-      throw new IllegalStateException("Unable to locate launch jar at '" + ImplantBootstrap.LAUNCH_JAR + "'.");
+    if (!Files.exists(IgniteBootstrap.LAUNCH_JAR)) {
+      throw new IllegalStateException("Unable to locate launch jar at '" + IgniteBootstrap.LAUNCH_JAR + "'.");
     }
 
     // Launch Target
     launchArguments.add("--launchTarget");
-    launchArguments.add("implant_launch");
+    launchArguments.add("ignite_launch");
 
     // Load the server jar on the provided ClassLoader via the Agent.
     try {
-      Agent.addJar(ImplantBootstrap.LAUNCH_JAR);
+      Agent.addJar(IgniteBootstrap.LAUNCH_JAR);
     } catch (final IOException exception) {
       throw new IllegalStateException("Unable to add launch jar to classpath!");
     }
 
     // Logger
-    final Logger logger = LogManager.getLogger("ImplantBootstrap");
-    logger.info("Implant Launcher version {}", ImplantBootstrap.class.getPackage().getImplementationVersion());
+    final Logger logger = LogManager.getLogger("IgniteBootstrap");
+    logger.info("Ignite Launcher version {}", IgniteBootstrap.class.getPackage().getImplementationVersion());
 
     // Blackboard
-    ImplantBlackboard.setProperty(ImplantBlackboard.LAUNCH_ARGUMENTS, Collections.unmodifiableList(arguments));
-    ImplantBlackboard.setProperty(ImplantBlackboard.LAUNCH_JAR, ImplantBootstrap.LAUNCH_JAR);
-    ImplantBlackboard.setProperty(ImplantBlackboard.LAUNCH_TARGET, ImplantBootstrap.LAUNCH_TARGET);
-    ImplantBlackboard.setProperty(ImplantBlackboard.MOD_DIRECTORY_PATH, ImplantBootstrap.MOD_TARGET_PATH);
+    IgniteBlackboard.setProperty(IgniteBlackboard.LAUNCH_ARGUMENTS, Collections.unmodifiableList(arguments));
+    IgniteBlackboard.setProperty(IgniteBlackboard.LAUNCH_JAR, IgniteBootstrap.LAUNCH_JAR);
+    IgniteBlackboard.setProperty(IgniteBlackboard.LAUNCH_TARGET, IgniteBootstrap.LAUNCH_TARGET);
+    IgniteBlackboard.setProperty(IgniteBlackboard.MOD_DIRECTORY_PATH, IgniteBootstrap.MOD_TARGET_PATH);
 
     // Modlauncher
     logger.info("Preparing ModLauncher with arguments {}", launchArguments);

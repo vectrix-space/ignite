@@ -1,5 +1,5 @@
 /*
- * This file is part of Implant, licensed under the MIT License (MIT).
+ * This file is part of Ignite, licensed under the MIT License (MIT).
  *
  * Copyright (c) Mineteria <https://mineteria.com/>
  * Copyright (c) contributors
@@ -22,13 +22,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.implant.launch;
+package com.mineteria.ignite.launch;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import com.mineteria.implant.ImplantCore;
-import com.mineteria.implant.mod.ModResource;
-import com.mineteria.implant.util.ImplantConstants;
+import com.mineteria.ignite.IgniteCore;
+import com.mineteria.ignite.mod.ModResource;
+import com.mineteria.ignite.util.IgniteConstants;
 import cpw.mods.modlauncher.api.IEnvironment;
 import cpw.mods.modlauncher.api.ITransformationService;
 import cpw.mods.modlauncher.api.ITransformer;
@@ -44,12 +44,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public final class ImplantTransformationService implements ITransformationService {
-  private final Logger logger = LogManager.getLogger("ImplantTransformation");
-
+public final class IgniteTransformationService implements ITransformationService {
   @Override
   public @NonNull String name() {
-    return "implant_transformation";
+    return "ignite_transformation";
   }
 
   @Override
@@ -64,17 +62,17 @@ public final class ImplantTransformationService implements ITransformationServic
 
   @Override
   public @NonNull List<Map.Entry<String, Path>> runScan(final @NonNull IEnvironment environment) {
-    ImplantCore.INSTANCE.getEngine().locateResources();
-    ImplantCore.INSTANCE.getEngine().loadCandidates();
+    IgniteCore.INSTANCE.getEngine().locateResources();
+    IgniteCore.INSTANCE.getEngine().loadCandidates();
 
     final List<Map.Entry<String, Path>> launchResources = new ArrayList<>();
-    for (final ModResource resource : ImplantCore.INSTANCE.getEngine().getCandidates()) {
-      final String atFiles = resource.getManifest().getMainAttributes().getValue(ImplantConstants.AT);
+    for (final ModResource resource : IgniteCore.INSTANCE.getEngine().getCandidates()) {
+      final String atFiles = resource.getManifest().getMainAttributes().getValue(IgniteConstants.AT);
       if (atFiles != null) {
         for (final String atFile : atFiles.split(",")) {
           if (!atFile.endsWith(".cfg")) continue;
 
-          AccessTransformerEngine.INSTANCE.addResource(resource.getFileSystem().getPath(ImplantConstants.META_INF).resolve(atFile), atFile);
+          AccessTransformerEngine.INSTANCE.addResource(resource.getFileSystem().getPath(IgniteConstants.META_INF).resolve(atFile), atFile);
         }
       }
 

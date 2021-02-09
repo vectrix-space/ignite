@@ -1,2 +1,2 @@
-com.mineteria.implant.launch.ImplantTransformationService
+com.mineteria.ignite.launch.IgniteTransformationService
 org.spongepowered.asm.launch.MixinTransformationService

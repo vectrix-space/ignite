@@ -1,5 +1,5 @@
 /*
- * This file is part of Implant, licensed under the MIT License (MIT).
+ * This file is part of Ignite, licensed under the MIT License (MIT).
  *
  * Copyright (c) Mineteria <https://mineteria.com/>
  * Copyright (c) contributors
@@ -22,36 +22,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.implant.mixin;
+package com.mineteria.ignite.mixin;
 
-import com.google.common.collect.ImmutableList;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.spongepowered.asm.launch.platform.container.ContainerHandleModLauncher;
-import org.spongepowered.asm.service.modlauncher.MixinServiceModLauncher;
+import org.spongepowered.asm.launch.platform.IMixinPlatformServiceAgent;
+import org.spongepowered.asm.launch.platform.MixinPlatformAgentAbstract;
+import org.spongepowered.asm.launch.platform.MixinPlatformManager;
+import org.spongepowered.asm.launch.platform.container.IContainerHandle;
 
 import java.util.Collection;
 
-public final class ImplantMixinService extends MixinServiceModLauncher {
+@SuppressWarnings("unused")
+public final class IgniteMixinPlatformService extends MixinPlatformAgentAbstract implements IMixinPlatformServiceAgent {
   @Override
-  public boolean isValid() {
-    return true;
+  public void init() {}
+
+  @Override
+  public AcceptResult accept(final @NonNull MixinPlatformManager manager, final @NonNull IContainerHandle handle) {
+    return AcceptResult.REJECTED;
   }
 
   @Override
-  public ContainerHandleModLauncher getPrimaryContainer() {
-    return new LauncherContainer(this.getName());
+  public String getSideName() {
+    return "SERVER";
   }
 
   @Override
-  public Collection<String> getPlatformAgents() {
-    return ImmutableList.<String>of(
-      "com.mineteria.implant.mixin.ImplantMixinPlatformService"
-    );
-  }
-
-  private static final class LauncherContainer extends ContainerHandleModLauncher {
-    public LauncherContainer(final @NonNull String name) {
-      super(name);
-    }
+  public Collection<IContainerHandle> getMixinContainers() {
+    return null;
   }
 }
