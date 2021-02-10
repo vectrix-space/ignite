@@ -46,6 +46,7 @@ This project has many parts inspired by the following projects:
 
 - [Orion]
 - [Sponge]
+- [Velocity]
 - [plugin-spi]
 
 [ModLauncher]: https://github.com/cpw/modlauncher
@@ -57,4 +58,5 @@ This project has many parts inspired by the following projects:
 [Gradle]: https://www.gradle.org/
 [Orion]: https://github.com/OrionMinecraft/Orion
 [Sponge]: https://github.com/SpongePowered/Sponge
+[Velocity]: https://github.com/VelocityPowered/Velocity
 [plugin-spi]: https://github.com/SpongePowered/plugin-spi

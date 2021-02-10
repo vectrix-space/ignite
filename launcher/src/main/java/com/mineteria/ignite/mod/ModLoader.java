@@ -14,7 +14,16 @@ import java.util.Map;
 
 public final class ModLoader {
   public void loadContainers(final @NonNull ModEngine engine, final @NonNull Map<Object, ModContainer> target) {
-    for (final ModContainer container : engine.getContainers()) {
+    final List<ModContainer> ordered;
+    try {
+      ordered = ModDependencyResolver.resolveDependencies(engine, engine.getContainers());
+    } catch (final IllegalStateException exception) {
+      engine.getLogger().error("Unable to generate mod dependency graph!");
+      engine.getLogger().error("\n", exception);
+      return;
+    }
+
+    for (final ModContainer container : ordered) {
       try {
         // Add the resource to the class loader.
         Agent.addJar(container.getResource().getPath());
@@ -28,7 +37,7 @@ public final class ModLoader {
           try {
             engine.getEventManager().register(modInstance, modInstance);
           } catch (final Exception exception) {
-            throw new IllegalStateException("Unable to register plugin listeners!");
+            throw new IllegalStateException("Unable to register mod listeners!");
           }
         }
       } catch (final Exception exception) {

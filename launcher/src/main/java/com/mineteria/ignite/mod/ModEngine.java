@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public final class ModEngine {
@@ -69,6 +70,10 @@ public final class ModEngine {
 
   public @NonNull List<ModResource> getResources() {
     return this.resources;
+  }
+
+  public @NonNull Optional<ModContainer> getContainer(final @NonNull String id) {
+    return Optional.ofNullable(this.containers.get(id));
   }
 
   public @NonNull Collection<ModContainer> getContainers() {
