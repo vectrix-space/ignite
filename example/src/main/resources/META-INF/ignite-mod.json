@@ -2,7 +2,7 @@
   "id": "example",
   "version": "1.0.0",
   "target": "com.mineteria.example.ExampleMod",
-  "mixins": [
+  "requiredMixins": [
     "mixins.example.core.json"
   ]
 }

@@ -6,7 +6,9 @@ dependencies {
   implementation(project(":api"))
 
   // Event
-  implementation "net.kyori:event-method-asm:4.0.0-SNAPSHOT"
+  implementation("net.kyori:event-method-asm:4.0.0-SNAPSHOT") {
+    exclude group: "org.ow2.asm"
+  }
 
   // Access Transformers
   implementation("net.minecraftforge:accesstransformers:2.2.1:service") {
@@ -50,6 +52,7 @@ shadowJar {
   dependencies {
     // API
     include project(":api")
+
     include dependency("org.apache.logging.log4j:log4j-api")
     include dependency("org.apache.logging.log4j:log4j-core")
     include dependency("org.checkerframework:checker-qual")
@@ -58,6 +61,11 @@ shadowJar {
     include dependency("org.jline:jline-terminal")
     include dependency("org.jline:jline-terminal-jna")
     include dependency("net.java.dev.jna:jna")
+
+    // Event
+    include dependency("net.kyori:event-api")
+    include dependency("net.kyori:event-method")
+    include dependency("net.kyori:event-method-asm")
 
     // Common
     include dependency("com.google.guava:guava")

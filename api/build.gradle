@@ -35,6 +35,7 @@ dependencies {
   // Access Transformers
   api("net.minecraftforge:accesstransformers:2.2.1") {
     exclude group: "org.apache.logging.log4j"
+    exclude group: "cpw.mods"
   }
 }
 
