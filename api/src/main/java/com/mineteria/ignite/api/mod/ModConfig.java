@@ -30,19 +30,23 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public final class ModConfig {
   private String id;
   private String version;
+  private String target;
   private List<String> mixins;
 
   public ModConfig() {}
 
   public ModConfig(final @NonNull String id,
                    final @NonNull String version,
+                   final @Nullable String target,
                    final @NonNull List<String> mixins) {
     this.id = id;
     this.version = version;
+    this.target = target;
     this.mixins = mixins;
   }
 
@@ -52,6 +56,10 @@ public final class ModConfig {
 
   public @NonNull String getVersion() {
     return this.version;
+  }
+
+  public @Nullable String getTarget() {
+    return this.target;
   }
 
   public @NonNull List<String> getMixins() {
@@ -70,6 +78,7 @@ public final class ModConfig {
     final ModConfig that = (ModConfig) other;
     return Objects.equals(this.id, that.id)
       && Objects.equals(this.version, that.version)
+      && Objects.equals(this.target, that.target)
       && Objects.equals(this.mixins, that.mixins);
   }
 
@@ -77,6 +86,7 @@ public final class ModConfig {
   public @NonNull String toString() {
     return "ModConfig{id=" + this.id +
       ", version=" + this.version +
+      ", target=" + this.target +
       ", mixins=" + Arrays.toString(mixins.toArray(new String[0])) +
       "}";
   }

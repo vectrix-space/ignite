@@ -20,7 +20,7 @@ The Ignite launcher must be executed instead of the Minecraft Server. Ignite wil
 
 Your mod will require a `META-INF/mod.json` in order to be located as a mod. The `META-INF/mod.json` provides the ID of the mod, and a list of Mixin configuration file names.
 
-Example `META-INF/mod.json`:
+Example `META-INF/ignite-mod.json`:
 ```json
 {
   "id": "example-mixins",

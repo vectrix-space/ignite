@@ -24,19 +24,27 @@
  */
 package com.mineteria.ignite.api.mod;
 
+import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Objects;
 
 public final class ModContainer {
+  private final Logger logger;
   private final ModResource resource;
   private final ModConfig config;
 
-  public ModContainer(final @NonNull ModResource resource,
+  public ModContainer(final @NonNull Logger logger,
+                      final @NonNull ModResource resource,
                       final @NonNull ModConfig config) {
+    this.logger = logger;
     this.resource = resource;
     this.config = config;
+  }
+
+  public @NonNull Logger getLogger() {
+    return this.logger;
   }
 
   public @NonNull String getId() {

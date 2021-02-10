@@ -15,6 +15,7 @@ dependencies {
     exclude group: "com.google.errorprone", module: "error_prone_annotations"
   }
 
+  api "com.google.inject:guice:4.2.3"
   api "com.google.code.gson:gson:2.8.0"
 
   // Mixins

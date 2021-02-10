@@ -24,37 +24,37 @@
  */
 package com.mineteria.ignite;
 
-import com.google.gson.Gson;
-import com.mineteria.ignite.api.mod.ModEngine;
-import com.mineteria.ignite.mod.IgniteModEngine;
+import com.google.inject.Guice;
+import com.mineteria.ignite.inject.IgniteModule;
+import com.mineteria.ignite.launch.IgniteBlackboard;
+import com.mineteria.ignite.mod.ModEngine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.asm.launch.MixinBootstrap;
 
-public final class IgniteCore {
-  public static final IgniteCore INSTANCE = new IgniteCore();
+public final class IgniteEngine {
+  public static final IgniteEngine INSTANCE = new IgniteEngine();
 
-  private final Logger logger = LogManager.getLogger("IgniteCore");
-  private final Gson gson = new Gson();
+  static {
+    MixinBootstrap.init();
+  }
+
+  private final Logger logger = LogManager.getLogger("IgniteEngine");
 
   private final ModEngine modEngine;
 
-  /* package */ IgniteCore() {
-    this.modEngine = new IgniteModEngine(this);
+  /* package */ IgniteEngine() {
+    this.modEngine = new ModEngine(this.logger);
 
-    MixinBootstrap.init();
+    IgniteBlackboard.setProperty(IgniteBlackboard.PARENT_INJECTOR, Guice.createInjector(new IgniteModule()));
   }
 
   public @NonNull Logger getLogger() {
     return this.logger;
   }
 
-  public @NonNull Gson getGson() {
-    return this.gson;
-  }
-
-  public @NonNull ModEngine getEngine() {
+  public @NonNull ModEngine getModEngine() {
     return this.modEngine;
   }
 }

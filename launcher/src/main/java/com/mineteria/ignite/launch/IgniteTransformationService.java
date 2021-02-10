@@ -26,7 +26,7 @@ package com.mineteria.ignite.launch;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import com.mineteria.ignite.IgniteCore;
+import com.mineteria.ignite.IgniteEngine;
 import com.mineteria.ignite.api.mod.ModResource;
 import com.mineteria.ignite.util.IgniteConstants;
 import cpw.mods.modlauncher.api.IEnvironment;
@@ -60,11 +60,11 @@ public final class IgniteTransformationService implements ITransformationService
 
   @Override
   public @NonNull List<Map.Entry<String, Path>> runScan(final @NonNull IEnvironment environment) {
-    IgniteCore.INSTANCE.getEngine().locateResources();
-    IgniteCore.INSTANCE.getEngine().loadCandidates();
+    IgniteEngine.INSTANCE.getModEngine().locateResources();
+    IgniteEngine.INSTANCE.getModEngine().loadResources();
 
     final List<Map.Entry<String, Path>> launchResources = new ArrayList<>();
-    for (final ModResource resource : IgniteCore.INSTANCE.getEngine().getCandidates()) {
+    for (final ModResource resource : IgniteEngine.INSTANCE.getModEngine().getResources()) {
       final String atFiles = resource.getManifest().getMainAttributes().getValue(IgniteConstants.AT);
       if (atFiles != null) {
         for (final String atFile : atFiles.split(",")) {

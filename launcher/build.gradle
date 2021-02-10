@@ -57,6 +57,7 @@ shadowJar {
 
     // Common
     include dependency("com.google.guava:guava")
+    include dependency("com.google.inject:guice")
     include dependency("com.google.code.gson:gson")
 
     // ASM

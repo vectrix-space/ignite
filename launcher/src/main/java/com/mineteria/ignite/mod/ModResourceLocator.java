@@ -24,7 +24,6 @@
  */
 package com.mineteria.ignite.mod;
 
-import com.mineteria.ignite.IgniteCore;
 import com.mineteria.ignite.api.mod.ModResource;
 import com.mineteria.ignite.launch.IgniteBlackboard;
 import com.mineteria.ignite.util.IgniteConstants;
@@ -39,18 +38,17 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
-public final class ModLocator {
+public final class ModResourceLocator {
   public static final String DEFAULT_METADATA_FILENAME = "ignite-mod.json";
 
   private static final String NAME = "java_directory";
 
-  public @NonNull List<ModResource> locateResources() {
-    final IgniteCore core = IgniteCore.INSTANCE;
+  public @NonNull List<ModResource> locateResources(final @NonNull ModEngine engine) {
     final List<ModResource> modResources = new ArrayList<>();
 
     final Path modDirectory = IgniteBlackboard.getProperty(IgniteBlackboard.MOD_DIRECTORY_PATH);
     if (modDirectory == null || Files.notExists(modDirectory)) {
-      core.getLogger().warn("Mod directory '{}' does not exist for mod locator. Skipping...", modDirectory);
+      engine.getLogger().warn("Mod directory '{}' does not exist for mod resource locator. Skipping...", modDirectory);
       return modResources;
     }
 
@@ -63,21 +61,21 @@ public final class ModLocator {
         try (final JarFile jarFile = new JarFile(childDirectory.toFile())) {
           final JarEntry jarEntry = jarFile.getJarEntry(this.getMetadataPath());
           if (jarEntry == null) {
-            core.getLogger().debug("'{}' does not contain any mod metadata so it is not a mod. Skipping...", jarFile);
+            engine.getLogger().debug("'{}' does not contain any mod metadata so it is not a mod. Skipping...", jarFile);
             continue;
           }
 
-          modResources.add(new ModResource(ModLocator.NAME, childDirectory, jarFile.getManifest()));
+          modResources.add(new ModResource(ModResourceLocator.NAME, childDirectory, jarFile.getManifest()));
         }
       }
     } catch (final IOException exception) {
-      core.getLogger().error("Error walking mods directory '{}'.", modDirectory, exception);
+      engine.getLogger().error("Error walking mods directory '{}'.", modDirectory, exception);
     }
 
     return modResources;
   }
 
   public @NonNull String getMetadataPath() {
-    return IgniteConstants.META_INF + "/" + ModLocator.DEFAULT_METADATA_FILENAME;
+    return IgniteConstants.META_INF + "/" + ModResourceLocator.DEFAULT_METADATA_FILENAME;
   }
 }

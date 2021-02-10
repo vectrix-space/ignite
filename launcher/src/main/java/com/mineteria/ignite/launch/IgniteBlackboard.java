@@ -25,6 +25,7 @@
 package com.mineteria.ignite.launch;
 
 import com.google.common.reflect.TypeToken;
+import com.google.inject.Injector;
 import cpw.mods.modlauncher.api.TypesafeMap;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -41,6 +42,8 @@ public final class IgniteBlackboard {
   public static final TypesafeMap.Key<String>       LAUNCH_TARGET    = key("ignite.launch.target", TypeToken.of(String.class));
 
   public static final TypesafeMap.Key<Path> MOD_DIRECTORY_PATH = key("ignite.mod.directory", TypeToken.of(Path.class));
+
+  public static final TypesafeMap.Key<Injector> PARENT_INJECTOR = key("ignite.internal.parent_injector", TypeToken.of(Injector.class));
 
   public static <T> @Nullable T getProperty(final TypesafeMap.@NonNull Key<T> key) {
     return IgniteBlackboard.getProperty(key, null);

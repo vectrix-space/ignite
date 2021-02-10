@@ -24,7 +24,7 @@
  */
 package com.mineteria.ignite.launch;
 
-import com.mineteria.ignite.IgniteCore;
+import com.mineteria.ignite.IgniteEngine;
 import com.mineteria.ignite.api.mod.ModResource;
 import cpw.mods.gross.Java9ClassLoaderUtil;
 import cpw.mods.modlauncher.api.ILaunchHandlerService;
@@ -104,7 +104,7 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
 
   @Override
   public @NonNull Callable<Void> launchService(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
-    IgniteCore.INSTANCE.getEngine().loadContainers();
+    IgniteEngine.INSTANCE.getModEngine().loadContainers();
 
     this.logger.info("Transitioning to launch target, please wait...");
 
@@ -123,7 +123,7 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
 
   protected @NonNull Function<String, Optional<URL>> getResourceLocator() {
     return string -> {
-      for (final ModResource resource : IgniteCore.INSTANCE.getEngine().getCandidates()) {
+      for (final ModResource resource : IgniteEngine.INSTANCE.getModEngine().getResources()) {
         final Path resolved = resource.getFileSystem().getPath(string);
         if (Files.exists(resolved)) {
           try {
