@@ -6,6 +6,25 @@ dependencies {
   api "org.checkerframework:checker-qual:3.9.1"
   api "net.minecrell:terminalconsoleappender:1.1.1"
 
+  // Configuration
+  api("org.spongepowered:configurate-hocon:3.7.1") {
+    exclude group: "org.checkerframework", module: "checker-qual" // We use our own version
+    exclude group: "com.google.guava", module: "guava" // We use our own version
+    exclude group: "com.google.inject", module: "guice" // We use our own version
+  }
+
+  api("org.spongepowered:configurate-yaml:3.7.1") {
+    exclude group: "org.checkerframework", module: "checker-qual" // We use our own version
+    exclude group: "com.google.guava", module: "guava" // We use our own version
+    exclude group: "com.google.inject", module: "guice" // We use our own version
+  }
+
+  api("org.spongepowered:configurate-gson:3.7.1") {
+    exclude group: "org.checkerframework", module: "checker-qual" // We use our own version
+    exclude group: "com.google.guava", module: "guava" // We use our own version
+    exclude group: "com.google.inject", module: "guice" // We use our own version
+  }
+
   // Common
   api("com.google.guava:guava:21.0") {
     exclude group: "com.google.code.findbugs", module: "jsr305" // We don't want to use jsr305, use checkerframework

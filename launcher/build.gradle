@@ -62,6 +62,12 @@ shadowJar {
     include dependency("org.jline:jline-terminal-jna")
     include dependency("net.java.dev.jna:jna")
 
+    // Configuration
+    include dependency("org.spongepowered:configurate-core")
+    include dependency("org.spongepowered:configurate-hocon")
+    include dependency("org.spongepowered:configurate-yaml")
+    include dependency("org.spongepowered:configurate-gson")
+
     // Event
     include dependency("net.kyori:event-api")
     include dependency("net.kyori:event-method")

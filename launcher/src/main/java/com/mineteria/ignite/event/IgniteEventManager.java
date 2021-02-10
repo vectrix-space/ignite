@@ -137,7 +137,7 @@ public final class IgniteEventManager implements EventManager {
     if (!this.engine.isMod(mod)) throw new IllegalArgumentException("Specified mod is not loaded!");
   }
 
-  private static class IgniteMethodScanner implements MethodScanner<Object> {
+  private static final class IgniteMethodScanner implements MethodScanner<Object> {
     @Override
     public boolean shouldRegister(final @NonNull Object listener, final @NonNull Method method) {
       return method.isAnnotationPresent(Subscribe.class);
@@ -154,7 +154,7 @@ public final class IgniteEventManager implements EventManager {
     }
   }
 
-  private static class KyoriToIgniteHandler<E> implements EventSubscriber<E> {
+  private static final class KyoriToIgniteHandler<E> implements EventSubscriber<E> {
     private final EventHandler<E> handler;
     private final int priority;
 
