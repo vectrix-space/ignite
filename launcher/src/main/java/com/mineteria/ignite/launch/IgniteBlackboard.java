@@ -42,6 +42,7 @@ public final class IgniteBlackboard {
   public static final TypesafeMap.Key<String>       LAUNCH_TARGET    = key("ignite.launch.target", TypeToken.of(String.class));
 
   public static final TypesafeMap.Key<Path> MOD_DIRECTORY_PATH = key("ignite.mod.directory", TypeToken.of(Path.class));
+  public static final TypesafeMap.Key<Path> CONFIG_DIRECTORY_PATH = key("ignite.config.directory", TypeToken.of(Path.class));
 
   public static final TypesafeMap.Key<Injector> PARENT_INJECTOR = key("ignite.internal.parent_injector", TypeToken.of(Injector.class));
 

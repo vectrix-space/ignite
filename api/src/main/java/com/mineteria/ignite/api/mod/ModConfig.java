@@ -43,7 +43,7 @@ public final class ModConfig {
   public ModConfig(final @NonNull String id,
                    final @NonNull String version,
                    final @Nullable String target,
-                   final @NonNull List<String> mixins) {
+                   final @Nullable List<String> mixins) {
     this.id = id;
     this.version = version;
     this.target = target;
@@ -62,7 +62,7 @@ public final class ModConfig {
     return this.target;
   }
 
-  public @NonNull List<String> getMixins() {
+  public @Nullable List<String> getMixins() {
     return this.mixins;
   }
 
@@ -87,7 +87,7 @@ public final class ModConfig {
     return "ModConfig{id=" + this.id +
       ", version=" + this.version +
       ", target=" + this.target +
-      ", mixins=" + Arrays.toString(mixins.toArray(new String[0])) +
+      ", mixins=" + (this.mixins != null ? Arrays.toString(this.mixins.toArray(new String[0])) : "[]") +
       "}";
   }
 }

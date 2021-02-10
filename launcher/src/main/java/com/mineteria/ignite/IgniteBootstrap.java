@@ -57,6 +57,11 @@ public final class IgniteBootstrap {
   private static final Path MOD_TARGET_PATH = Paths.get(System.getProperty(IgniteBlackboard.MOD_DIRECTORY_PATH.name(), "./mods"));
 
   /**
+   * The configs directory.
+   */
+  private static final Path CONFIG_TARGET_PATH = Paths.get(System.getProperty(IgniteBlackboard.CONFIG_DIRECTORY_PATH.name(), "./configs"));
+
+  /**
    * The main launch target to boostrap from.
    *
    * @param args The launch arguments
@@ -90,6 +95,7 @@ public final class IgniteBootstrap {
     IgniteBlackboard.setProperty(IgniteBlackboard.LAUNCH_JAR, IgniteBootstrap.LAUNCH_JAR);
     IgniteBlackboard.setProperty(IgniteBlackboard.LAUNCH_TARGET, IgniteBootstrap.LAUNCH_TARGET);
     IgniteBlackboard.setProperty(IgniteBlackboard.MOD_DIRECTORY_PATH, IgniteBootstrap.MOD_TARGET_PATH);
+    IgniteBlackboard.setProperty(IgniteBlackboard.CONFIG_DIRECTORY_PATH, IgniteBootstrap.CONFIG_TARGET_PATH);
 
     // Modlauncher
     logger.info("Preparing ModLauncher with arguments {}", launchArguments);
