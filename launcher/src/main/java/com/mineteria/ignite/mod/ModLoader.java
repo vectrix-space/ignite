@@ -1,6 +1,7 @@
 package com.mineteria.ignite.mod;
 
 import com.google.inject.Injector;
+import com.mineteria.ignite.agent.Agent;
 import com.mineteria.ignite.api.mod.ModContainer;
 import com.mineteria.ignite.inject.ModModule;
 import com.mineteria.ignite.launch.IgniteBlackboard;
@@ -13,9 +14,11 @@ public final class ModLoader {
   public void loadContainers(final @NonNull ModEngine engine, final @NonNull Map<Object, ModContainer> target) {
     for (final ModContainer container : engine.getContainers()) {
       try {
+        Agent.addJar(container.getResource().getPath());
+
         final Object modInstance = this.initializeContainer(container);
         if (modInstance != null) target.put(modInstance, container);
-      } catch (final IllegalStateException exception) {
+      } catch (final Exception exception) {
         engine.getLogger().error("Failed to load mod!", exception);
       }
     }

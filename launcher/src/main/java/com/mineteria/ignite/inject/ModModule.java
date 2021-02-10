@@ -41,7 +41,7 @@ public final class ModModule extends AbstractModule {
     private final ModContainer container;
 
     @Inject
-    /* package */ ModConfigPath(final @Configs Path configs, final ModContainer container) {
+    public ModConfigPath(final @Configs Path configs, final ModContainer container) {
       this.configs = configs;
       this.container = container;
     }
