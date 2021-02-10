@@ -62,6 +62,11 @@ public final class IgniteBootstrap {
   private static final Path CONFIG_TARGET_PATH = Paths.get(System.getProperty(IgniteBlackboard.CONFIG_DIRECTORY_PATH.name(), "./configs"));
 
   /**
+   * The event executor threads.
+   */
+  private static final Integer EVENT_EXECUTOR_THREADS = Integer.valueOf(System.getProperty(IgniteBlackboard.EVENT_EXECUTOR_THREADS.name()));
+
+  /**
    * The main launch target to boostrap from.
    *
    * @param args The launch arguments

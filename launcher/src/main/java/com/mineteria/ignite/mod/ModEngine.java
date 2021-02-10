@@ -24,6 +24,8 @@
  */
 package com.mineteria.ignite.mod;
 
+import com.mineteria.ignite.IgniteEngine;
+import com.mineteria.ignite.api.event.EventManager;
 import com.mineteria.ignite.api.mod.ModContainer;
 import com.mineteria.ignite.api.mod.ModResource;
 import org.apache.logging.log4j.Logger;
@@ -45,14 +47,18 @@ public final class ModEngine {
   private final Map<String, ModContainer> containers = new HashMap<>();
   private final List<ModResource> resources = new ArrayList<>();
 
-  private final Logger logger;
+  private final IgniteEngine engine;
 
-  public ModEngine(final @NonNull Logger logger) {
-    this.logger = logger;
+  public ModEngine(final @NonNull IgniteEngine engine) {
+    this.engine = engine;
   }
 
   public @NonNull Logger getLogger() {
-    return this.logger;
+    return this.engine.getLogger();
+  }
+
+  public @NonNull EventManager getEventManager() {
+    return this.engine.getEventManager();
   }
 
   public @NonNull ModResourceLocator getResourceLocator() {
@@ -71,11 +77,16 @@ public final class ModEngine {
     return this.containers.containsKey(id);
   }
 
+  public boolean isMod(final @NonNull Object object) {
+    if (object instanceof ModContainer) return true;
+    return this.containerInstances.containsKey(object);
+  }
+
   /**
    * Locates and populates the mod resources list.
    */
   public void locateResources() {
-    this.logger.info("Scanning for mods...");
+    this.getLogger().info("Scanning for mods...");
 
     this.resources.addAll(this.resourceLocator.locateResources(this));
   }
@@ -88,7 +99,7 @@ public final class ModEngine {
       this.containers.put(container.getId(), container);
     }
 
-    this.logger.info("Located {} mod(s).", this.containers.size());
+    this.getLogger().info("Located {} mod(s).", this.containers.size());
   }
 
   /**
@@ -97,7 +108,7 @@ public final class ModEngine {
   public void loadContainers() {
     this.containerLoader.loadContainers(this, this.containerInstances);
 
-    this.logger.info("Loaded [{}] mod(s).", this.containers.values().stream()
+    this.getLogger().info("Loaded [{}] mod(s).", this.containers.values().stream()
       .map(ModContainer::toString)
       .collect(Collectors.joining(", "))
     );

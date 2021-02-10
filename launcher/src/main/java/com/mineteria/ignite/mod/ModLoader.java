@@ -1,6 +1,7 @@
 package com.mineteria.ignite.mod;
 
 import com.google.inject.Injector;
+import com.mineteria.ignite.IgniteEngine;
 import com.mineteria.ignite.agent.Agent;
 import com.mineteria.ignite.api.mod.ModContainer;
 import com.mineteria.ignite.inject.ModModule;
@@ -14,17 +15,29 @@ public final class ModLoader {
   public void loadContainers(final @NonNull ModEngine engine, final @NonNull Map<Object, ModContainer> target) {
     for (final ModContainer container : engine.getContainers()) {
       try {
+        // Add the resource to the class loader.
         Agent.addJar(container.getResource().getPath());
 
-        final Object modInstance = this.initializeContainer(container);
-        if (modInstance != null) target.put(modInstance, container);
+        // Instantiate the container.
+        final Object modInstance = this.instantiateContainer(container);
+        if (modInstance != null) {
+          target.put(modInstance, container);
+
+          // Register the instance events.
+          try {
+            engine.getEventManager().register(modInstance, modInstance);
+          } catch (final Exception exception) {
+            throw new IllegalStateException("Unable to register plugin listeners!");
+          }
+        }
       } catch (final Exception exception) {
-        engine.getLogger().error("Failed to load mod!", exception);
+        engine.getLogger().error("Failed to load mod '{}'!", container.getId());
+        engine.getLogger().error("\n", exception);
       }
     }
   }
 
-  public @Nullable Object initializeContainer(final @NonNull ModContainer container) throws IllegalStateException {
+  public @Nullable Object instantiateContainer(final @NonNull ModContainer container) throws IllegalStateException {
     try {
       final String targetClass = container.getConfig().getTarget();
       if (targetClass != null) {

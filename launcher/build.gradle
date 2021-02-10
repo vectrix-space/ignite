@@ -5,6 +5,9 @@ dependencies {
   // API
   implementation(project(":api"))
 
+  // Event
+  implementation "net.kyori:event-method-asm:4.0.0-SNAPSHOT"
+
   // Access Transformers
   implementation("net.minecraftforge:accesstransformers:2.2.1:service") {
     exclude group: "org.apache.logging.log4j"

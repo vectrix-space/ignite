@@ -25,6 +25,8 @@
 package com.mineteria.ignite;
 
 import com.google.inject.Guice;
+import com.mineteria.ignite.api.event.EventManager;
+import com.mineteria.ignite.event.IgniteEventManager;
 import com.mineteria.ignite.inject.IgniteModule;
 import com.mineteria.ignite.launch.IgniteBlackboard;
 import com.mineteria.ignite.mod.ModEngine;
@@ -43,11 +45,13 @@ public final class IgniteEngine {
   private final Logger logger = LogManager.getLogger("IgniteEngine");
 
   private final ModEngine modEngine;
+  private final EventManager eventManager;
 
   /* package */ IgniteEngine() {
-    this.modEngine = new ModEngine(this.logger);
+    this.modEngine = new ModEngine(this);
+    this.eventManager = new IgniteEventManager(this.modEngine);
 
-    IgniteBlackboard.setProperty(IgniteBlackboard.PARENT_INJECTOR, Guice.createInjector(new IgniteModule()));
+    IgniteBlackboard.setProperty(IgniteBlackboard.PARENT_INJECTOR, Guice.createInjector(new IgniteModule(this)));
   }
 
   public @NonNull Logger getLogger() {
@@ -56,5 +60,9 @@ public final class IgniteEngine {
 
   public @NonNull ModEngine getModEngine() {
     return this.modEngine;
+  }
+
+  public @NonNull EventManager getEventManager() {
+    return this.eventManager;
   }
 }

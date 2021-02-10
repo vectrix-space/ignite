@@ -3,6 +3,7 @@ package com.mineteria.ignite.inject;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.Scopes;
+import com.mineteria.ignite.IgniteEngine;
 import com.mineteria.ignite.IgnitePlatform;
 import com.mineteria.ignite.api.Ignite;
 import com.mineteria.ignite.api.Platform;
@@ -13,11 +14,17 @@ import com.mineteria.ignite.launch.IgniteBlackboard;
 import java.nio.file.Path;
 
 public final class IgniteModule extends AbstractModule {
-  public IgniteModule() {}
+  private final IgniteEngine engine;
+
+  public IgniteModule(final IgniteEngine engine) {
+    this.engine = engine;
+  }
 
   @Override
   protected void configure() {
     this.requestStaticInjection(Ignite.class);
+
+    this.bind(IgniteEngine.class).toInstance(this.engine);
 
     this.bind(Platform.class).to(IgnitePlatform.class).in(Scopes.SINGLETON);
 
