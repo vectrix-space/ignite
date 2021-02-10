@@ -8,5 +8,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Subscribe {
-  SubscribePriority priority();
+  SubscribePriority priority() default SubscribePriority.NORMAL;
 }

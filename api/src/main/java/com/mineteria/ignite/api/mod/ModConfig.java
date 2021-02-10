@@ -30,24 +30,23 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 public final class ModConfig {
   private String id;
   private String version;
-  private String target;
-  private List<String> mixins;
+  private @Nullable String target;
+  private @Nullable List<String> requiredMixins;
 
   public ModConfig() {}
 
   public ModConfig(final @NonNull String id,
                    final @NonNull String version,
                    final @Nullable String target,
-                   final @Nullable List<String> mixins) {
+                   final @Nullable List<String> requiredMixins) {
     this.id = id;
     this.version = version;
     this.target = target;
-    this.mixins = mixins;
+    this.requiredMixins = requiredMixins;
   }
 
   public @NonNull String getId() {
@@ -62,13 +61,13 @@ public final class ModConfig {
     return this.target;
   }
 
-  public @Nullable List<String> getMixins() {
-    return this.mixins;
+  public @Nullable List<String> getRequiredMixins() {
+    return this.requiredMixins;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id, this.version, this.mixins);
+    return Objects.hash(this.id, this.version, this.requiredMixins);
   }
 
   @Override
@@ -79,7 +78,7 @@ public final class ModConfig {
     return Objects.equals(this.id, that.id)
       && Objects.equals(this.version, that.version)
       && Objects.equals(this.target, that.target)
-      && Objects.equals(this.mixins, that.mixins);
+      && Objects.equals(this.requiredMixins, that.requiredMixins);
   }
 
   @Override
@@ -87,7 +86,7 @@ public final class ModConfig {
     return "ModConfig{id=" + this.id +
       ", version=" + this.version +
       ", target=" + this.target +
-      ", mixins=" + (this.mixins != null ? Arrays.toString(this.mixins.toArray(new String[0])) : "[]") +
+      ", requiredMixins=" + (this.requiredMixins != null ? Arrays.toString(this.requiredMixins.toArray(new String[0])) : "[]") +
       "}";
   }
 }

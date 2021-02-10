@@ -105,6 +105,7 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
   @Override
   public @NonNull Callable<Void> launchService(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
     IgniteEngine.INSTANCE.getModEngine().loadContainers();
+    IgniteEngine.INSTANCE.getModEngine().loadMods();
 
     this.logger.info("Transitioning to launch target, please wait...");
 

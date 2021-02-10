@@ -1,14 +1,15 @@
 package com.mineteria.ignite.mod;
 
 import com.google.inject.Injector;
-import com.mineteria.ignite.IgniteEngine;
 import com.mineteria.ignite.agent.Agent;
 import com.mineteria.ignite.api.mod.ModContainer;
 import com.mineteria.ignite.inject.ModModule;
 import com.mineteria.ignite.launch.IgniteBlackboard;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.spongepowered.asm.mixin.Mixins;
 
+import java.util.List;
 import java.util.Map;
 
 public final class ModLoader {
@@ -37,7 +38,18 @@ public final class ModLoader {
     }
   }
 
-  public @Nullable Object instantiateContainer(final @NonNull ModContainer container) throws IllegalStateException {
+  public void loadMods(final @NonNull ModEngine engine) {
+    for (final ModContainer container : engine.getContainers()) {
+      final List<String> mixins = container.getConfig().getRequiredMixins();
+      if (mixins != null && !mixins.isEmpty()) {
+        for (final String mixinConfig : mixins) {
+          Mixins.addConfiguration(mixinConfig);
+        }
+      }
+    }
+  }
+
+  private @Nullable Object instantiateContainer(final @NonNull ModContainer container) throws IllegalStateException {
     try {
       final String targetClass = container.getConfig().getTarget();
       if (targetClass != null) {

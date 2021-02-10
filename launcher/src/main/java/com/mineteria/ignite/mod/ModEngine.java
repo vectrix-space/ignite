@@ -26,6 +26,8 @@ package com.mineteria.ignite.mod;
 
 import com.mineteria.ignite.IgniteEngine;
 import com.mineteria.ignite.api.event.EventManager;
+import com.mineteria.ignite.api.event.platform.PlatformConstructEvent;
+import com.mineteria.ignite.api.event.platform.PlatformInitializeEvent;
 import com.mineteria.ignite.api.mod.ModContainer;
 import com.mineteria.ignite.api.mod.ModResource;
 import org.apache.logging.log4j.Logger;
@@ -108,9 +110,22 @@ public final class ModEngine {
   public void loadContainers() {
     this.containerLoader.loadContainers(this, this.containerInstances);
 
-    this.getLogger().info("Loaded [{}] mod(s).", this.containers.values().stream()
+    this.engine.getEventManager().post(new PlatformConstructEvent());
+
+    this.getLogger().info("Constructed [{}] mod(s).", this.containers.values().stream()
       .map(ModContainer::toString)
       .collect(Collectors.joining(", "))
     );
+  }
+
+  /**
+   * Loads the mods by invoking the initialize event.
+   */
+  public void loadMods() {
+    this.containerLoader.loadMods(this);
+
+    this.engine.getEventManager().post(new PlatformInitializeEvent());
+
+    this.getLogger().info("Initialized mod(s).");
   }
 }
