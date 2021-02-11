@@ -104,7 +104,6 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
 
   @Override
   public final @NonNull Callable<Void> launchService(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
-    IgniteEngine.INSTANCE.getModEngine().loadContainers();
     IgniteEngine.INSTANCE.getModEngine().loadMods();
 
     this.logger.info("Transitioning to launch target, please wait...");
@@ -146,8 +145,6 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
    * @param launchClassLoader The transforming class loader to load classes with
    */
   protected void launchService0(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) throws Exception {
-    final ClassLoader classLoader = launchClassLoader.getInstance();
-
     final Path launchJar = IgniteBlackboard.getProperty(IgniteBlackboard.LAUNCH_JAR);
     if (launchJar == null || !Files.exists(launchJar)) {
       throw new IllegalStateException("No launch jar was found!");
@@ -155,7 +152,7 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
       final String launchTarget = IgniteBlackboard.getProperty(IgniteBlackboard.LAUNCH_TARGET, "org.bukkit.craftbukkit.Main");
 
       // Invoke the main method on the provided ClassLoader.
-      Class.forName(launchTarget, true, classLoader)
+      Class.forName(launchTarget, true, launchClassLoader.getInstance())
         .getMethod("main", String[].class)
         .invoke(null, (Object) arguments);
     }

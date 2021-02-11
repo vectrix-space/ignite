@@ -108,8 +108,7 @@ public final class ModEngine {
    */
   public void loadContainers() {
     this.containerLoader.loadContainers(this, this.pendingContainers, this.containers, this.containerInstances);
-
-    this.engine.getEventManager().post(new PlatformConstructEvent());
+    this.containerLoader.loadTransformers(this);
 
     this.getLogger().info("Constructed [{}] mod(s).", this.containers.values().stream()
       .map(ModContainer::toString)
@@ -121,8 +120,7 @@ public final class ModEngine {
    * Loads the mods by invoking the initialize event.
    */
   public void loadMods() {
-    this.containerLoader.loadMods(this);
-
+    this.engine.getEventManager().post(new PlatformConstructEvent());
     this.engine.getEventManager().post(new PlatformInitializeEvent());
 
     this.getLogger().info("Initialized mod(s).");

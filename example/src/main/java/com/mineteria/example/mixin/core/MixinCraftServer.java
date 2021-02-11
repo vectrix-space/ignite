@@ -1,4 +1,4 @@
-package com.mineteria.example.mixins;
+package com.mineteria.example.mixin.core;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

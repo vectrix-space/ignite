@@ -3,8 +3,11 @@ package com.mineteria.ignite.mod;
 import com.google.inject.Injector;
 import com.mineteria.ignite.agent.Agent;
 import com.mineteria.ignite.api.mod.ModContainer;
+import com.mineteria.ignite.api.mod.ModResource;
 import com.mineteria.ignite.inject.ModModule;
 import com.mineteria.ignite.launch.IgniteBlackboard;
+import com.mineteria.ignite.util.IgniteConstants;
+import net.minecraftforge.accesstransformer.AccessTransformerEngine;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.asm.mixin.Mixins;
@@ -51,13 +54,22 @@ public final class ModLoader {
     }
   }
 
-  public void loadMods(final @NonNull ModEngine engine) {
+  public void loadTransformers(final @NonNull ModEngine engine) {
     for (final ModContainer container : engine.getContainers()) {
+      final ModResource resource = container.getResource();
+
+      final String atFiles = resource.getManifest().getMainAttributes().getValue(IgniteConstants.AT);
+      if (atFiles != null) {
+        for (final String atFile : atFiles.split(",")) {
+          if (!atFile.endsWith(".cfg")) continue;
+
+          AccessTransformerEngine.INSTANCE.addResource(resource.getFileSystem().getPath(IgniteConstants.META_INF).resolve(atFile), atFile);
+        }
+      }
+
       final List<String> mixins = container.getConfig().getRequiredMixins();
       if (mixins != null && !mixins.isEmpty()) {
-        for (final String mixinConfig : mixins) {
-          Mixins.addConfiguration(mixinConfig);
-        }
+        Mixins.addConfigurations(mixins.toArray(new String[0]));
       }
     }
   }
