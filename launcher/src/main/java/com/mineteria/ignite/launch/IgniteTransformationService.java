@@ -45,7 +45,7 @@ import java.util.Set;
 public final class IgniteTransformationService implements ITransformationService {
   @Override
   public final @NonNull String name() {
-    return "ignite_transformation";
+    return "ignite_platform";
   }
 
   @Override
@@ -66,6 +66,15 @@ public final class IgniteTransformationService implements ITransformationService
 
     final List<Map.Entry<String, Path>> launchResources = new ArrayList<>();
     for (final ModResource resource : IgniteEngine.INSTANCE.getModEngine().getResources()) {
+      final String atFiles = resource.getManifest().getMainAttributes().getValue(IgniteConstants.AT);
+      if (atFiles != null) {
+        for (final String atFile : atFiles.split(",")) {
+          if (!atFile.endsWith(".cfg")) continue;
+
+          AccessTransformerEngine.INSTANCE.addResource(resource.getFileSystem().getPath(IgniteConstants.META_INF).resolve(atFile), atFile);
+        }
+      }
+
       final Map.Entry<String, Path> entry = Maps.immutableEntry(resource.getPath().getFileName().toString(), resource.getPath());
       launchResources.add(entry);
     }

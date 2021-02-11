@@ -31,13 +31,11 @@ public final class ModLoader {
 
     for (final ModContainer container : ordered) {
       try {
-        // Add the resource to the class loader.
-        Agent.addJar(container.getResource().getPath());
-
         // Instantiate the container.
         final Object modInstance = this.instantiateContainer(container);
+        identifierTarget.put(container.getId(), container);
+
         if (modInstance != null) {
-          identifierTarget.put(container.getId(), container);
           instanceTarget.put(modInstance, container);
 
           // Register the instance events.
@@ -46,6 +44,8 @@ public final class ModLoader {
           } catch (final Exception exception) {
             throw new IllegalStateException("Unable to register mod listeners!");
           }
+        } else {
+          engine.getLogger().warn("Loaded '{}' without a target class.", container.getId());
         }
       } catch (final Exception exception) {
         engine.getLogger().error("Failed to load mod '{}'!", container.getId());
@@ -76,8 +76,12 @@ public final class ModLoader {
 
   private @Nullable Object instantiateContainer(final @NonNull ModContainer container) throws IllegalStateException {
     try {
+      // Add the resource to the class loader.
+      Agent.addJar(container.getResource().getPath());
+
       final String targetClass = container.getConfig().getTarget();
       if (targetClass != null) {
+        // Load the class.
         final Class<?> modClass = Class.forName(targetClass, true, ClassLoader.getSystemClassLoader());
 
         final Injector parentInjector = IgniteBlackboard.getProperty(IgniteBlackboard.PARENT_INJECTOR);

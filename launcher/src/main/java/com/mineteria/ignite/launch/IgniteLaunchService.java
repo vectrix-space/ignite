@@ -33,21 +33,33 @@ import cpw.mods.modlauncher.api.ITransformingClassLoaderBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.io.IOException;
+import java.net.JarURLConnection;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
+import java.util.jar.Manifest;
 
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public final class IgniteLaunchService implements ILaunchHandlerService {
-  private final Logger logger = LogManager.getLogger("IgniteLaunch");
+  private static final Optional<Manifest> UNKNOWN_MANIFEST = Optional.of(new Manifest());
 
   /**
    * A list of class loader exclusions to ignore when
@@ -55,30 +67,14 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
    */
   protected static final @NonNull List<String> EXCLUDED_PACKAGES = Arrays.asList(
     // Ignite
-    "org.mineteria.ignite.launch.",
-    "org.mineteria.ignite.mod.",
-    "org.mineteria.ignite.mixin.",
+    "org.mineteria.ignite.ignite.",
 
     // Libraries
-    "ninja.leaping.configurate.",
-    "javax.inject.",
-    "joptsimple.",
-    "gnu.trove.",
-    "it.unimi.dsi.fastutil.",
-    "org.apache.logging.log4j.",
-    "org.yaml.snakeyaml.",
-    "com.google.inject.",
-    "com.google.common.",
-    "com.google.gson.",
-    "javax.annotation.",
-    "org.apache.commons.",
-
-    // Note: Fix for logging.
-    "net.minecrell.terminalconsole.",
-    "com.sun.jna.",
-    "org.fusesource.jansi.",
-    "org.jline."
+    "ninja.leaping.configurate."
   );
+
+  private final Logger logger = LogManager.getLogger("IgniteLaunch");
+  private final ConcurrentMap<URL, Optional<Manifest>> manifestCache = new ConcurrentHashMap<>();
 
   @Override
   public final @NonNull String name() {
@@ -95,11 +91,12 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
       try {
         builder.addTransformationPath(Paths.get(url.toURI()));
       } catch (final URISyntaxException exception) {
-        this.logger.error("Failed to add Mixin transformation path.", exception);
+        this.logger.error("Failed to add Mixin transformation path", exception);
       }
     }
 
-    builder.setClassBytesLocator(this.getResourceLocator());
+    builder.setResourceEnumeratorLocator(this.getResourceLocator());
+    builder.setManifestLocator(this.getManifestLocator());
   }
 
   @Override
@@ -121,16 +118,76 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
     };
   }
 
-  protected final @NonNull Function<String, Optional<URL>> getResourceLocator() {
+  protected final @NonNull Function<String, Enumeration<URL>> getResourceLocator() {
     return string -> {
-      for (final ModResource resource : IgniteEngine.INSTANCE.getModEngine().getResources()) {
-        final Path resolved = resource.getFileSystem().getPath(string);
-        if (Files.exists(resolved)) {
-          try {
-            return Optional.of(resolved.toUri().toURL());
-          } catch (final MalformedURLException exception) {
-            throw new RuntimeException(exception);
+      // Save unnecessary searches of mod classes for things that are definitely not mods
+      // In this case: MC and fastutil
+      if (string.startsWith("net/minecraft") || string.startsWith("it/unimi")) {
+        return Collections.emptyEnumeration();
+      }
+
+      return new Enumeration<URL>() {
+        private final @NonNull Iterator<ModResource> resources = IgniteEngine.INSTANCE.getModEngine().getResources().iterator();
+
+        private @Nullable URL next = this.computeNext();
+
+        @Override
+        public boolean hasMoreElements() {
+          return this.next != null;
+        }
+
+        @Override
+        public URL nextElement() {
+          final URL next = this.next;
+          if (next == null) throw new NoSuchElementException();
+          this.next = this.computeNext();
+          return next;
+        }
+
+        private URL computeNext() {
+          while (this.resources.hasNext()) {
+            final ModResource resource = this.resources.next();
+            final Path resolved = resource.getFileSystem().getPath(string);
+            if (Files.exists(resolved)) {
+              try {
+                return resolved.toUri().toURL();
+              } catch (final MalformedURLException ex) {
+                throw new RuntimeException(ex);
+              }
+            }
           }
+
+          return null;
+        }
+      };
+    };
+  }
+
+  protected final @NonNull Function<URLConnection, Optional<Manifest>> getManifestLocator() {
+    return connection -> {
+      if (connection instanceof JarURLConnection) {
+        final URL jarUrl = ((JarURLConnection) connection).getJarFileURL();
+        final Optional<Manifest> manifest = this.manifestCache.computeIfAbsent(jarUrl, key -> {
+          for (final ModResource resource : IgniteEngine.INSTANCE.getModEngine().getResources()) {
+            try {
+              if (resource.getPath().toAbsolutePath().normalize().equals(Paths.get(key.toURI()).toAbsolutePath().normalize())) {
+                return Optional.of(resource.getManifest());
+              }
+            } catch (final URISyntaxException exception) {
+              this.logger.error("Failed to load manifest from jar '{}'!", key, exception);
+            }
+          }
+          return IgniteLaunchService.UNKNOWN_MANIFEST;
+        });
+
+        try {
+          if (manifest == IgniteLaunchService.UNKNOWN_MANIFEST) {
+            return Optional.ofNullable(((JarURLConnection) connection).getManifest());
+          } else {
+            return manifest;
+          }
+        } catch (final IOException exception) {
+          this.logger.error("Failed to load manifest from jar '{}'!", jarUrl, exception);
         }
       }
 
