@@ -13,10 +13,13 @@ import java.util.List;
 import java.util.Map;
 
 public final class ModLoader {
-  public void loadContainers(final @NonNull ModEngine engine, final @NonNull Map<Object, ModContainer> target) {
+  public void loadContainers(final @NonNull ModEngine engine,
+                             final @NonNull List<ModContainer> pending,
+                             final @NonNull Map<String, ModContainer> identifierTarget,
+                             final @NonNull Map<Object, ModContainer> instanceTarget) {
     final List<ModContainer> ordered;
     try {
-      ordered = ModDependencyResolver.resolveDependencies(engine, engine.getContainers());
+      ordered = ModDependencyResolver.resolveDependencies(engine, pending);
     } catch (final IllegalStateException exception) {
       engine.getLogger().error("Unable to generate mod dependency graph!");
       engine.getLogger().error("\n", exception);
@@ -31,7 +34,8 @@ public final class ModLoader {
         // Instantiate the container.
         final Object modInstance = this.instantiateContainer(container);
         if (modInstance != null) {
-          target.put(modInstance, container);
+          identifierTarget.put(container.getId(), container);
+          instanceTarget.put(modInstance, container);
 
           // Register the instance events.
           try {

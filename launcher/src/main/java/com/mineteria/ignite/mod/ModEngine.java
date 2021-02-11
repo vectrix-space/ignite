@@ -48,6 +48,7 @@ public final class ModEngine {
   private final ModLoader containerLoader = new ModLoader();
   private final Map<Object, ModContainer> containerInstances = new IdentityHashMap<>();
   private final Map<String, ModContainer> containers = new HashMap<>();
+  private final List<ModContainer> pendingContainers = new ArrayList<>();
   private final List<ModResource> resources = new ArrayList<>();
 
   private final IgniteEngine engine;
@@ -102,18 +103,16 @@ public final class ModEngine {
    * Loads the located resources and adds them to the containers map.
    */
   public void loadResources() {
-    for (final ModContainer container : this.resourceLoader.loadResources(this)) {
-      this.containers.put(container.getId(), container);
-    }
+    this.pendingContainers.addAll(this.resourceLoader.loadResources(this));
 
-    this.getLogger().info("Located {} mod(s).", this.containers.size());
+    this.getLogger().info("Located {} mod(s).", this.pendingContainers.size());
   }
 
   /**
    * Loads the target instance for the mod containers.
    */
   public void loadContainers() {
-    this.containerLoader.loadContainers(this, this.containerInstances);
+    this.containerLoader.loadContainers(this, this.pendingContainers, this.containers, this.containerInstances);
 
     this.engine.getEventManager().post(new PlatformConstructEvent());
 

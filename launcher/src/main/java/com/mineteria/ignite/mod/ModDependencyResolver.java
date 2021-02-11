@@ -41,6 +41,7 @@ public final class ModDependencyResolver {
             graph.putEdge(container, dependency);
           } else {
             engine.getLogger().error("Unable to resolve required dependency '" + requiredDependency + "' for '" + container.getId() + "!");
+            graph.removeNode(container);
           }
         }
       }
@@ -54,6 +55,7 @@ public final class ModDependencyResolver {
             graph.putEdge(container, dependency);
           } else {
             engine.getLogger().error("Unable to resolve optional dependency '" + optionalDependency + "' for '" + container.getId() + "!");
+            graph.removeNode(container);
           }
         }
       }
