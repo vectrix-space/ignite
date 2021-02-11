@@ -24,9 +24,11 @@
  */
 package com.mineteria.ignite.util;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 public final class IgniteConstants {
-  public static final String META_INF = "META-INF";
-  public static final String AT = "AT";
+  public static final @NonNull String META_INF = "META-INF";
+  public static final @NonNull String AT = "AT";
 
   private IgniteConstants() {}
 }

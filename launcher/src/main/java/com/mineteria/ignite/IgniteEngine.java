@@ -36,7 +36,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.asm.launch.MixinBootstrap;
 
 public final class IgniteEngine {
-  public static final IgniteEngine INSTANCE = new IgniteEngine();
+  public static final @NonNull IgniteEngine INSTANCE = new IgniteEngine();
 
   static {
     MixinBootstrap.init();
@@ -54,15 +54,15 @@ public final class IgniteEngine {
     IgniteBlackboard.setProperty(IgniteBlackboard.PARENT_INJECTOR, Guice.createInjector(new IgniteModule(this)));
   }
 
-  public @NonNull Logger getLogger() {
+  public final @NonNull Logger getLogger() {
     return this.logger;
   }
 
-  public @NonNull ModEngine getModEngine() {
+  public final @NonNull ModEngine getModEngine() {
     return this.modEngine;
   }
 
-  public @NonNull EventManager getEventManager() {
+  public final @NonNull EventManager getEventManager() {
     return this.eventManager;
   }
 }

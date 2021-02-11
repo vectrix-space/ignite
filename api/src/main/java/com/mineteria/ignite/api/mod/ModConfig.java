@@ -24,6 +24,7 @@
  */
 package com.mineteria.ignite.api.mod;
 
+import com.google.gson.Gson;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -31,6 +32,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Represents the mod config, which is usually populated using
+ * {@link Gson}.
+ */
 public final class ModConfig {
   private String id;
   private String version;
@@ -55,37 +60,67 @@ public final class ModConfig {
     this.requiredMixins = requiredMixins;
   }
 
-  public @NonNull String getId() {
+  /**
+   * Returns the mod identifier.
+   *
+   * @return The mod identifier
+   */
+  public final @NonNull String getId() {
     return this.id;
   }
 
-  public @NonNull String getVersion() {
+  /**
+   * Returns the mod version.
+   *
+   * @return The mod version
+   */
+  public final @NonNull String getVersion() {
     return this.version;
   }
 
-  public @Nullable String getTarget() {
+  /**
+   * Returns the mod target class.
+   *
+   * @return The mod target class
+   */
+  public final @Nullable String getTarget() {
     return this.target;
   }
 
-  public @Nullable List<String> getRequiredDependencies() {
+  /**
+   * Returns a list of required dependency identifiers.
+   *
+   * @return A list of required dependency
+   */
+  public final @Nullable List<String> getRequiredDependencies() {
     return this.requiredDependencies;
   }
 
-  public @Nullable List<String> getOptionalDependencies() {
+  /**
+   * Returns a list of optional dependency identifiers.
+   *
+   * @return A list of optional dependency
+   */
+  public final @Nullable List<String> getOptionalDependencies() {
     return this.optionalDependencies;
   }
 
-  public @Nullable List<String> getRequiredMixins() {
+  /**
+   * Returns a list of required mixin configurations.
+   *
+   * @return A list of required mixins
+   */
+  public final @Nullable List<String> getRequiredMixins() {
     return this.requiredMixins;
   }
 
   @Override
-  public int hashCode() {
+  public final int hashCode() {
     return Objects.hash(this.id, this.version, this.target, this.requiredDependencies, this.optionalDependencies, this.requiredMixins);
   }
 
   @Override
-  public boolean equals(final @Nullable Object other) {
+  public final boolean equals(final @Nullable Object other) {
     if (this == other) return true;
     if (!(other instanceof ModConfig)) return false;
     final ModConfig that = (ModConfig) other;
@@ -98,7 +133,7 @@ public final class ModConfig {
   }
 
   @Override
-  public @NonNull String toString() {
+  public final @NonNull String toString() {
     return "ModConfig{id=" + this.id +
       ", version=" + this.version +
       ", target=" + this.target +

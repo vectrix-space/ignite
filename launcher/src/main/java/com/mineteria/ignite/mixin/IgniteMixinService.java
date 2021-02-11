@@ -33,17 +33,17 @@ import java.util.Collection;
 
 public final class IgniteMixinService extends MixinServiceModLauncher {
   @Override
-  public boolean isValid() {
+  public final boolean isValid() {
     return true;
   }
 
   @Override
-  public @NonNull ContainerHandleModLauncher getPrimaryContainer() {
+  public final @NonNull ContainerHandleModLauncher getPrimaryContainer() {
     return new LauncherContainer(this.getName());
   }
 
   @Override
-  public @NonNull Collection<String> getPlatformAgents() {
+  public final @NonNull Collection<String> getPlatformAgents() {
     return ImmutableList.<String>of(
       "com.mineteria.ignite.mixin.IgniteMixinPlatformService"
     );

@@ -6,8 +6,8 @@ import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
 import com.mineteria.ignite.api.event.EventHandler;
 import com.mineteria.ignite.api.event.EventManager;
+import com.mineteria.ignite.api.event.PostPriority;
 import com.mineteria.ignite.api.event.Subscribe;
-import com.mineteria.ignite.api.event.SubscribePriority;
 import com.mineteria.ignite.mod.ModEngine;
 import net.kyori.event.EventSubscriber;
 import net.kyori.event.PostResult;
@@ -65,8 +65,10 @@ public final class IgniteEventManager implements EventManager {
   }
 
   @Override
-  public <E> void register(final @NonNull Object mod, final @NonNull Class<E> event,
-                           final @NonNull SubscribePriority priority, final @NonNull EventHandler<E> handler) {
+  public <E> void register(final @NonNull Object mod,
+                           final @NonNull Class<E> event,
+                           final @NonNull PostPriority priority,
+                           final @NonNull EventHandler<E> handler) {
     requireNonNull(mod, "mod");
     requireNonNull(event, "event");
     requireNonNull(priority, "priority");
@@ -133,43 +135,43 @@ public final class IgniteEventManager implements EventManager {
     this.bus.unregister(subscriber -> subscriber instanceof KyoriToIgniteHandler && ((KyoriToIgniteHandler<?>) subscriber).handler == handler);
   }
 
-  private void ensureMod(final @NonNull Object mod) {
+  private void ensureMod(final Object mod) {
     if (!this.engine.isMod(mod)) throw new IllegalArgumentException("Specified mod is not loaded!");
   }
 
-  private static final class IgniteMethodScanner implements MethodScanner<Object> {
+  /* package */ static final class IgniteMethodScanner implements MethodScanner<Object> {
     @Override
-    public boolean shouldRegister(final @NonNull Object listener, final @NonNull Method method) {
+    public final boolean shouldRegister(final @NonNull Object listener, final @NonNull Method method) {
       return method.isAnnotationPresent(Subscribe.class);
     }
 
     @Override
-    public int postOrder(final @NonNull Object listener, final @NonNull Method method) {
+    public final int postOrder(final @NonNull Object listener, final @NonNull Method method) {
       return method.getAnnotation(Subscribe.class).priority().ordinal();
     }
 
     @Override
-    public boolean consumeCancelledEvents(final @NonNull Object listener, final @NonNull Method method) {
+    public final boolean consumeCancelledEvents(final @NonNull Object listener, final @NonNull Method method) {
       return true;
     }
   }
 
-  private static final class KyoriToIgniteHandler<E> implements EventSubscriber<E> {
+  /* package */ static final class KyoriToIgniteHandler<E> implements EventSubscriber<E> {
     private final EventHandler<E> handler;
     private final int priority;
 
-    private KyoriToIgniteHandler(final @NonNull EventHandler<E> handler, final @NonNull SubscribePriority priority) {
+    /* package */ KyoriToIgniteHandler(final @NonNull EventHandler<E> handler, final @NonNull PostPriority priority) {
       this.handler = handler;
       this.priority = priority.ordinal();
     }
 
     @Override
-    public void invoke(final @NonNull E event) throws Throwable {
+    public void invoke(final @NonNull E event) {
       handler.execute(event);
     }
 
     @Override
-    public int postOrder() {
+    public final int postOrder() {
       return this.priority;
     }
   }

@@ -24,17 +24,17 @@ public final class IgnitePlatform implements Platform {
   }
 
   @Override
-  public EventManager getEventManager() {
+  public final @NonNull EventManager getEventManager() {
     return this.engine.getEventManager();
   }
 
   @Override
-  public Path getConfigs() {
+  public final @NonNull Path getConfigs() {
     return this.configs;
   }
 
   @Override
-  public Path getMods() {
+  public final @NonNull Path getMods() {
     return this.mods;
   }
 }

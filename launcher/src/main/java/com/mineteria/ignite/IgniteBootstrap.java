@@ -44,22 +44,22 @@ public final class IgniteBootstrap {
   /**
    * The launch jar path.
    */
-  private static final Path LAUNCH_JAR = Paths.get(System.getProperty(IgniteBlackboard.LAUNCH_JAR.name(), "./server.jar"));
+  public static final @NonNull Path LAUNCH_JAR = Paths.get(System.getProperty(IgniteBlackboard.LAUNCH_JAR.name(), "./server.jar"));
 
   /**
    * The launch target class path.
    */
-  private static final String LAUNCH_TARGET = System.getProperty(IgniteBlackboard.LAUNCH_TARGET.name(), "org.bukkit.craftbukkit.Main");
+  public static final @NonNull String LAUNCH_TARGET = System.getProperty(IgniteBlackboard.LAUNCH_TARGET.name(), "org.bukkit.craftbukkit.Main");
 
   /**
    * The mods directory.
    */
-  private static final Path MOD_TARGET_PATH = Paths.get(System.getProperty(IgniteBlackboard.MOD_DIRECTORY_PATH.name(), "./mods"));
+  public static final @NonNull Path MOD_TARGET_PATH = Paths.get(System.getProperty(IgniteBlackboard.MOD_DIRECTORY_PATH.name(), "./mods"));
 
   /**
    * The configs directory.
    */
-  private static final Path CONFIG_TARGET_PATH = Paths.get(System.getProperty(IgniteBlackboard.CONFIG_DIRECTORY_PATH.name(), "./configs"));
+  public static final @NonNull Path CONFIG_TARGET_PATH = Paths.get(System.getProperty(IgniteBlackboard.CONFIG_DIRECTORY_PATH.name(), "./configs"));
 
   /**
    * The main launch target to boostrap from.

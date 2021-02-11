@@ -39,7 +39,6 @@ import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public final class ModEngine {
@@ -57,35 +56,31 @@ public final class ModEngine {
     this.engine = engine;
   }
 
-  public @NonNull Logger getLogger() {
+  public final @NonNull Logger getLogger() {
     return this.engine.getLogger();
   }
 
-  public @NonNull EventManager getEventManager() {
+  public final @NonNull EventManager getEventManager() {
     return this.engine.getEventManager();
   }
 
-  public @NonNull ModResourceLocator getResourceLocator() {
+  public final @NonNull ModResourceLocator getResourceLocator() {
     return this.resourceLocator;
   }
 
-  public @NonNull List<ModResource> getResources() {
+  public final @NonNull List<ModResource> getResources() {
     return this.resources;
   }
 
-  public @NonNull Optional<ModContainer> getContainer(final @NonNull String id) {
-    return Optional.ofNullable(this.containers.get(id));
-  }
-
-  public @NonNull Collection<ModContainer> getContainers() {
+  public final @NonNull Collection<ModContainer> getContainers() {
     return this.containers.values();
   }
 
-  public boolean hasContainer(final @NonNull String id) {
+  public final boolean hasContainer(final @NonNull String id) {
     return this.containers.containsKey(id);
   }
 
-  public boolean isMod(final @NonNull Object object) {
+  public final boolean isMod(final @NonNull Object object) {
     if (object instanceof ModContainer) return true;
     return this.containerInstances.containsKey(object);
   }

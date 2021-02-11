@@ -7,8 +7,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Annotation used to specify the mod specific configuration
+ * path.
+ *
+ * <p>Usually the parent is the {@link Configs} path, with
+ * directory being named after the mod ID.</p>
+ */
 @BindingAnnotation
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.PARAMETER})
-public @interface ModConfig {
+public @interface Config {
 }

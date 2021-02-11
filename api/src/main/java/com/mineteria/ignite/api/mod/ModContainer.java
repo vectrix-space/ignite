@@ -30,6 +30,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Objects;
 
+/**
+ * Represents a mod that can be loaded.
+ */
 public final class ModContainer {
   private final Logger logger;
   private final ModResource resource;
@@ -43,33 +46,58 @@ public final class ModContainer {
     this.config = config;
   }
 
-  public @NonNull Logger getLogger() {
+  /**
+   * Returns the {@link Logger} logger for this container.
+   *
+   * @return The container logger
+   */
+  public final @NonNull Logger getLogger() {
     return this.logger;
   }
 
-  public @NonNull String getId() {
+  /**
+   * Returns the {@link String} identifier for this container.
+   *
+   * @return The container identifier
+   */
+  public final @NonNull String getId() {
     return this.config.getId();
   }
 
-  public @NonNull String getVersion() {
+  /**
+   * Returns the {@link String} version for this container.
+   *
+   * @return The container version
+   */
+  public final @NonNull String getVersion() {
     return this.config.getVersion();
   }
 
-  public @NonNull ModResource getResource() {
+  /**
+   * Returns the {@link ModResource} resource for this container.
+   *
+   * @return The container resource
+   */
+  public final @NonNull ModResource getResource() {
     return this.resource;
   }
 
-  public @NonNull ModConfig getConfig() {
+  /**
+   * Returns the {@link ModConfig} config for this container.
+   *
+   * @return The container config
+   */
+  public final @NonNull ModConfig getConfig() {
     return this.config;
   }
 
   @Override
-  public int hashCode() {
+  public final int hashCode() {
     return Objects.hash(this.resource, this.config);
   }
 
   @Override
-  public boolean equals(final @Nullable Object other) {
+  public final boolean equals(final @Nullable Object other) {
     if (this == other) return true;
     if (!(other instanceof ModContainer)) return false;
     final ModContainer that = (ModContainer) other;
@@ -78,7 +106,7 @@ public final class ModContainer {
   }
 
   @Override
-  public @NonNull String toString() {
+  public final @NonNull String toString() {
     return this.getId() + "@" + this.getVersion();
   }
 }

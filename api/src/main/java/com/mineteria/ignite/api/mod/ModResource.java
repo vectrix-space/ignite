@@ -34,6 +34,11 @@ import java.nio.file.Path;
 import java.util.Objects;
 import java.util.jar.Manifest;
 
+/**
+ * Represents a mod resource that could contain the
+ * relevant information to create a {@link ModContainer}
+ * from.
+ */
 public final class ModResource {
   private final String locator;
   private final Path path;
@@ -49,19 +54,39 @@ public final class ModResource {
     this.manifest = manifest;
   }
 
-  public @NonNull String getLocator() {
+  /**
+   * Returns the {@link String} locator identifier for this resource.
+   *
+   * @return The resource locator identifier
+   */
+  public final @NonNull String getLocator() {
     return this.locator;
   }
 
-  public @NonNull Path getPath() {
+  /**
+   * Returns the {@link Path} path for this resource.
+   *
+   * @return The resource path
+   */
+  public final @NonNull Path getPath() {
     return this.path;
   }
 
-  public @NonNull Manifest getManifest() {
+  /**
+   * Returns the {@link Manifest} manifest for this resource.
+   *
+   * @return The resource manifest
+   */
+  public final @NonNull Manifest getManifest() {
     return this.manifest;
   }
 
-  public @NonNull FileSystem getFileSystem() {
+  /**
+   * Returns the {@link FileSystem} file system for this resource.
+   *
+   * @return The resource file system
+   */
+  public final @NonNull FileSystem getFileSystem() {
     if (this.fileSystem == null) {
       try {
         this.fileSystem = FileSystems.newFileSystem(this.getPath(), this.getClass().getClassLoader());
@@ -74,12 +99,12 @@ public final class ModResource {
   }
 
   @Override
-  public int hashCode() {
+  public final int hashCode() {
     return Objects.hash(this.locator, this.path, this.manifest);
   }
 
   @Override
-  public boolean equals(final @Nullable Object other) {
+  public final boolean equals(final @Nullable Object other) {
     if (this == other) return true;
     if (!(other instanceof ModResource)) return false;
     final ModResource that = (ModResource) other;
@@ -89,7 +114,7 @@ public final class ModResource {
   }
 
   @Override
-  public @NonNull String toString() {
+  public final @NonNull String toString() {
     return "ModResource{name=" + this.locator + ", path=" + this.path + ", fileSystem=" + this.fileSystem + "}";
   }
 }

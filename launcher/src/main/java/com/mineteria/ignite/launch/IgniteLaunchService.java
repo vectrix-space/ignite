@@ -53,7 +53,7 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
    * A list of class loader exclusions to ignore when
    * transforming classes.
    */
-  protected static final List<String> EXCLUDED_PACKAGES = Arrays.asList(
+  protected static final @NonNull List<String> EXCLUDED_PACKAGES = Arrays.asList(
     // Ignite
     "org.mineteria.ignite.launch.",
     "org.mineteria.ignite.mod.",
@@ -81,7 +81,7 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
   );
 
   @Override
-  public @NonNull String name() {
+  public final @NonNull String name() {
     return "ignite_launch";
   }
 
@@ -103,7 +103,7 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
   }
 
   @Override
-  public @NonNull Callable<Void> launchService(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
+  public final @NonNull Callable<Void> launchService(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
     IgniteEngine.INSTANCE.getModEngine().loadContainers();
     IgniteEngine.INSTANCE.getModEngine().loadMods();
 
@@ -122,7 +122,7 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
     };
   }
 
-  protected @NonNull Function<String, Optional<URL>> getResourceLocator() {
+  protected final @NonNull Function<String, Optional<URL>> getResourceLocator() {
     return string -> {
       for (final ModResource resource : IgniteEngine.INSTANCE.getModEngine().getResources()) {
         final Path resolved = resource.getFileSystem().getPath(string);

@@ -4,8 +4,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Scopes;
+import com.mineteria.ignite.api.config.Config;
 import com.mineteria.ignite.api.config.Configs;
-import com.mineteria.ignite.api.config.ModConfig;
 import com.mineteria.ignite.api.mod.ModContainer;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -29,7 +29,7 @@ public final class ModModule extends AbstractModule {
     this.bind(Logger.class).toInstance(this.container.getLogger());
 
     this.bind(Path.class)
-      .annotatedWith(ModConfig.class)
+      .annotatedWith(Config.class)
       .toProvider(ModConfigPath.class)
       .in(Scopes.SINGLETON);
   }

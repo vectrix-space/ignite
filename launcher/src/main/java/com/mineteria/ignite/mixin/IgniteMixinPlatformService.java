@@ -39,17 +39,17 @@ public final class IgniteMixinPlatformService extends MixinPlatformAgentAbstract
   public void init() {}
 
   @Override
-  public @NonNull AcceptResult accept(final @NonNull MixinPlatformManager manager, final @NonNull IContainerHandle handle) {
+  public final @NonNull AcceptResult accept(final @NonNull MixinPlatformManager manager, final @NonNull IContainerHandle handle) {
     return AcceptResult.REJECTED;
   }
 
   @Override
-  public @NonNull String getSideName() {
+  public final @NonNull String getSideName() {
     return "SERVER";
   }
 
   @Override
-  public @Nullable Collection<IContainerHandle> getMixinContainers() {
+  public final @Nullable Collection<IContainerHandle> getMixinContainers() {
     return null;
   }
 }

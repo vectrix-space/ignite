@@ -18,7 +18,7 @@ import java.util.Map;
 
 @SuppressWarnings("UnstableApiUsage")
 public final class ModDependencyResolver {
-  public static List<ModContainer> resolveDependencies(final ModEngine engine, final @NonNull Collection<ModContainer> containers) throws IllegalStateException {
+  public static List<ModContainer> resolveDependencies(final @NonNull ModEngine engine, final @NonNull Collection<ModContainer> containers) throws IllegalStateException {
     final List<ModContainer> sortedContainers = new ArrayList<>(containers);
     sortedContainers.sort(Comparator.comparing(ModContainer::getId));
 

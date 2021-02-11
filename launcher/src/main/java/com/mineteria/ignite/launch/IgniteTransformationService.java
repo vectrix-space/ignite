@@ -44,7 +44,7 @@ import java.util.Set;
 
 public final class IgniteTransformationService implements ITransformationService {
   @Override
-  public @NonNull String name() {
+  public final @NonNull String name() {
     return "ignite_transformation";
   }
 
@@ -59,7 +59,7 @@ public final class IgniteTransformationService implements ITransformationService
   }
 
   @Override
-  public @NonNull List<Map.Entry<String, Path>> runScan(final @NonNull IEnvironment environment) {
+  public final @NonNull List<Map.Entry<String, Path>> runScan(final @NonNull IEnvironment environment) {
     IgniteEngine.INSTANCE.getModEngine().locateResources();
     IgniteEngine.INSTANCE.getModEngine().loadResources();
 
@@ -88,7 +88,7 @@ public final class IgniteTransformationService implements ITransformationService
 
   @Override
   @SuppressWarnings("rawtypes")
-  public @NonNull List<ITransformer> transformers() {
+  public final @NonNull List<ITransformer> transformers() {
     return ImmutableList.of();
   }
 }

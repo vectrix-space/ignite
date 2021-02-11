@@ -3,13 +3,14 @@ package com.mineteria.ignite.inject;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.Scopes;
+import com.mineteria.ignite.IgniteBootstrap;
 import com.mineteria.ignite.IgniteEngine;
 import com.mineteria.ignite.IgnitePlatform;
 import com.mineteria.ignite.api.Ignite;
 import com.mineteria.ignite.api.Platform;
 import com.mineteria.ignite.api.config.Configs;
 import com.mineteria.ignite.api.config.Mods;
-import com.mineteria.ignite.launch.IgniteBlackboard;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.nio.file.Path;
 
@@ -41,15 +42,15 @@ public final class IgniteModule extends AbstractModule {
 
   /* package */ static final class ModsPath implements Provider<Path> {
     @Override
-    public Path get() {
-      return IgniteBlackboard.getProperty(IgniteBlackboard.MOD_DIRECTORY_PATH);
+    public final @NonNull Path get() {
+      return IgniteBootstrap.MOD_TARGET_PATH;
     }
   }
 
   /* package */ static final class ConfigsPath implements Provider<Path> {
     @Override
-    public Path get() {
-      return IgniteBlackboard.getProperty(IgniteBlackboard.CONFIG_DIRECTORY_PATH);
+    public final @NonNull Path get() {
+      return IgniteBootstrap.CONFIG_TARGET_PATH;
     }
   }
 }

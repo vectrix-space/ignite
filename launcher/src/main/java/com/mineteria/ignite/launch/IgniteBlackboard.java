@@ -37,14 +37,14 @@ import java.util.List;
 public final class IgniteBlackboard {
   private static final TypesafeMap BLACKBOARD = new TypesafeMap();
 
-  public static final TypesafeMap.Key<List<String>> LAUNCH_ARGUMENTS = key("ignite.launch.arguments", new TypeToken<List<String>>() {});
-  public static final TypesafeMap.Key<Path>         LAUNCH_JAR       = key("ignite.launch.jar", TypeToken.of(Path.class));
-  public static final TypesafeMap.Key<String>       LAUNCH_TARGET    = key("ignite.launch.target", TypeToken.of(String.class));
+  public static final TypesafeMap.@NonNull Key<List<String>> LAUNCH_ARGUMENTS = key("ignite.launch.arguments", new TypeToken<List<String>>() {});
+  public static final TypesafeMap.@NonNull Key<Path>         LAUNCH_JAR       = key("ignite.launch.jar", TypeToken.of(Path.class));
+  public static final TypesafeMap.@NonNull Key<String>       LAUNCH_TARGET    = key("ignite.launch.target", TypeToken.of(String.class));
 
-  public static final TypesafeMap.Key<Path> MOD_DIRECTORY_PATH = key("ignite.mod.directory", TypeToken.of(Path.class));
-  public static final TypesafeMap.Key<Path> CONFIG_DIRECTORY_PATH = key("ignite.config.directory", TypeToken.of(Path.class));
+  public static final TypesafeMap.@NonNull Key<Path> MOD_DIRECTORY_PATH = key("ignite.mod.directory", TypeToken.of(Path.class));
+  public static final TypesafeMap.@NonNull Key<Path> CONFIG_DIRECTORY_PATH = key("ignite.config.directory", TypeToken.of(Path.class));
 
-  public static final TypesafeMap.Key<Injector> PARENT_INJECTOR = key("ignite.internal.parent_injector", TypeToken.of(Injector.class));
+  public static final TypesafeMap.@NonNull Key<Injector> PARENT_INJECTOR = key("ignite.internal.parent_injector", TypeToken.of(Injector.class));
 
   public static <T> @Nullable T getProperty(final TypesafeMap.@NonNull Key<T> key) {
     return IgniteBlackboard.getProperty(key, null);

@@ -2,7 +2,7 @@ package com.mineteria.example;
 
 import com.google.inject.Inject;
 import com.mineteria.ignite.api.Platform;
-import com.mineteria.ignite.api.config.ModConfig;
+import com.mineteria.ignite.api.config.Config;
 import com.mineteria.ignite.api.event.Subscribe;
 import com.mineteria.ignite.api.event.platform.PlatformInitializeEvent;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +17,7 @@ public final class ExampleMod {
   @Inject
   public ExampleMod(final Logger logger,
                     final Platform platform,
-                    final @ModConfig Path configuration) {
+                    final @Config Path configuration) {
     this.logger = logger;
     this.platform = platform;
     this.configuration = configuration;

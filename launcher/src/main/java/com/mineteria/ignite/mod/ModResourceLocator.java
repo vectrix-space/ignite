@@ -39,11 +39,10 @@ import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
 public final class ModResourceLocator {
-  public static final String DEFAULT_METADATA_FILENAME = "ignite-mod.json";
+  public static final @NonNull String DEFAULT_METADATA_FILENAME = "ignite-mod.json";
+  public static final @NonNull String NAME = "java_directory";
 
-  private static final String NAME = "java_directory";
-
-  public @NonNull List<ModResource> locateResources(final @NonNull ModEngine engine) {
+  public final @NonNull List<ModResource> locateResources(final @NonNull ModEngine engine) {
     final List<ModResource> modResources = new ArrayList<>();
 
     final Path modDirectory = IgniteBlackboard.getProperty(IgniteBlackboard.MOD_DIRECTORY_PATH);
@@ -75,7 +74,7 @@ public final class ModResourceLocator {
     return modResources;
   }
 
-  public @NonNull String getMetadataPath() {
+  public final @NonNull String getMetadataPath() {
     return IgniteConstants.META_INF + "/" + ModResourceLocator.DEFAULT_METADATA_FILENAME;
   }
 }
