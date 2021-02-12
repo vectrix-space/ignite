@@ -9,6 +9,7 @@ import com.mineteria.ignite.api.event.EventManager;
 import com.mineteria.ignite.api.event.PostPriority;
 import com.mineteria.ignite.api.event.Subscribe;
 import com.mineteria.ignite.launch.IgnitePlatform;
+import com.mineteria.ignite.launch.mod.ModClassLoader;
 import net.kyori.event.EventSubscriber;
 import net.kyori.event.PostResult;
 import net.kyori.event.SimpleEventBus;
@@ -19,6 +20,9 @@ import net.kyori.event.method.asm.ASMEventExecutorFactory;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.IdentityHashMap;
@@ -33,6 +37,10 @@ public final class IgniteEventManager implements EventManager {
   private final IgnitePlatform platform;
 
   public IgniteEventManager(final @NonNull IgnitePlatform platform) {
+    // Add event executors to the mod class loader.
+    final ModClassLoader classLoader = AccessController.doPrivileged((PrivilegedAction<ModClassLoader>) () -> new ModClassLoader(new URL[0]));
+    classLoader.addLoaders();
+
     this.platform = platform;
 
     this.bus = new SimpleEventBus<Object>(Object.class) {
@@ -44,7 +52,7 @@ public final class IgniteEventManager implements EventManager {
 
     this.methodAdapter = new SimpleMethodSubscriptionAdapter<>(
       bus,
-      new ASMEventExecutorFactory<>(ClassLoader.getSystemClassLoader()),
+      new ASMEventExecutorFactory<>(classLoader),
       new IgniteMethodScanner()
     );
   }

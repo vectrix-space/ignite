@@ -9,6 +9,8 @@ import com.mineteria.ignite.launch.inject.ModModule;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +43,7 @@ public final class ModLoader {
           try {
             platform.getEventManager().register(modInstance, modInstance);
           } catch (final Exception exception) {
-            throw new IllegalStateException("Unable to register mod listeners!");
+            throw new IllegalStateException("Unable to register mod listeners!", exception);
           }
         } else {
           platform.getLogger().warn("Loaded '{}' without a target class.", container.getId());
@@ -58,13 +60,14 @@ public final class ModLoader {
   private Object instantiateContainer(final ModContainer container) throws IllegalStateException {
     try {
       // Add the resource to the class loader.
-      // TODO: Use a custom mod class loader.
-      Agent.addJar(container.getResource().getPath());
+      final URL modJar = container.getResource().getPath().toUri().toURL();
+      final ModClassLoader classLoader = new ModClassLoader(new URL[] { modJar });
+      classLoader.addLoaders();
 
       final String targetClass = container.getConfig().getTarget();
       if (targetClass != null) {
         // Load the class.
-        final Class<?> modClass = Class.forName(targetClass, true, ClassLoader.getSystemClassLoader());
+        final Class<?> modClass = classLoader.loadClass(targetClass);
 
         final Injector parentInjector = IgniteLaunch.getInstance().getInjector();
         if (parentInjector != null) {
