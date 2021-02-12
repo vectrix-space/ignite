@@ -37,7 +37,7 @@ jar {
       "Implementation-Title": project.name,
       "Implementation-Version": project.version,
       "Implementation-Vendor": "Mineteria"
-    ], "com/mineteria/ignite/")
+    ], "com/mineteria/ignite/applaunch/")
 
     from { zipTree { configurations.compile.files.find { entry -> entry.name.contains("modlauncher") } }.matching { include "**/MANIFEST.MF" }.singleFile }
   }

@@ -4,10 +4,8 @@ import com.mineteria.ignite.launch.IgniteLaunch;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Path;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -24,14 +22,6 @@ public final class ModClassLoader extends URLClassLoader {
 
   public void addLoaders() {
     ModClassLoader.loaders.add(this);
-  }
-
-  public void addPath(final @NonNull Path path) {
-    try {
-      this.addURL(path.toUri().toURL());
-    } catch (final MalformedURLException exception) {
-      throw new AssertionError(exception);
-    }
   }
 
   @Override

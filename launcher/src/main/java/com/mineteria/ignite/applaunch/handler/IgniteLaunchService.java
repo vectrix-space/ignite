@@ -75,7 +75,6 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
 
     // Libraries
     "org.spongepowered.asm.",
-//    "net.kyori.event.",
     "ninja.leaping.configurate.",
     "javax.inject.",
     "joptsimple.",
