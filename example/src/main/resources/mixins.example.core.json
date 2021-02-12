@@ -1,7 +1,8 @@
 {
   "required": true,
   "minVersion": "0.6.15",
-  "package": "com.mineteria.example.mixins",
+  "package": "com.mineteria.example.mixin.core",
+  "plugin": "com.mineteria.example.mixin.plugins.CorePlugin",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "server": [

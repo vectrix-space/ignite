@@ -20,7 +20,7 @@ The Ignite launcher must be executed instead of the Minecraft Server. Ignite wil
 
 Your mod will require a `META-INF/mod.json` in order to be located as a mod. The `META-INF/mod.json` provides the ID of the mod, and a list of Mixin configuration file names.
 
-Example `META-INF/mod.json`:
+Example `META-INF/ignite-mod.json`:
 ```json
 {
   "id": "example-mixins",
@@ -46,6 +46,7 @@ This project has many parts inspired by the following projects:
 
 - [Orion]
 - [Sponge]
+- [Velocity]
 - [plugin-spi]
 
 [ModLauncher]: https://github.com/cpw/modlauncher
@@ -57,4 +58,5 @@ This project has many parts inspired by the following projects:
 [Gradle]: https://www.gradle.org/
 [Orion]: https://github.com/OrionMinecraft/Orion
 [Sponge]: https://github.com/SpongePowered/Sponge
+[Velocity]: https://github.com/VelocityPowered/Velocity
 [plugin-spi]: https://github.com/SpongePowered/plugin-spi
