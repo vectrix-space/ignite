@@ -1,3 +1,5 @@
+apply plugin: "maven"
+apply plugin: "signing"
 apply plugin: "java-library"
 apply plugin: "com.github.johnrengelman.shadow"
 
@@ -110,4 +112,59 @@ artifacts {
   archives javadocJar
   archives sourcesJar
   archives shadowJar
+}
+
+signing {
+  required { !project.version.endsWith("-SNAPSHOT") && gradle.taskGraph.hasTask(":uploadArchives") && project.hasProperty("signing.keyId") }
+  sign configurations.archives
+}
+
+if(project.hasProperty("sonatypeUsername") && project.hasProperty("sonatypePassword")) {
+  uploadArchives {
+    enabled = System.getenv("TRAVIS") == null || project.version.endsWith("-SNAPSHOT")
+
+    repositories {
+      mavenDeployer {
+        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+        repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+          authentication(userName: sonatypeUsername, password: sonatypePassword)
+        }
+
+        snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+          authentication(userName: sonatypeUsername, password: sonatypePassword)
+        }
+
+        pom.project {
+          name = "Ignite"
+          description = "Bootstraps the Minecraft Server with ModLauncher to apply Mixins and Access Transformers from mods."
+          url = "https://github.com/Mineteria-Development/Ignite/"
+
+          developers {
+            developer {
+              name = "Vectrix"
+            }
+          }
+
+          issueManagement {
+            system = "GitHub Issues"
+            url = "https://github.com/Mineteria-Development/Ignite/issues"
+          }
+
+          licenses {
+            license {
+              name = "MIT License"
+              url = "https://opensource.org/licenses/MIT"
+            }
+          }
+
+          scm {
+            connection = "scm:git@github.com:Mineteria-Development/Ignite.git"
+            developerConnection = "scm:git@github.com:Mineteria-Development/Ignite.git"
+            url = "https://github.com/Mineteria-Development/Ignite/"
+          }
+        }
+      }
+    }
+  }
 }

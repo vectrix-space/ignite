@@ -1,6 +1,12 @@
 apply plugin: "java-library"
 apply plugin: "com.github.johnrengelman.shadow"
 
+import java.nio.file.Path
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
+
+archivesBaseName = "Ignite"
+
 dependencies {
   // API
   implementation(project(":api"))
@@ -44,8 +50,6 @@ jar {
 }
 
 shadowJar {
-  classifier "shaded"
-
   mergeServiceFiles()
   transform(com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer)
 
@@ -104,6 +108,20 @@ shadowJar {
   relocate "com.google.common", "com.mineteria.ignite.relocate.google"
 }
 
+task copyFinalJarToTarget(type: DefaultTask) {
+  doLast {
+    Path targetJarDirectory = projectDir.toPath().toAbsolutePath().resolve("../target")
+    Files.createDirectories(targetJarDirectory)
+    Files.copy(
+      shadowJar.archivePath.toPath().toAbsolutePath(),
+      targetJarDirectory.resolve(shadowJar.baseName + '.jar'),
+      StandardCopyOption.REPLACE_EXISTING
+    )
+  }
+}
+
 artifacts {
   archives shadowJar
 }
+
+build.dependsOn(copyFinalJarToTarget)

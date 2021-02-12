@@ -1,10 +1,11 @@
 plugins {
-  id "java-library"
   id "net.minecrell.licenser" version "0.4.1"
   id "com.github.johnrengelman.shadow" version "5.2.0"
 }
 
-allprojects {
+subprojects {
+  apply plugin: "java-library"
+
   group = "com.mineteria"
   version = "0.2.0-SNAPSHOT"
   description = "Bootstraps the Minecraft Server with ModLauncher to apply Mixins and Access Transformers from mods."

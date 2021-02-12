@@ -1,24 +1,24 @@
 Ignite
 ======
 
-Bootstraps the Minecraft Server with [ModLauncher] to apply [Mixins] and [Access Transformers] from mods.
+Bootstraps the Minecraft Server with [ModLauncher] to apply [Mixins] and [Access Transformers] from Ignite mods.
 
 ## Building
-__Note:__ If you do not have [Gradle] installed then use ./gradlew for Unix systems or Git Bash and gradlew.bat for Windows systems in place of any 'gradle' command.
+__Note:__ If you do not have [Gradle] installed then use `./gradlew` for Unix systems or Git Bash and gradlew.bat for Windows systems in place of any 'gradle' command.
 
-In order to build Ignite you simply need to run the `gradle` command. You can find the compiled JAR file in `./build/libs` labeled similarly to 'Ignite-x.x.x-SNAPSHOT-shaded.jar'.
+In order to build Ignite you simply need to run the `gradle` command. You can find the compiled JAR file in `./target` labeled 'Ignite.jar'.
 
 ## Launcher Usage
 
 The Ignite launcher must be executed instead of the Minecraft Server. Ignite will launch the Minecraft Server itself, additionally passing in any extra arguments you provide it.
 
-`java -javaagent:./Ignite-0.1.1-shaded.jar -Dignite.launch.jar=./paper.jar -Dignite.launch.target=org.bukkit.craftbukkit.Main -Dignite.mod.directory=./plugins -jar Ignite-0.1.1-shaded.jar`
+`java -javaagent:./Ignite.jar -Dignite.launch.jar=./paper.jar -Dignite.launch.target=org.bukkit.craftbukkit.Main -Dignite.mod.directory=./plugins -Dignite.config.directory=./plugins -jar Ignite.jar`
 
 **Note:** You must use the `-javaagent` flag pointing to the launcher in order for it to start.
 
 ## Mod Usage
 
-Your mod will require a `META-INF/mod.json` in order to be located as a mod. The `META-INF/mod.json` provides the ID of the mod, and a list of Mixin configuration file names.
+Your mod will require a `META-INF/ignite-mod.json` in order to be located as a mod. The `META-INF/ignite-mod.json` provides the ID of the mod, and a list of Mixin configuration file names.
 
 Example `META-INF/ignite-mod.json`:
 ```json
