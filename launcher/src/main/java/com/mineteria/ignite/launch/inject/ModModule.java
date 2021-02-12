@@ -1,4 +1,4 @@
-package com.mineteria.ignite.inject;
+package com.mineteria.ignite.launch.inject;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
@@ -39,13 +39,13 @@ public final class ModModule extends AbstractModule {
     private final ModContainer container;
 
     @Inject
-    public ModConfigPath(final @Configs Path configs, final ModContainer container) {
+    public ModConfigPath(final @NonNull @Configs Path configs, final @NonNull ModContainer container) {
       this.configs = configs;
       this.container = container;
     }
 
     @Override
-    public Path get() {
+    public final @NonNull Path get() {
       return this.configs.resolve(this.container.getId());
     }
   }

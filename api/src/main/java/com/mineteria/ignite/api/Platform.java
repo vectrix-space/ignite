@@ -1,6 +1,7 @@
 package com.mineteria.ignite.api;
 
 import com.mineteria.ignite.api.event.EventManager;
+import com.mineteria.ignite.api.mod.ModManager;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.nio.file.Path;
@@ -10,6 +11,13 @@ import java.nio.file.Path;
  * by mods.
  */
 public interface Platform {
+  /**
+   * Returns the {@link ModManager} mod manager.
+   *
+   * @return The mod manager
+   */
+  @NonNull ModManager getModManager();
+
   /**
    * Returns the {@link EventManager} event manager.
    *

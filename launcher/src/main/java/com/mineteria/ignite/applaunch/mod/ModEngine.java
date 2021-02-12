@@ -22,46 +22,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.ignite.mod;
+package com.mineteria.ignite.applaunch.mod;
 
-import com.mineteria.ignite.IgniteEngine;
-import com.mineteria.ignite.api.event.EventManager;
-import com.mineteria.ignite.api.event.platform.PlatformConstructEvent;
-import com.mineteria.ignite.api.event.platform.PlatformInitializeEvent;
 import com.mineteria.ignite.api.mod.ModContainer;
 import com.mineteria.ignite.api.mod.ModResource;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.spongepowered.asm.mixin.Mixins;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public final class ModEngine {
+  private final Logger logger = LogManager.getLogger("IgniteEngine");
   private final ModResourceLocator resourceLocator = new ModResourceLocator();
   private final ModResourceLoader resourceLoader = new ModResourceLoader();
-  private final ModLoader containerLoader = new ModLoader();
-  private final Map<Object, ModContainer> containerInstances = new IdentityHashMap<>();
   private final Map<String, ModContainer> containers = new HashMap<>();
-  private final List<ModContainer> pendingContainers = new ArrayList<>();
   private final List<ModResource> resources = new ArrayList<>();
 
-  private final IgniteEngine engine;
-
-  public ModEngine(final @NonNull IgniteEngine engine) {
-    this.engine = engine;
-  }
+  public ModEngine() {}
 
   public final @NonNull Logger getLogger() {
-    return this.engine.getLogger();
-  }
-
-  public final @NonNull EventManager getEventManager() {
-    return this.engine.getEventManager();
+    return this.logger;
   }
 
   public final @NonNull ModResourceLocator getResourceLocator() {
@@ -80,11 +66,6 @@ public final class ModEngine {
     return this.containers.containsKey(id);
   }
 
-  public final boolean isMod(final @NonNull Object object) {
-    if (object instanceof ModContainer) return true;
-    return this.containerInstances.containsKey(object);
-  }
-
   /**
    * Locates and populates the mod resources list.
    */
@@ -98,31 +79,24 @@ public final class ModEngine {
    * Loads the located resources and adds them to the containers map.
    */
   public void loadResources() {
-    this.pendingContainers.addAll(this.resourceLoader.loadResources(this));
+    for (final ModContainer container : this.resourceLoader.loadResources(this)) {
+      this.containers.put(container.getId(), container);
+    }
 
-    this.getLogger().info("Located {} mod(s).", this.pendingContainers.size());
+    this.getLogger().info("Located {} mod(s).", this.containers.size());
   }
 
   /**
-   * Loads the target instance for the mod containers.
+   * Loads the mod transformers.
    */
-  public void loadContainers() {
-    this.containerLoader.loadContainers(this, this.pendingContainers, this.containers, this.containerInstances);
-    this.containerLoader.loadTransformers(this);
+  public void loadTransformers() {
+    for (final ModContainer container : this.getContainers()) {
+      final List<String> mixins = container.getConfig().getRequiredMixins();
+      if (mixins != null && !mixins.isEmpty()) {
+        Mixins.addConfigurations(mixins.toArray(new String[0]));
+      }
+    }
 
-    this.getLogger().info("Constructed [{}] mod(s).", this.containers.values().stream()
-      .map(ModContainer::toString)
-      .collect(Collectors.joining(", "))
-    );
-  }
-
-  /**
-   * Loads the mods by invoking the initialize event.
-   */
-  public void loadMods() {
-    this.engine.getEventManager().post(new PlatformConstructEvent());
-    this.engine.getEventManager().post(new PlatformInitializeEvent());
-
-    this.getLogger().info("Initialized mod(s).");
+    this.getLogger().info("Applied mod transformers.");
   }
 }

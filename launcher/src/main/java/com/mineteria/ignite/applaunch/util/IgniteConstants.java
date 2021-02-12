@@ -22,36 +22,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.ignite.mixin;
+package com.mineteria.ignite.applaunch.util;
 
-import com.google.common.collect.ImmutableList;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.spongepowered.asm.launch.platform.container.ContainerHandleModLauncher;
-import org.spongepowered.asm.service.modlauncher.MixinServiceModLauncher;
 
-import java.util.Collection;
+public final class IgniteConstants {
+  public static final @NonNull String META_INF = "META-INF";
+  public static final @NonNull String AT = "AT";
 
-public final class IgniteMixinService extends MixinServiceModLauncher {
-  @Override
-  public final boolean isValid() {
-    return true;
-  }
-
-  @Override
-  public final @NonNull ContainerHandleModLauncher getPrimaryContainer() {
-    return new LauncherContainer(this.getName());
-  }
-
-  @Override
-  public final @NonNull Collection<String> getPlatformAgents() {
-    return ImmutableList.<String>of(
-      "com.mineteria.ignite.mixin.IgniteMixinPlatformService"
-    );
-  }
-
-  private static final class LauncherContainer extends ContainerHandleModLauncher {
-    public LauncherContainer(final @NonNull String name) {
-      super(name);
-    }
-  }
+  private IgniteConstants() {}
 }

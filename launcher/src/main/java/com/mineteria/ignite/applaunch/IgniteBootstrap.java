@@ -22,10 +22,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.ignite;
+package com.mineteria.ignite.applaunch;
 
-import com.mineteria.ignite.agent.Agent;
-import com.mineteria.ignite.launch.IgniteBlackboard;
+import com.mineteria.ignite.applaunch.agent.Agent;
+import com.mineteria.ignite.applaunch.mod.ModEngine;
 import cpw.mods.modlauncher.Launcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -61,12 +61,29 @@ public final class IgniteBootstrap {
    */
   public static final @NonNull Path CONFIG_TARGET_PATH = Paths.get(System.getProperty(IgniteBlackboard.CONFIG_DIRECTORY_PATH.name(), "./configs"));
 
+  private static IgniteBootstrap instance;
+
+  public static IgniteBootstrap getInstance() {
+    return IgniteBootstrap.instance;
+  }
+
+  public static void main(final @NonNull String[] args) {
+    new IgniteBootstrap().run(args);
+  }
+
+  private final ModEngine modEngine;
+
+  public IgniteBootstrap() {
+    IgniteBootstrap.instance = this;
+    this.modEngine = new ModEngine();
+  }
+
   /**
    * The main launch target to boostrap from.
    *
    * @param args The launch arguments
    */
-  public static void main(final @NonNull String[] args) {
+  public void run(final @NonNull String[] args) {
     final List<String> arguments = Arrays.asList(args);
     final List<String> launchArguments = new ArrayList<>(arguments);
 
@@ -100,5 +117,9 @@ public final class IgniteBootstrap {
     // Modlauncher
     logger.info("Preparing ModLauncher with arguments {}", launchArguments);
     Launcher.main(launchArguments.toArray(new String[0]));
+  }
+
+  public final @NonNull ModEngine getModEngine() {
+    return this.modEngine;
   }
 }

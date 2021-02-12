@@ -1,4 +1,4 @@
-package com.mineteria.ignite.mod;
+package com.mineteria.ignite.applaunch.mod;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
@@ -21,7 +21,7 @@ import java.util.jar.JarFile;
 public final class ModResourceLoader {
   private final Gson gson = new Gson();
 
-  public @NonNull List<ModContainer> loadResources(final @NonNull ModEngine engine) {
+  public final @NonNull List<ModContainer> loadResources(final @NonNull ModEngine engine) {
     final List<ModContainer> containers = new ArrayList<>();
 
     for (final ModResource resource : engine.getResources()) {

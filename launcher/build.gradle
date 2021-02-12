@@ -27,8 +27,8 @@ dependencies {
 
 jar {
   manifest {
-    attributes "Main-Class": "com.mineteria.ignite.IgniteBootstrap"
-    attributes "Premain-Class": "com.mineteria.ignite.agent.Agent"
+    attributes "Main-Class": "com.mineteria.ignite.applaunch.IgniteBootstrap"
+    attributes "Premain-Class": "com.mineteria.ignite.applaunch.agent.Agent"
 
     attributes([
       "Specification-Title": "Ignite",
@@ -51,7 +51,7 @@ shadowJar {
 
   dependencies {
     // API
-    include project(":api")
+    include(project(":api"))
 
     include dependency("org.apache.logging.log4j:log4j-api")
     include dependency("org.apache.logging.log4j:log4j-core")

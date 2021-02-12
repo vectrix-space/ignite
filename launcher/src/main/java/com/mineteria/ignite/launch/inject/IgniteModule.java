@@ -1,31 +1,22 @@
-package com.mineteria.ignite.inject;
+package com.mineteria.ignite.launch.inject;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.Scopes;
-import com.mineteria.ignite.IgniteBootstrap;
-import com.mineteria.ignite.IgniteEngine;
-import com.mineteria.ignite.IgnitePlatform;
 import com.mineteria.ignite.api.Ignite;
 import com.mineteria.ignite.api.Platform;
 import com.mineteria.ignite.api.config.Configs;
 import com.mineteria.ignite.api.config.Mods;
+import com.mineteria.ignite.applaunch.IgniteBootstrap;
+import com.mineteria.ignite.launch.IgnitePlatform;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.nio.file.Path;
 
 public final class IgniteModule extends AbstractModule {
-  private final IgniteEngine engine;
-
-  public IgniteModule(final IgniteEngine engine) {
-    this.engine = engine;
-  }
-
   @Override
   protected void configure() {
     this.requestStaticInjection(Ignite.class);
-
-    this.bind(IgniteEngine.class).toInstance(this.engine);
 
     this.bind(Platform.class).to(IgnitePlatform.class).in(Scopes.SINGLETON);
 

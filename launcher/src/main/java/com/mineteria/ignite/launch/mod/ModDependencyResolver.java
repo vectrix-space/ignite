@@ -1,10 +1,11 @@
-package com.mineteria.ignite.mod;
+package com.mineteria.ignite.launch.mod;
 
 import com.google.common.collect.Maps;
 import com.google.common.graph.Graph;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.MutableGraph;
 import com.mineteria.ignite.api.mod.ModContainer;
+import com.mineteria.ignite.launch.IgnitePlatform;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayDeque;
@@ -18,7 +19,7 @@ import java.util.Map;
 
 @SuppressWarnings("UnstableApiUsage")
 public final class ModDependencyResolver {
-  public static List<ModContainer> resolveDependencies(final @NonNull ModEngine engine, final @NonNull Collection<ModContainer> containers) throws IllegalStateException {
+  public static @NonNull List<ModContainer> resolveDependencies(final @NonNull IgnitePlatform platform, final @NonNull Collection<ModContainer> containers) throws IllegalStateException {
     final List<ModContainer> sortedContainers = new ArrayList<>(containers);
     sortedContainers.sort(Comparator.comparing(ModContainer::getId));
 
@@ -40,7 +41,7 @@ public final class ModDependencyResolver {
           if (dependency != null) {
             graph.putEdge(container, dependency);
           } else {
-            engine.getLogger().error("Unable to resolve required dependency '" + requiredDependency + "' for '" + container.getId() + "!");
+            platform.getLogger().error("Unable to resolve required dependency '" + requiredDependency + "' for '" + container.getId() + "!");
             graph.removeNode(container);
           }
         }
@@ -54,7 +55,7 @@ public final class ModDependencyResolver {
           if (dependency != null) {
             graph.putEdge(container, dependency);
           } else {
-            engine.getLogger().error("Unable to resolve optional dependency '" + optionalDependency + "' for '" + container.getId() + "!");
+            platform.getLogger().error("Unable to resolve optional dependency '" + optionalDependency + "' for '" + container.getId() + "!");
             graph.removeNode(container);
           }
         }
@@ -71,11 +72,11 @@ public final class ModDependencyResolver {
     return sorted;
   }
 
-  private static void visitNode(final @NonNull Graph<ModContainer> dependencyGraph,
-                                final @NonNull ModContainer node,
-                                final @NonNull Map<ModContainer, Mark> marks,
-                                final @NonNull List<ModContainer> sorted,
-                                final @NonNull Deque<ModContainer> currentIteration) throws IllegalStateException {
+  private static void visitNode(final Graph<ModContainer> dependencyGraph,
+                                final ModContainer node,
+                                final Map<ModContainer, Mark> marks,
+                                final List<ModContainer> sorted,
+                                final Deque<ModContainer> currentIteration) throws IllegalStateException {
     final Mark mark = marks.getOrDefault(node, Mark.NOT_VISITED);
     if (mark == Mark.PERMANENT) {
       return;

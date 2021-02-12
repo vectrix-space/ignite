@@ -1,4 +1,4 @@
-package com.mineteria.ignite.event;
+package com.mineteria.ignite.launch.event;
 
 import static java.util.Objects.requireNonNull;
 
@@ -8,7 +8,7 @@ import com.mineteria.ignite.api.event.EventHandler;
 import com.mineteria.ignite.api.event.EventManager;
 import com.mineteria.ignite.api.event.PostPriority;
 import com.mineteria.ignite.api.event.Subscribe;
-import com.mineteria.ignite.mod.ModEngine;
+import com.mineteria.ignite.launch.IgnitePlatform;
 import net.kyori.event.EventSubscriber;
 import net.kyori.event.PostResult;
 import net.kyori.event.SimpleEventBus;
@@ -30,14 +30,14 @@ public final class IgniteEventManager implements EventManager {
     .synchronizedListMultimap(Multimaps.newListMultimap(new IdentityHashMap<>(), ArrayList::new));
   private final SimpleEventBus<Object> bus;
   private final MethodSubscriptionAdapter<Object> methodAdapter;
-  private final ModEngine engine;
+  private final IgnitePlatform platform;
 
-  public IgniteEventManager(final @NonNull ModEngine engine) {
-    this.engine = engine;
+  public IgniteEventManager(final @NonNull IgnitePlatform platform) {
+    this.platform = platform;
 
     this.bus = new SimpleEventBus<Object>(Object.class) {
       @Override
-      protected boolean shouldPost(final @NonNull Object event, final @NonNull EventSubscriber<?> subscriber) {
+      protected final boolean shouldPost(final @NonNull Object event, final @NonNull EventSubscriber<?> subscriber) {
         return true;
       }
     };
@@ -122,11 +122,11 @@ public final class IgniteEventManager implements EventManager {
 
     final PostResult result = this.bus.post(event);
     if (!result.exceptions().isEmpty()) {
-      this.engine.getLogger().error("An error occurred attempting to post an event '{}'!", event);
+      this.platform.getLogger().error("An error occurred attempting to post an event '{}'!", event);
 
       int i = 0;
       for (final Throwable throwable : result.exceptions().values()) {
-        this.engine.getLogger().error("#{}: \n", ++i, throwable);
+        this.platform.getLogger().error("#{}: \n", ++i, throwable);
       }
     }
   }
@@ -136,7 +136,7 @@ public final class IgniteEventManager implements EventManager {
   }
 
   private void ensureMod(final Object mod) {
-    if (!this.engine.isMod(mod)) throw new IllegalArgumentException("Specified mod is not loaded!");
+    if (!this.platform.getModManager().isInstance(mod)) throw new IllegalArgumentException("Specified mod is not loaded!");
   }
 
   /* package */ static final class IgniteMethodScanner implements MethodScanner<Object> {

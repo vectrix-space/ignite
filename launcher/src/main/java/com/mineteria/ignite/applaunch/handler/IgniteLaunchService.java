@@ -22,10 +22,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.ignite.launch;
+package com.mineteria.ignite.applaunch.handler;
 
-import com.mineteria.ignite.IgniteEngine;
 import com.mineteria.ignite.api.mod.ModResource;
+import com.mineteria.ignite.applaunch.IgniteBlackboard;
+import com.mineteria.ignite.applaunch.IgniteBootstrap;
+import com.mineteria.ignite.applaunch.mod.ModEngine;
 import cpw.mods.gross.Java9ClassLoaderUtil;
 import cpw.mods.modlauncher.api.ILaunchHandlerService;
 import cpw.mods.modlauncher.api.ITransformingClassLoader;
@@ -67,10 +69,30 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
    */
   protected static final @NonNull List<String> EXCLUDED_PACKAGES = Arrays.asList(
     // Ignite
-    "org.mineteria.ignite.ignite.",
+    "com.mineteria.ignite.api.",
+    "com.mineteria.ignite.applaunch.",
+    "com.mineteria.ignite.relocate.",
 
     // Libraries
-    "ninja.leaping.configurate."
+    "org.spongepowered.asm.",
+    "ninja.leaping.configurate.",
+    "javax.inject.",
+    "joptsimple.",
+    "gnu.trove.",
+    "it.unimi.dsi.fastutil.",
+    "org.apache.logging.log4j.",
+    "org.yaml.snakeyaml.",
+    "com.google.inject.",
+    "com.google.common.",
+    "com.google.gson.",
+    "javax.annotation.",
+    "org.apache.commons.",
+
+    // Logging
+    "net.minecrell.terminalconsole.",
+    "com.sun.jna.",
+    "org.fusesource.jansi.",
+    "org.jline."
   );
 
   private final Logger logger = LogManager.getLogger("IgniteLaunch");
@@ -101,16 +123,11 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
 
   @Override
   public final @NonNull Callable<Void> launchService(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
-    IgniteEngine.INSTANCE.getModEngine().loadMods();
+    IgniteBootstrap.getInstance().getModEngine().loadTransformers();
 
     this.logger.info("Transitioning to launch target, please wait...");
 
-    launchClassLoader.addTargetPackageFilter(other -> {
-      for (final String pkg : IgniteLaunchService.EXCLUDED_PACKAGES) {
-        if (other.startsWith(pkg)) return false;
-      }
-      return true;
-    });
+    launchClassLoader.addTargetPackageFilter(other -> IgniteLaunchService.EXCLUDED_PACKAGES.stream().noneMatch(other::startsWith));
 
     return () -> {
       this.launchService0(arguments, launchClassLoader);
@@ -127,17 +144,17 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
       }
 
       return new Enumeration<URL>() {
-        private final @NonNull Iterator<ModResource> resources = IgniteEngine.INSTANCE.getModEngine().getResources().iterator();
+        private final @NonNull Iterator<ModResource> resources = IgniteBootstrap.getInstance().getModEngine().getResources().iterator();
 
         private @Nullable URL next = this.computeNext();
 
         @Override
-        public boolean hasMoreElements() {
+        public final boolean hasMoreElements() {
           return this.next != null;
         }
 
         @Override
-        public URL nextElement() {
+        public final @NonNull URL nextElement() {
           final URL next = this.next;
           if (next == null) throw new NoSuchElementException();
           this.next = this.computeNext();
@@ -168,7 +185,7 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
       if (connection instanceof JarURLConnection) {
         final URL jarUrl = ((JarURLConnection) connection).getJarFileURL();
         final Optional<Manifest> manifest = this.manifestCache.computeIfAbsent(jarUrl, key -> {
-          for (final ModResource resource : IgniteEngine.INSTANCE.getModEngine().getResources()) {
+          for (final ModResource resource : IgniteBootstrap.getInstance().getModEngine().getResources()) {
             try {
               if (resource.getPath().toAbsolutePath().normalize().equals(Paths.get(key.toURI()).toAbsolutePath().normalize())) {
                 return Optional.of(resource.getManifest());
@@ -177,6 +194,7 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
               this.logger.error("Failed to load manifest from jar '{}'!", key, exception);
             }
           }
+
           return IgniteLaunchService.UNKNOWN_MANIFEST;
         });
 
@@ -206,12 +224,10 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
     if (launchJar == null || !Files.exists(launchJar)) {
       throw new IllegalStateException("No launch jar was found!");
     } else {
-      final String launchTarget = IgniteBlackboard.getProperty(IgniteBlackboard.LAUNCH_TARGET, "org.bukkit.craftbukkit.Main");
-
       // Invoke the main method on the provided ClassLoader.
-      Class.forName(launchTarget, true, launchClassLoader.getInstance())
-        .getMethod("main", String[].class)
-        .invoke(null, (Object) arguments);
+      Class.forName("com.mineteria.ignite.launch.IgniteLaunch", true, launchClassLoader.getInstance())
+        .getMethod("main", ModEngine.class, String[].class)
+        .invoke(null, IgniteBootstrap.getInstance().getModEngine(), arguments);
     }
   }
 }

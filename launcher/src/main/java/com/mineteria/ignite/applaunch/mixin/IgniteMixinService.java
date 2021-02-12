@@ -22,47 +22,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.ignite;
+package com.mineteria.ignite.applaunch.mixin;
 
-import com.google.inject.Guice;
-import com.mineteria.ignite.api.event.EventManager;
-import com.mineteria.ignite.event.IgniteEventManager;
-import com.mineteria.ignite.inject.IgniteModule;
-import com.mineteria.ignite.launch.IgniteBlackboard;
-import com.mineteria.ignite.mod.ModEngine;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.google.common.collect.ImmutableList;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.spongepowered.asm.launch.MixinBootstrap;
+import org.spongepowered.asm.launch.platform.container.ContainerHandleModLauncher;
+import org.spongepowered.asm.service.modlauncher.MixinServiceModLauncher;
 
-public final class IgniteEngine {
-  public static final @NonNull IgniteEngine INSTANCE = new IgniteEngine();
+import java.util.Collection;
 
-  static {
-    MixinBootstrap.init();
+public final class IgniteMixinService extends MixinServiceModLauncher {
+  @Override
+  public final boolean isValid() {
+    return true;
   }
 
-  private final Logger logger = LogManager.getLogger("IgniteEngine");
-
-  private final ModEngine modEngine;
-  private final EventManager eventManager;
-
-  /* package */ IgniteEngine() {
-    this.modEngine = new ModEngine(this);
-    this.eventManager = new IgniteEventManager(this.modEngine);
-
-    IgniteBlackboard.setProperty(IgniteBlackboard.PARENT_INJECTOR, Guice.createInjector(new IgniteModule(this)));
+  @Override
+  public final @NonNull ContainerHandleModLauncher getPrimaryContainer() {
+    return new LauncherContainer(this.getName());
   }
 
-  public final @NonNull Logger getLogger() {
-    return this.logger;
+  @Override
+  public final @NonNull Collection<String> getPlatformAgents() {
+    return ImmutableList.<String>of(
+      "com.mineteria.ignite.applaunch.mixin.IgniteMixinPlatformService"
+    );
   }
 
-  public final @NonNull ModEngine getModEngine() {
-    return this.modEngine;
-  }
-
-  public final @NonNull EventManager getEventManager() {
-    return this.eventManager;
+  private static final class LauncherContainer extends ContainerHandleModLauncher {
+    public LauncherContainer(final @NonNull String name) {
+      super(name);
+    }
   }
 }

@@ -22,11 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.ignite.mod;
+package com.mineteria.ignite.applaunch.mod;
 
 import com.mineteria.ignite.api.mod.ModResource;
-import com.mineteria.ignite.launch.IgniteBlackboard;
-import com.mineteria.ignite.util.IgniteConstants;
+import com.mineteria.ignite.applaunch.IgniteBlackboard;
+import com.mineteria.ignite.applaunch.util.IgniteConstants;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.IOException;
