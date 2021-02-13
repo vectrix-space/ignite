@@ -3,6 +3,8 @@ apply plugin: "signing"
 apply plugin: "java-library"
 apply plugin: "com.github.johnrengelman.shadow"
 
+archivesBaseName = "ignite-api"
+
 dependencies {
   // API
   api "org.checkerframework:checker-qual:3.9.1"
@@ -111,7 +113,7 @@ shadowJar {
 artifacts {
   archives javadocJar
   archives sourcesJar
-  archives shadowJar
+  archives jar
 }
 
 signing {

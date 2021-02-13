@@ -6,7 +6,7 @@ plugins {
 subprojects {
   apply plugin: "java-library"
 
-  group = "com.mineteria"
+  group = "com.mineteria.ignite"
   version = "0.2.0-SNAPSHOT"
   description = "Bootstraps the Minecraft Server with ModLauncher to apply Mixins and Access Transformers from mods."
 

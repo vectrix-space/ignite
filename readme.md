@@ -1,18 +1,19 @@
 Ignite
 ======
+[![Build Status](https://travis-ci.com/Mineteria-Development/Ignite.svg?branch=master)](https://travis-ci.com/Mineteria-Development/Ignite)
 
 Bootstraps the Minecraft Server with [ModLauncher] to apply [Mixins] and [Access Transformers] from Ignite mods.
 
 ## Building
 __Note:__ If you do not have [Gradle] installed then use `./gradlew` for Unix systems or Git Bash and gradlew.bat for Windows systems in place of any 'gradle' command.
 
-In order to build Ignite you simply need to run the `gradle` command. You can find the compiled JAR file in `./target` labeled 'Ignite.jar'.
+In order to build Ignite you simply need to run the `gradle` command. You can find the compiled JAR file in `./target` labeled 'ignite-launcher.jar'.
 
 ## Launcher Usage
 
 The Ignite launcher must be executed instead of the Minecraft Server. Ignite will launch the Minecraft Server itself, additionally passing in any extra arguments you provide it.
 
-`java -javaagent:./Ignite.jar -Dignite.launch.jar=./paper.jar -Dignite.launch.target=org.bukkit.craftbukkit.Main -Dignite.mod.directory=./plugins -Dignite.config.directory=./plugins -jar Ignite.jar`
+`java -javaagent:./ignite-launcher.jar -Dignite.launch.jar=./paper.jar -Dignite.launch.target=org.bukkit.craftbukkit.Main -Dignite.mod.directory=./plugins -Dignite.config.directory=./plugins -jar ignite-launcher.jar`
 
 **Note:** You must use the `-javaagent` flag pointing to the launcher in order for it to start.
 
