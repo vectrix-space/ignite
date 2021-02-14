@@ -25,6 +25,7 @@
 package com.mineteria.ignite.api.mod;
 
 import com.google.gson.Gson;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -39,10 +40,10 @@ import java.util.Objects;
 public final class ModConfig {
   private String id;
   private String version;
-  private @Nullable String target;
-  private @Nullable List<String> requiredDependencies;
-  private @Nullable List<String> optionalDependencies;
-  private @Nullable List<String> requiredMixins;
+  private String target;
+  private List<String> requiredDependencies;
+  private List<String> optionalDependencies;
+  private List<String> requiredMixins;
 
   public ModConfig() {}
 
@@ -65,7 +66,7 @@ public final class ModConfig {
    *
    * @return The mod identifier
    */
-  public final @NonNull String getId() {
+  public final @MonotonicNonNull String getId() {
     return this.id;
   }
 
@@ -74,7 +75,7 @@ public final class ModConfig {
    *
    * @return The mod version
    */
-  public final @NonNull String getVersion() {
+  public final @MonotonicNonNull String getVersion() {
     return this.version;
   }
 

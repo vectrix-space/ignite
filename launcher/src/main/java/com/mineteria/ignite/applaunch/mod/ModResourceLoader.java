@@ -36,6 +36,10 @@ public final class ModResourceLoader {
 
         final JsonReader reader = new JsonReader(new InputStreamReader(jarFile.getInputStream(jarEntry), StandardCharsets.UTF_8));
         final ModConfig config = this.gson.fromJson(reader, ModConfig.class);
+        if (config.getId() == null || config.getVersion() == null) {
+          engine.getLogger().error("Attempted to load '{}', but found an invalid configuration! Skipping...", jarFile.getName());
+          continue;
+        }
 
         if (engine.hasContainer(config.getId())) {
           engine.getLogger().warn("The mod '" + config.getId() + "' is already loaded! Skipping...");
