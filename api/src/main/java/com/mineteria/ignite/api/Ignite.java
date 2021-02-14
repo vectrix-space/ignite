@@ -2,6 +2,7 @@ package com.mineteria.ignite.api;
 
 import com.google.inject.Inject;
 import com.mineteria.ignite.api.event.EventManager;
+import com.mineteria.ignite.api.mod.ModManager;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
@@ -18,6 +19,15 @@ public final class Ignite {
   public static @NonNull Platform getPlatform() {
     if (Ignite.platform == null) throw new IllegalStateException("Ignite has not been initialized yet!");
     return Ignite.platform;
+  }
+
+  /**
+   * Returns the {@link ModManager}, if it is initialized.
+   *
+   * @return The mod manager
+   */
+  public static @NonNull ModManager getModManager() {
+    return Ignite.getPlatform().getModManager();
   }
 
   /**
