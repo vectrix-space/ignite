@@ -117,7 +117,12 @@ artifacts {
 }
 
 signing {
-  required { !project.version.endsWith("-SNAPSHOT") && gradle.taskGraph.hasTask(":uploadArchives") && project.hasProperty("signing.keyId") }
+  required { !project.version.endsWith("-SNAPSHOT") && gradle.taskGraph.hasTask(":uploadArchives") }
+
+  String signingKey = findProperty("signingKey")
+  String signingPassword = findProperty("signingPassword")
+  useInMemoryPgpKeys(signingKey, signingPassword)
+
   sign configurations.archives
 }
 
