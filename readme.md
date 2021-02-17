@@ -19,6 +19,30 @@ The Ignite launcher must be executed instead of the Minecraft Server. Ignite wil
 
 ## Mod Usage
 
+To depend on the Ignite API in order to create your mod, you will need to add the following to your buildscript:
+
+* Maven
+```xml
+<dependency>
+  <groupId>com.mineteria.ignite</groupId>
+  <artifactId>ignite-api</artifactId>
+  <version>0.2.0</version>
+</dependency>
+```
+
+* Gradle
+```groovy
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile "com.mineteria.ignite:ignite-api:0.2.0"
+}
+```
+
+### Setup
+
 Your mod will require a `META-INF/ignite-mod.json` in order to be located as a mod. The `META-INF/ignite-mod.json` provides the ID of the mod, and a list of Mixin configuration file names.
 
 Example `META-INF/ignite-mod.json`:
