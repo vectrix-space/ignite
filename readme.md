@@ -48,8 +48,10 @@ Your mod will require a `META-INF/ignite-mod.json` in order to be located as a m
 Example `META-INF/ignite-mod.json`:
 ```json
 {
-  "id": "example-mixins",
-  "mixins": [
+  "id": "example",
+  "version": "1.0.0",
+  "target": "com.mineteria.example.ExampleMod",
+  "requiredMixins": [
     "mixins.example.core.json"
   ]
 }
