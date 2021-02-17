@@ -25,7 +25,7 @@
 package com.mineteria.ignite.applaunch.handler;
 
 import com.mineteria.ignite.api.mod.ModResource;
-import com.mineteria.ignite.applaunch.IgniteBlackboard;
+import com.mineteria.ignite.api.IgniteBlackboard;
 import com.mineteria.ignite.applaunch.IgniteBootstrap;
 import com.mineteria.ignite.applaunch.mod.ModEngine;
 import cpw.mods.gross.Java9ClassLoaderUtil;
@@ -73,26 +73,38 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
     "com.mineteria.ignite.applaunch.",
     "com.mineteria.ignite.relocate.",
 
-    // Libraries
-    "org.spongepowered.asm.",
-    "ninja.leaping.configurate.",
-    "javax.inject.",
-    "joptsimple.",
-    "gnu.trove.",
-    "it.unimi.dsi.fastutil.",
-    "org.apache.logging.log4j.",
-    "org.yaml.snakeyaml.",
-    "com.google.inject.",
-    "com.google.common.",
-    "com.google.gson.",
-    "javax.annotation.",
-    "org.apache.commons.",
-
     // Logging
+    "org.apache.logging.log4j.",
+    "org.checkerframework.",
     "net.minecrell.terminalconsole.",
+    "org.jline.",
     "com.sun.jna.",
-    "org.fusesource.jansi.",
-    "org.jline."
+
+    // Configuration
+    "ninja.leaping.configurate.",
+    "com.typesafe.config.",
+    "com.google.gson.",
+    "org.yaml.snakeyaml.",
+
+    // Common
+    "com.google.common.",
+    "com.google.inject.",
+    "javax.annotation.",
+    "javax.inject.",
+    "org.aopalliance.",
+
+    // ASM
+    "org.objectweb.asm.",
+
+    // Mixin
+    "org.spongepowered.asm.",
+
+    // Access Transformers
+    "net.minecraftforge.accesstransformer.",
+    "org.antlr.v4.runtime.",
+
+    // Core
+    "joptsimple."
   );
 
   private final Logger logger = LogManager.getLogger("IgniteLaunch");

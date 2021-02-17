@@ -5,8 +5,6 @@ import com.google.inject.Provider;
 import com.google.inject.Scopes;
 import com.mineteria.ignite.api.Ignite;
 import com.mineteria.ignite.api.Platform;
-import com.mineteria.ignite.api.config.Configs;
-import com.mineteria.ignite.api.config.Mods;
 import com.mineteria.ignite.applaunch.IgniteBootstrap;
 import com.mineteria.ignite.launch.IgnitePlatform;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -21,12 +19,12 @@ public final class IgniteModule extends AbstractModule {
     this.bind(Platform.class).to(IgnitePlatform.class).in(Scopes.SINGLETON);
 
     this.bind(Path.class)
-      .annotatedWith(Mods.class)
+      .annotatedWith(com.mineteria.ignite.api.config.path.ModsPath.class)
       .toProvider(ModsPath.class)
       .in(Scopes.SINGLETON);
 
     this.bind(Path.class)
-      .annotatedWith(Configs.class)
+      .annotatedWith(com.mineteria.ignite.api.config.path.ConfigsPath.class)
       .toProvider(ConfigsPath.class)
       .in(Scopes.SINGLETON);
   }

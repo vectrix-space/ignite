@@ -1,5 +1,11 @@
 package com.mineteria.example.mixin.plugins;
 
+import com.mineteria.example.ExampleConfig;
+import com.mineteria.ignite.api.IgniteBlackboard;
+import com.mineteria.ignite.api.config.Configuration;
+import com.mineteria.ignite.api.config.Configurations;
+import ninja.leaping.configurate.ConfigurationOptions;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.objectweb.asm.tree.ClassNode;
@@ -21,7 +27,13 @@ public final class CorePlugin implements IMixinConfigPlugin {
 
   @Override
   public final boolean shouldApplyMixin(final @NonNull String targetClassName, final @NonNull String mixinClassName) {
-    return true;
+    final Configuration<ExampleConfig, CommentedConfigurationNode> config = Configurations.loadHocon(
+      IgniteBlackboard.getProperty(IgniteBlackboard.CONFIG_DIRECTORY_PATH).resolve("dream").resolve("dream.conf"),
+      ConfigurationOptions.defaults(),
+      new ExampleConfig()
+    );
+
+    return config.getInstance().test;
   }
 
   @Override

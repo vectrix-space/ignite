@@ -1,4 +1,4 @@
-package com.mineteria.ignite.api.config;
+package com.mineteria.ignite.api.config.path;
 
 import com.google.inject.BindingAnnotation;
 
@@ -11,11 +11,11 @@ import java.lang.annotation.Target;
  * Annotation used to specify the mod specific configuration
  * path.
  *
- * <p>Usually the parent is the {@link Configs} path, with
+ * <p>Usually the parent is the {@link ConfigsPath} path, with
  * directory being named after the mod ID.</p>
  */
 @BindingAnnotation
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.PARAMETER})
-public @interface Config {
+public @interface ConfigPath {
 }

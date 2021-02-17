@@ -1,4 +1,4 @@
-package com.mineteria.ignite.api.config;
+package com.mineteria.ignite.api.config.path;
 
 import com.google.inject.BindingAnnotation;
 
@@ -16,5 +16,5 @@ import java.lang.annotation.Target;
 @BindingAnnotation
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.PARAMETER})
-public @interface Configs {
+public @interface ConfigsPath {
 }

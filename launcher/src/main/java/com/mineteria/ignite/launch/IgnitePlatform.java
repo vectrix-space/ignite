@@ -2,8 +2,8 @@ package com.mineteria.ignite.launch;
 
 import com.google.inject.Inject;
 import com.mineteria.ignite.api.Platform;
-import com.mineteria.ignite.api.config.Configs;
-import com.mineteria.ignite.api.config.Mods;
+import com.mineteria.ignite.api.config.path.ConfigsPath;
+import com.mineteria.ignite.api.config.path.ModsPath;
 import com.mineteria.ignite.api.event.EventManager;
 import com.mineteria.ignite.api.mod.ModManager;
 import com.mineteria.ignite.launch.event.IgniteEventManager;
@@ -23,8 +23,8 @@ public final class IgnitePlatform implements Platform {
   private final Path mods;
 
   @Inject
-  public IgnitePlatform(final @NonNull @Configs Path configs,
-                        final @NonNull @Mods Path mods) {
+  public IgnitePlatform(final @NonNull @ConfigsPath Path configs,
+                        final @NonNull @ModsPath Path mods) {
     this.mods = mods;
     this.configs = configs;
 

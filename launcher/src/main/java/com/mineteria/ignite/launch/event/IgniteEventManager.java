@@ -38,8 +38,8 @@ public final class IgniteEventManager implements EventManager {
 
   public IgniteEventManager(final @NonNull IgnitePlatform platform) {
     // Add event executors to the mod class loader.
-    final ModClassLoader classLoader = AccessController.doPrivileged((PrivilegedAction<ModClassLoader>) () -> new ModClassLoader(new URL[0]));
-    classLoader.addLoaders();
+//    final ModClassLoader classLoader = AccessController.doPrivileged((PrivilegedAction<ModClassLoader>) () -> new ModClassLoader(new URL[0]));
+//    classLoader.addLoaders();
 
     this.platform = platform;
 
@@ -52,7 +52,7 @@ public final class IgniteEventManager implements EventManager {
 
     this.methodAdapter = new SimpleMethodSubscriptionAdapter<>(
       bus,
-      new ASMEventExecutorFactory<>(classLoader),
+      new ASMEventExecutorFactory<>(/*classLoader*/),
       new IgniteMethodScanner()
     );
   }

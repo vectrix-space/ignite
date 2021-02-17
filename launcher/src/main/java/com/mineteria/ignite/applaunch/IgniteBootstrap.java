@@ -24,6 +24,7 @@
  */
 package com.mineteria.ignite.applaunch;
 
+import com.mineteria.ignite.api.IgniteBlackboard;
 import com.mineteria.ignite.applaunch.agent.Agent;
 import com.mineteria.ignite.applaunch.mod.ModEngine;
 import cpw.mods.modlauncher.Launcher;

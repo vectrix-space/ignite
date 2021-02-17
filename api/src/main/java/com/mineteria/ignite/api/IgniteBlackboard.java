@@ -22,10 +22,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.ignite.applaunch;
+package com.mineteria.ignite.api;
 
 import com.google.common.reflect.TypeToken;
-import cpw.mods.modlauncher.api.TypesafeMap;
+import com.mineteria.ignite.api.util.BlackboardMap;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -34,28 +34,28 @@ import java.util.List;
 
 @SuppressWarnings("UnstableApiUsage")
 public final class IgniteBlackboard {
-  private static final TypesafeMap BLACKBOARD = new TypesafeMap();
+  private static final BlackboardMap BLACKBOARD = new BlackboardMap();
 
-  public static final TypesafeMap.@NonNull Key<List<String>> LAUNCH_ARGUMENTS = key("ignite.launch.arguments", new TypeToken<List<String>>() {});
-  public static final TypesafeMap.@NonNull Key<Path>         LAUNCH_JAR       = key("ignite.launch.jar", TypeToken.of(Path.class));
-  public static final TypesafeMap.@NonNull Key<String>       LAUNCH_TARGET    = key("ignite.launch.target", TypeToken.of(String.class));
+  public static final BlackboardMap.@NonNull Key<List<String>> LAUNCH_ARGUMENTS = key("ignite.launch.arguments", new TypeToken<List<String>>() {});
+  public static final BlackboardMap.@NonNull Key<Path>         LAUNCH_JAR       = key("ignite.launch.jar", TypeToken.of(Path.class));
+  public static final BlackboardMap.@NonNull Key<String>       LAUNCH_TARGET    = key("ignite.launch.target", TypeToken.of(String.class));
 
-  public static final TypesafeMap.@NonNull Key<Path> MOD_DIRECTORY_PATH = key("ignite.mod.directory", TypeToken.of(Path.class));
-  public static final TypesafeMap.@NonNull Key<Path> CONFIG_DIRECTORY_PATH = key("ignite.config.directory", TypeToken.of(Path.class));
+  public static final BlackboardMap.@NonNull Key<Path> MOD_DIRECTORY_PATH       = key("ignite.mod.directory", TypeToken.of(Path.class));
+  public static final BlackboardMap.@NonNull Key<Path> CONFIG_DIRECTORY_PATH    = key("ignite.config.directory", TypeToken.of(Path.class));
 
-  public static <T> @Nullable T getProperty(final TypesafeMap.@NonNull Key<T> key) {
+  public static <T> @Nullable T getProperty(final BlackboardMap.@NonNull Key<T> key) {
     return IgniteBlackboard.getProperty(key, null);
   }
 
-  public static <T> @Nullable T getProperty(final TypesafeMap.@NonNull Key<T> key, final @Nullable T defaultValue) {
+  public static <T> @Nullable T getProperty(final BlackboardMap.@NonNull Key<T> key, final @Nullable T defaultValue) {
     return IgniteBlackboard.BLACKBOARD.get(key).orElse(defaultValue);
   }
 
-  public static <T> void setProperty(final TypesafeMap.@NonNull Key<T> key, final @Nullable T value) {
+  public static <T> void setProperty(final BlackboardMap.@NonNull Key<T> key, final @Nullable T value) {
     IgniteBlackboard.BLACKBOARD.computeIfAbsent(key, k -> value);
   }
 
-  private static <T> TypesafeMap.@NonNull Key<T> key(final @NonNull String key, final @NonNull TypeToken<T> type) {
-    return TypesafeMap.Key.getOrCreate(IgniteBlackboard.BLACKBOARD, key, type.getRawType());
+  private static <T> BlackboardMap.@NonNull Key<T> key(final @NonNull String key, final @NonNull TypeToken<T> type) {
+    return BlackboardMap.Key.getOrCreate(IgniteBlackboard.BLACKBOARD, key, type.getRawType());
   }
 }

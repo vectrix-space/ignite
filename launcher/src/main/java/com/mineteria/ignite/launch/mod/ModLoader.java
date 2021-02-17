@@ -2,6 +2,7 @@ package com.mineteria.ignite.launch.mod;
 
 import com.google.inject.Injector;
 import com.mineteria.ignite.api.mod.ModContainer;
+import com.mineteria.ignite.applaunch.agent.Agent;
 import com.mineteria.ignite.launch.IgniteLaunch;
 import com.mineteria.ignite.launch.IgnitePlatform;
 import com.mineteria.ignite.launch.inject.ModModule;
@@ -57,14 +58,16 @@ public final class ModLoader {
   private Object instantiateContainer(final ModContainer container) throws IllegalStateException {
     try {
       // Add the resource to the class loader.
-      final URL modJar = container.getResource().getPath().toUri().toURL();
-      final ModClassLoader classLoader = new ModClassLoader(new URL[] { modJar });
-      classLoader.addLoaders();
+      Agent.addJar(container.getResource().getPath());
+//      final URL modJar = container.getResource().getPath().toUri().toURL();
+//      final ModClassLoader classLoader = new ModClassLoader(new URL[] { modJar });
+//      classLoader.addLoaders();
 
       final String targetClass = container.getConfig().getTarget();
       if (targetClass != null) {
         // Load the class.
-        final Class<?> modClass = classLoader.loadClass(targetClass);
+//        final Class<?> modClass = classLoader.loadClass(targetClass);
+        final Class<?> modClass = Class.forName(targetClass, true, IgniteLaunch.class.getClassLoader());
 
         final Injector parentInjector = IgniteLaunch.getInstance().getInjector();
         if (parentInjector != null) {
