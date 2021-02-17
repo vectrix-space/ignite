@@ -24,8 +24,8 @@
  */
 package com.mineteria.ignite.applaunch.handler;
 
-import com.mineteria.ignite.api.mod.ModResource;
 import com.mineteria.ignite.api.IgniteBlackboard;
+import com.mineteria.ignite.api.mod.ModResource;
 import com.mineteria.ignite.applaunch.IgniteBootstrap;
 import com.mineteria.ignite.applaunch.mod.ModEngine;
 import cpw.mods.gross.Java9ClassLoaderUtil;

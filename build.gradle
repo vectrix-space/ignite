@@ -5,6 +5,7 @@ plugins {
 
 subprojects {
   apply plugin: "java-library"
+  apply plugin: "net.minecrell.licenser"
 
   group = "com.mineteria.ignite"
   version = "0.2.1-SNAPSHOT"
@@ -29,7 +30,7 @@ subprojects {
   }
 
   license {
-    header = file("header.txt")
+    header = file("../header.txt")
     newLine = false
     ext {
       name = "Ignite"

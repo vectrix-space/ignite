@@ -1,8 +1,9 @@
 apply plugin: "java-library"
 apply plugin: "com.github.johnrengelman.shadow"
 
-import java.nio.file.Path
+
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 
 archivesBaseName = "ignite-launcher"
@@ -108,8 +109,6 @@ shadowJar {
     include dependency("cpw.mods:grossjava9hacks")
     include dependency("net.sf.jopt-simple:jopt-simple")
   }
-
-//  relocate "com.google.common", "com.mineteria.ignite.relocate.google"
 }
 
 task copyFinalJarToTarget(type: DefaultTask) {

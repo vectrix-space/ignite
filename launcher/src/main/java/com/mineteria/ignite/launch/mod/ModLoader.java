@@ -1,8 +1,31 @@
+/*
+ * This file is part of Ignite, licensed under the MIT License (MIT).
+ *
+ * Copyright (c) Mineteria <https://mineteria.com/>
+ * Copyright (c) contributors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package com.mineteria.ignite.launch.mod;
 
 import com.google.inject.Injector;
 import com.mineteria.ignite.api.mod.ModContainer;
-import com.mineteria.ignite.applaunch.agent.Agent;
 import com.mineteria.ignite.launch.IgniteLaunch;
 import com.mineteria.ignite.launch.IgnitePlatform;
 import com.mineteria.ignite.launch.inject.ModModule;
@@ -58,16 +81,14 @@ public final class ModLoader {
   private Object instantiateContainer(final ModContainer container) throws IllegalStateException {
     try {
       // Add the resource to the class loader.
-      Agent.addJar(container.getResource().getPath());
-//      final URL modJar = container.getResource().getPath().toUri().toURL();
-//      final ModClassLoader classLoader = new ModClassLoader(new URL[] { modJar });
-//      classLoader.addLoaders();
+      final URL modJar = container.getResource().getPath().toUri().toURL();
+      final ModClassLoader classLoader = new ModClassLoader(new URL[] { modJar });
+      classLoader.addLoaders();
 
       final String targetClass = container.getConfig().getTarget();
       if (targetClass != null) {
         // Load the class.
-//        final Class<?> modClass = classLoader.loadClass(targetClass);
-        final Class<?> modClass = Class.forName(targetClass, true, IgniteLaunch.class.getClassLoader());
+        final Class<?> modClass = classLoader.loadClass(targetClass);
 
         final Injector parentInjector = IgniteLaunch.getInstance().getInjector();
         if (parentInjector != null) {

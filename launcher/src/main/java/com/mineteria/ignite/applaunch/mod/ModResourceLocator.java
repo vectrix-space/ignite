@@ -24,8 +24,8 @@
  */
 package com.mineteria.ignite.applaunch.mod;
 
-import com.mineteria.ignite.api.mod.ModResource;
 import com.mineteria.ignite.api.IgniteBlackboard;
+import com.mineteria.ignite.api.mod.ModResource;
 import com.mineteria.ignite.applaunch.util.IgniteConstants;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
