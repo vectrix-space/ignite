@@ -33,7 +33,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 @SuppressWarnings("UnstableApiUsage")
-public final class IgniteBlackboard {
+public final class Blackboard {
   private static final BlackboardMap BLACKBOARD = new BlackboardMap();
 
   public static final BlackboardMap.@NonNull Key<List<String>> LAUNCH_ARGUMENTS = key("ignite.launch.arguments", new TypeToken<List<String>>() {});
@@ -44,18 +44,18 @@ public final class IgniteBlackboard {
   public static final BlackboardMap.@NonNull Key<Path> CONFIG_DIRECTORY_PATH    = key("ignite.config.directory", TypeToken.of(Path.class));
 
   public static <T> @Nullable T getProperty(final BlackboardMap.@NonNull Key<T> key) {
-    return IgniteBlackboard.getProperty(key, null);
+    return Blackboard.BLACKBOARD.get(key).orElse(null);
   }
 
-  public static <T> @Nullable T getProperty(final BlackboardMap.@NonNull Key<T> key, final @Nullable T defaultValue) {
-    return IgniteBlackboard.BLACKBOARD.get(key).orElse(defaultValue);
+  public static <T> @NonNull T getProperty(final BlackboardMap.@NonNull Key<T> key, final @NonNull T defaultValue) {
+    return Blackboard.BLACKBOARD.get(key).orElse(defaultValue);
   }
 
-  public static <T> void setProperty(final BlackboardMap.@NonNull Key<T> key, final @Nullable T value) {
-    IgniteBlackboard.BLACKBOARD.computeIfAbsent(key, k -> value);
+  public static <T> @Nullable T setProperty(final BlackboardMap.@NonNull Key<T> key, final @Nullable T value) {
+    return Blackboard.BLACKBOARD.computeIfAbsent(key, k -> value);
   }
 
   private static <T> BlackboardMap.@NonNull Key<T> key(final @NonNull String key, final @NonNull TypeToken<T> type) {
-    return BlackboardMap.Key.getOrCreate(IgniteBlackboard.BLACKBOARD, key, type.getRawType());
+    return BlackboardMap.Key.getOrCreate(Blackboard.BLACKBOARD, key, type.getRawType());
   }
 }

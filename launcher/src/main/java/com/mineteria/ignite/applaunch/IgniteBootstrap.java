@@ -24,7 +24,7 @@
  */
 package com.mineteria.ignite.applaunch;
 
-import com.mineteria.ignite.api.IgniteBlackboard;
+import com.mineteria.ignite.api.Blackboard;
 import com.mineteria.ignite.applaunch.agent.Agent;
 import com.mineteria.ignite.applaunch.mod.ModEngine;
 import cpw.mods.modlauncher.Launcher;
@@ -45,22 +45,22 @@ public final class IgniteBootstrap {
   /**
    * The launch jar path.
    */
-  public static final @NonNull Path LAUNCH_JAR = Paths.get(System.getProperty(IgniteBlackboard.LAUNCH_JAR.name(), "./server.jar"));
+  public static final @NonNull Path LAUNCH_JAR = Paths.get(System.getProperty(Blackboard.LAUNCH_JAR.getName(), "./server.jar"));
 
   /**
    * The launch target class path.
    */
-  public static final @NonNull String LAUNCH_TARGET = System.getProperty(IgniteBlackboard.LAUNCH_TARGET.name(), "org.bukkit.craftbukkit.Main");
+  public static final @NonNull String LAUNCH_TARGET = System.getProperty(Blackboard.LAUNCH_TARGET.getName(), "org.bukkit.craftbukkit.Main");
 
   /**
    * The mods directory.
    */
-  public static final @NonNull Path MOD_TARGET_PATH = Paths.get(System.getProperty(IgniteBlackboard.MOD_DIRECTORY_PATH.name(), "./mods"));
+  public static final @NonNull Path MOD_TARGET_PATH = Paths.get(System.getProperty(Blackboard.MOD_DIRECTORY_PATH.getName(), "./mods"));
 
   /**
    * The configs directory.
    */
-  public static final @NonNull Path CONFIG_TARGET_PATH = Paths.get(System.getProperty(IgniteBlackboard.CONFIG_DIRECTORY_PATH.name(), "./configs"));
+  public static final @NonNull Path CONFIG_TARGET_PATH = Paths.get(System.getProperty(Blackboard.CONFIG_DIRECTORY_PATH.getName(), "./configs"));
 
   private static IgniteBootstrap instance;
 
@@ -109,11 +109,11 @@ public final class IgniteBootstrap {
     logger.info("Ignite Launcher version {}", IgniteBootstrap.class.getPackage().getImplementationVersion());
 
     // Blackboard
-    IgniteBlackboard.setProperty(IgniteBlackboard.LAUNCH_ARGUMENTS, Collections.unmodifiableList(arguments));
-    IgniteBlackboard.setProperty(IgniteBlackboard.LAUNCH_JAR, IgniteBootstrap.LAUNCH_JAR);
-    IgniteBlackboard.setProperty(IgniteBlackboard.LAUNCH_TARGET, IgniteBootstrap.LAUNCH_TARGET);
-    IgniteBlackboard.setProperty(IgniteBlackboard.MOD_DIRECTORY_PATH, IgniteBootstrap.MOD_TARGET_PATH);
-    IgniteBlackboard.setProperty(IgniteBlackboard.CONFIG_DIRECTORY_PATH, IgniteBootstrap.CONFIG_TARGET_PATH);
+    Blackboard.setProperty(Blackboard.LAUNCH_ARGUMENTS, Collections.unmodifiableList(arguments));
+    Blackboard.setProperty(Blackboard.LAUNCH_JAR, IgniteBootstrap.LAUNCH_JAR);
+    Blackboard.setProperty(Blackboard.LAUNCH_TARGET, IgniteBootstrap.LAUNCH_TARGET);
+    Blackboard.setProperty(Blackboard.MOD_DIRECTORY_PATH, IgniteBootstrap.MOD_TARGET_PATH);
+    Blackboard.setProperty(Blackboard.CONFIG_DIRECTORY_PATH, IgniteBootstrap.CONFIG_TARGET_PATH);
 
     // Modlauncher
     logger.info("Preparing ModLauncher with arguments {}", launchArguments);

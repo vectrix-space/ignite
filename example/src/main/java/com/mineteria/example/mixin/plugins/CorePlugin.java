@@ -25,7 +25,7 @@
 package com.mineteria.example.mixin.plugins;
 
 import com.mineteria.example.ExampleConfig;
-import com.mineteria.ignite.api.IgniteBlackboard;
+import com.mineteria.ignite.api.Blackboard;
 import com.mineteria.ignite.api.config.Configuration;
 import com.mineteria.ignite.api.config.ConfigurationKey;
 import com.mineteria.ignite.api.config.Configurations;
@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Set;
 
 public final class CorePlugin implements IMixinConfigPlugin {
-  private static final ConfigurationKey EXAMPLE_KEY = ConfigurationKey.key("example", IgniteBlackboard.getProperty(IgniteBlackboard.CONFIG_DIRECTORY_PATH)
+  private static final ConfigurationKey EXAMPLE_KEY = ConfigurationKey.key("example", Blackboard.getProperty(Blackboard.CONFIG_DIRECTORY_PATH)
     .resolve("example")
     .resolve("example.conf")
   );

@@ -24,7 +24,7 @@
  */
 package com.mineteria.ignite.applaunch.handler;
 
-import com.mineteria.ignite.api.IgniteBlackboard;
+import com.mineteria.ignite.api.Blackboard;
 import com.mineteria.ignite.api.mod.ModResource;
 import com.mineteria.ignite.applaunch.IgniteBootstrap;
 import com.mineteria.ignite.applaunch.mod.ModEngine;
@@ -232,7 +232,7 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
    * @param launchClassLoader The transforming class loader to load classes with
    */
   protected void launchService0(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) throws Exception {
-    final Path launchJar = IgniteBlackboard.getProperty(IgniteBlackboard.LAUNCH_JAR);
+    final Path launchJar = Blackboard.getProperty(Blackboard.LAUNCH_JAR);
     if (launchJar == null || !Files.exists(launchJar)) {
       throw new IllegalStateException("No launch jar was found!");
     } else {
