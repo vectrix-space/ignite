@@ -24,20 +24,32 @@
  */
 package com.mineteria.example;
 
-import ninja.leaping.configurate.objectmapping.Setting;
-import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+import com.mineteria.ignite.api.Blackboard;
+import com.mineteria.ignite.api.config.ConfigurationKey;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
-@ConfigSerializable
-public final class ExampleConfig {
-  @Setting(value = "test", comment = "Test configuration property.")
-  public boolean test = true;
+import java.nio.file.Path;
 
-  @Setting(value = "container", comment = "A test container.")
-  public TestContainer container = new TestContainer();
+public final class ExampleInfo {
+  private static final @MonotonicNonNull Path CONFIGS_PATH = Blackboard.getProperty(Blackboard.CONFIG_DIRECTORY_PATH);
 
-  @ConfigSerializable
-  public static class TestContainer {
-    @Setting(value = "foo", comment = "A test boolean in a container.")
-    public boolean foo = false;
+  private static @MonotonicNonNull Path EXAMPLE_PATH;
+  private static @MonotonicNonNull ConfigurationKey EXAMPLE_CONFIG;
+
+  public static @MonotonicNonNull Path getExamplePath() {
+    if (ExampleInfo.EXAMPLE_PATH != null) return ExampleInfo.EXAMPLE_PATH;
+    if (ExampleInfo.CONFIGS_PATH == null) return null;
+
+    return ExampleInfo.EXAMPLE_PATH = ExampleInfo.CONFIGS_PATH.resolve("example");
+  }
+
+  public static @NonNull ConfigurationKey getExampleConfig() {
+    if (ExampleInfo.EXAMPLE_CONFIG != null) return ExampleInfo.EXAMPLE_CONFIG;
+
+    final Path examplePath = ExampleInfo.getExamplePath();
+    if (examplePath == null) throw new IllegalStateException("Unable to locate example path.");
+
+    return ExampleInfo.EXAMPLE_CONFIG = ConfigurationKey.key("example", examplePath.resolve("example.conf"));
   }
 }

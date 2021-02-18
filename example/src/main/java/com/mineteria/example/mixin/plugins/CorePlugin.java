@@ -25,9 +25,8 @@
 package com.mineteria.example.mixin.plugins;
 
 import com.mineteria.example.ExampleConfig;
-import com.mineteria.ignite.api.Blackboard;
+import com.mineteria.example.ExampleInfo;
 import com.mineteria.ignite.api.config.Configuration;
-import com.mineteria.ignite.api.config.ConfigurationKey;
 import com.mineteria.ignite.api.config.Configurations;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -40,11 +39,6 @@ import java.util.List;
 import java.util.Set;
 
 public final class CorePlugin implements IMixinConfigPlugin {
-  private static final ConfigurationKey EXAMPLE_KEY = ConfigurationKey.key("example", Blackboard.getProperty(Blackboard.CONFIG_DIRECTORY_PATH)
-    .resolve("example")
-    .resolve("example.conf")
-  );
-
   @Override
   public void onLoad(final @NonNull String mixinPackage) {
   }
@@ -56,9 +50,11 @@ public final class CorePlugin implements IMixinConfigPlugin {
 
   @Override
   public final boolean shouldApplyMixin(final @NonNull String targetClassName, final @NonNull String mixinClassName) {
-    final Configuration<ExampleConfig, CommentedConfigurationNode> config = Configurations.load(Configurations.HOCON_LOADER, CorePlugin.EXAMPLE_KEY, new ExampleConfig());
+    final Configuration<ExampleConfig, CommentedConfigurationNode> configWrapper = Configurations.load(Configurations.HOCON_LOADER, ExampleInfo.getExampleConfig(), ExampleConfig.class);
+    final ExampleConfig config = configWrapper.getInstance();
+    if (config == null) return false;
 
-    return config.getInstance().test;
+    return config.test;
   }
 
   @Override

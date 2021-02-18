@@ -26,31 +26,33 @@ package com.mineteria.example;
 
 import com.google.inject.Inject;
 import com.mineteria.ignite.api.Platform;
-import com.mineteria.ignite.api.config.path.ConfigPath;
+import com.mineteria.ignite.api.config.Configuration;
+import com.mineteria.ignite.api.config.Configurations;
 import com.mineteria.ignite.api.event.Subscribe;
 import com.mineteria.ignite.api.event.platform.PlatformInitializeEvent;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.nio.file.Path;
-
-@SuppressWarnings("UnstableApiUsage")
 public final class ExampleMod {
   private final Logger logger;
   private final Platform platform;
-  private final Path configurationPath;
 
   @Inject
   public ExampleMod(final Logger logger,
-                    final Platform platform,
-                    final @ConfigPath Path configurationPath) {
+                    final Platform platform) {
     this.logger = logger;
     this.platform = platform;
-    this.configurationPath = configurationPath;
   }
 
   @Subscribe
   public void onInitialize(final @NonNull PlatformInitializeEvent event) {
-    this.logger.info("Hello Initialization!");
+    this.logger.info("Hello Example!");
+
+    final Configuration<ExampleConfig, CommentedConfigurationNode> configWrapper = Configurations.load(Configurations.HOCON_LOADER, ExampleInfo.getExampleConfig(), ExampleConfig.class);
+    final ExampleConfig config = configWrapper.getInstance();
+    if (config != null) {
+      this.logger.info("Foo is set to: " + (config.container.foo ? "Enabled" : "Disabled"));
+    }
   }
 }
