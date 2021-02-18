@@ -90,7 +90,7 @@ public final class Configurations {
   };
 
   /**
-   * Loads a new virtual {@link Configuration} with the specified {@link ConfigurationKey}
+   * Creates a new virtual {@link Configuration} with the specified {@link ConfigurationKey}
    * and {@link Class} instance type.
    *
    * @param key The configuration key
@@ -99,12 +99,12 @@ public final class Configurations {
    * @param <N> The node type
    * @return The configuration
    */
-  public static <T, N extends ConfigurationNode> @NonNull Configuration<T, N> virtual(final @NonNull ConfigurationKey key, final @NonNull Class<T> instanceType) {
-    return Configurations.loadConfiguration(ignored -> null, key, instanceType);
+  public static <T, N extends ConfigurationNode> @NonNull Configuration<T, N> createVirtual(final @NonNull ConfigurationKey key, final @NonNull Class<T> instanceType) {
+    return new Configuration<>(key, instanceType);
   }
 
   /**
-   * Loads a new {@link Configuration} with the specified {@link ConfigurationLoader},
+   * Gets or creates a new {@link Configuration} with the specified {@link ConfigurationLoader},
    * {@link ConfigurationKey} and {@link Class} instance type.
    *
    * @param loader The loader supplier
@@ -114,13 +114,13 @@ public final class Configurations {
    * @param <N> The node type
    * @return The configuration
    */
-  public static <T, N extends ConfigurationNode> @NonNull Configuration<T, N> load(final @Nullable ConfigurationLoader<N> loader, final @NonNull ConfigurationKey key,
-                                                                                   final @NonNull Class<T> instanceType) {
+  public static <T, N extends ConfigurationNode> @NonNull Configuration<T, N> getOrCreate(final @Nullable ConfigurationLoader<N> loader, final @NonNull ConfigurationKey key,
+                                                                                          final @NonNull Class<T> instanceType) {
     return Configurations.loadConfiguration(ignored -> loader, key, instanceType);
   }
 
   /**
-   * Loads a new {@link Configuration} with the specified {@link ConfigurationLoader},
+   * Gets or creates a new {@link Configuration} with the specified {@link ConfigurationLoader},
    * {@link ConfigurationKey} and {@link Class} instance type.
    *
    * @param loaderSupplier The loader supplier
@@ -130,8 +130,8 @@ public final class Configurations {
    * @param <N> The node type
    * @return The configuration
    */
-  public static <T, N extends ConfigurationNode> @NonNull Configuration<T, N> load(final @NonNull Function<ConfigurationKey, ConfigurationLoader<N>> loaderSupplier,
-                                                                                   final @NonNull ConfigurationKey key, final @NonNull Class<T> instanceType) {
+  public static <T, N extends ConfigurationNode> @NonNull Configuration<T, N> getOrCreate(final @NonNull Function<ConfigurationKey, ConfigurationLoader<N>> loaderSupplier,
+                                                                                          final @NonNull ConfigurationKey key, final @NonNull Class<T> instanceType) {
     return Configurations.loadConfiguration(loaderSupplier, key, instanceType);
   }
 

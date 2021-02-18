@@ -49,7 +49,7 @@ public final class ExampleMod {
   public void onInitialize(final @NonNull PlatformInitializeEvent event) {
     this.logger.info("Hello Example!");
 
-    final Configuration<ExampleConfig, CommentedConfigurationNode> configWrapper = Configurations.load(Configurations.HOCON_LOADER, ExampleInfo.getExampleConfig(), ExampleConfig.class);
+    final Configuration<ExampleConfig, CommentedConfigurationNode> configWrapper = Configurations.getOrCreate(Configurations.HOCON_LOADER, ExampleInfo.getExampleConfig(), ExampleConfig.class);
     final ExampleConfig config = configWrapper.getInstance();
     if (config != null) {
       this.logger.info("Foo is set to: " + (config.container.foo ? "Enabled" : "Disabled"));

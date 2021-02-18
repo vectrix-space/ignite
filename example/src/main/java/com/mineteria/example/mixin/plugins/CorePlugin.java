@@ -50,11 +50,13 @@ public final class CorePlugin implements IMixinConfigPlugin {
 
   @Override
   public final boolean shouldApplyMixin(final @NonNull String targetClassName, final @NonNull String mixinClassName) {
-    final Configuration<ExampleConfig, CommentedConfigurationNode> configWrapper = Configurations.load(Configurations.HOCON_LOADER, ExampleInfo.getExampleConfig(), ExampleConfig.class);
+    final Configuration<ExampleConfig, CommentedConfigurationNode> configWrapper = Configurations.getOrCreate(Configurations.HOCON_LOADER, ExampleInfo.getExampleConfig(), ExampleConfig.class);
     final ExampleConfig config = configWrapper.getInstance();
-    if (config == null) return false;
+    if (config != null) {
+      return config.test;
+    }
 
-    return config.test;
+    return false;
   }
 
   @Override
