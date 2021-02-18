@@ -15,9 +15,6 @@ repositories {
 dependencies {
   // API
   api(project(":api"))
-
-  // Mixins
-  api "org.spongepowered:mixin:0.8.2"
 }
 
 

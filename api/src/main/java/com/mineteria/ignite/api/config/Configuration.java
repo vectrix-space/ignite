@@ -26,7 +26,6 @@ package com.mineteria.ignite.api.config;
 
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
-import ninja.leaping.configurate.objectmapping.DefaultObjectMapperFactory;
 import ninja.leaping.configurate.objectmapping.ObjectMapper;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
@@ -43,11 +42,10 @@ import java.util.Objects;
  * @param <T> The object mapper instance type
  * @param <N> The configuration node type
  */
-@SuppressWarnings("unchecked")
 public final class Configuration<T, N extends ConfigurationNode> {
-  private static <T> ObjectMapper<T> createMapper(final T instance) {
+  private static <T> ObjectMapper<T> createMapper(final Class<T> instanceType) {
     try {
-      return DefaultObjectMapperFactory.getInstance().getMapper((Class<T>) instance.getClass());
+      return ObjectMapper.forClass(instanceType);
     } catch (final ObjectMappingException exception) {
       throw new AssertionError(exception);
     }
@@ -56,18 +54,17 @@ public final class Configuration<T, N extends ConfigurationNode> {
   private final @Nullable ConfigurationLoader<N> loader;
   private final ObjectMapper<T> mapper;
   private final ConfigurationKey key;
-  private final T instance;
 
+  private @MonotonicNonNull ObjectMapper<T>.BoundInstance instance;
   private @MonotonicNonNull N node;
 
-  /* package */ Configuration(final @NonNull ConfigurationKey key, final @NonNull T instance) {
-    this(key, instance, null);
+  /* package */ Configuration(final @NonNull ConfigurationKey key, final @NonNull Class<T> instanceType) {
+    this(key, instanceType, null);
   }
 
-  /* package */ Configuration(final @NonNull ConfigurationKey key, final @NonNull T instance, final @Nullable ConfigurationLoader<N> loader) {
-    this.mapper = Configuration.createMapper(instance);
+  /* package */ Configuration(final @NonNull ConfigurationKey key, final @NonNull Class<T> instanceType, final @Nullable ConfigurationLoader<N> loader) {
+    this.mapper = Configuration.createMapper(instanceType);
     this.key = key;
-    this.instance = instance;
     this.loader = loader;
   }
 
@@ -80,9 +77,10 @@ public final class Configuration<T, N extends ConfigurationNode> {
    */
   public void load() throws IOException, ObjectMappingException {
     if (this.loader == null) return;
+    if (this.instance == null) this.instance = this.mapper.bindToNew();
 
     this.node = this.loader.load();
-    this.mapper.bind(this.instance).populate(this.node);
+    this.instance.populate(this.node);
     this.save();
   }
 
@@ -96,8 +94,10 @@ public final class Configuration<T, N extends ConfigurationNode> {
   public void save() throws IOException, ObjectMappingException {
     if (this.loader == null) return;
     if (this.node == null) this.node = this.loader.createEmptyNode();
+    if (this.instance != null) {
+      this.instance.serialize(this.node);
+    }
 
-    this.mapper.bind(this.instance).serialize(this.node);
     this.loader.save(this.node);
   }
 
@@ -106,7 +106,7 @@ public final class Configuration<T, N extends ConfigurationNode> {
    *
    * @return The configuration key
    */
-  public ConfigurationKey getKey() {
+  public @NonNull ConfigurationKey getKey() {
     return this.key;
   }
 
@@ -115,8 +115,8 @@ public final class Configuration<T, N extends ConfigurationNode> {
    *
    * @return The object mapper instance
    */
-  public @NonNull T getInstance() {
-    return this.instance;
+  public @MonotonicNonNull T getInstance() {
+    return this.instance != null ? this.instance.getInstance() : null;
   }
 
   /**
@@ -130,7 +130,7 @@ public final class Configuration<T, N extends ConfigurationNode> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.loader, this.mapper, this.instance, this.node);
+    return Objects.hash(this.loader, this.mapper, this.key, this.instance, this.node);
   }
 
   @Override
@@ -140,6 +140,7 @@ public final class Configuration<T, N extends ConfigurationNode> {
     final Configuration<?, ?> that = (Configuration<?, ?>) other;
     return Objects.equals(this.loader, that.loader)
       && Objects.equals(this.mapper, that.mapper)
+      && Objects.equals(this.key, that.key)
       && Objects.equals(this.instance, that.instance)
       && Objects.equals(this.node, that.node);
   }
@@ -148,6 +149,7 @@ public final class Configuration<T, N extends ConfigurationNode> {
   public String toString() {
     return "Configuration{loader=" + this.loader +
       ", mapper=" + this.mapper +
+      ", key=" + this.key +
       ", instance=" + this.instance +
       ", node=" + this.node +
       "}";
