@@ -53,9 +53,9 @@ public final class Configuration<T, N extends ConfigurationNode> {
     }
   }
 
-  private final ConfigurationKey key;
   private final @Nullable ConfigurationLoader<N> loader;
   private final ObjectMapper<T> mapper;
+  private final ConfigurationKey key;
   private final T instance;
 
   private @MonotonicNonNull N node;
