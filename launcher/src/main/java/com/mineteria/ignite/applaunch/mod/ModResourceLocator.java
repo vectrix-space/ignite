@@ -24,8 +24,8 @@
  */
 package com.mineteria.ignite.applaunch.mod;
 
+import com.mineteria.ignite.api.Blackboard;
 import com.mineteria.ignite.api.mod.ModResource;
-import com.mineteria.ignite.applaunch.IgniteBlackboard;
 import com.mineteria.ignite.applaunch.util.IgniteConstants;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -45,7 +45,7 @@ public final class ModResourceLocator {
   public final @NonNull List<ModResource> locateResources(final @NonNull ModEngine engine) {
     final List<ModResource> modResources = new ArrayList<>();
 
-    final Path modDirectory = IgniteBlackboard.getProperty(IgniteBlackboard.MOD_DIRECTORY_PATH);
+    final Path modDirectory = Blackboard.getProperty(Blackboard.MOD_DIRECTORY_PATH);
     if (modDirectory == null || Files.notExists(modDirectory)) {
       engine.getLogger().warn("Mod directory '{}' does not exist for mod resource locator. Skipping...", modDirectory);
       return modResources;

@@ -22,9 +22,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.ignite.api.event;
+package com.mineteria.ignite.api.config.path;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+import com.google.inject.BindingAnnotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -32,16 +32,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation used to specify an event listener, with the specified
- * {@link PostPriority} priority.
+ * Annotation used to specify the mod specific configuration
+ * path.
+ *
+ * <p>Usually the parent is the {@link ConfigsPath} path, with
+ * directory being named after the mod ID.</p>
  */
+@BindingAnnotation
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface Subscribe {
-  /**
-   * Returns the listener specified priority.
-   *
-   * @return The listener priority
-   */
-  @NonNull PostPriority priority() default PostPriority.NORMAL;
+@Target({ElementType.FIELD, ElementType.PARAMETER})
+public @interface ConfigPath {
 }

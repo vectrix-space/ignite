@@ -22,26 +22,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.mineteria.ignite.api.event;
+package com.mineteria.example;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+import ninja.leaping.configurate.objectmapping.Setting;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-/**
- * Annotation used to specify an event listener, with the specified
- * {@link PostPriority} priority.
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface Subscribe {
-  /**
-   * Returns the listener specified priority.
-   *
-   * @return The listener priority
-   */
-  @NonNull PostPriority priority() default PostPriority.NORMAL;
+@ConfigSerializable
+public final class ExampleConfig {
+  @Setting(value = "test", comment = "Test configuration property.")
+  public boolean test = true;
 }
