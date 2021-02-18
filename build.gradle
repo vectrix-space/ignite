@@ -8,7 +8,7 @@ subprojects {
   apply plugin: "net.minecrell.licenser"
 
   group = "com.mineteria.ignite"
-  version = "0.2.1-SNAPSHOT"
+  version = "0.2.1"
   description = "Bootstraps the Minecraft Server with ModLauncher to apply Mixins and Access Transformers from mods."
 
   java {
