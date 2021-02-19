@@ -102,7 +102,7 @@ public final class BlackboardMap {
     }
 
     @Override
-    public int compareTo(final @NonNull Key other) {
+    public int compareTo(final @NonNull Key<T> other) {
       if (this == other) return 0;
       if (this.identifier < other.identifier) return -1;
       if (this.identifier > other.identifier) return 1;
