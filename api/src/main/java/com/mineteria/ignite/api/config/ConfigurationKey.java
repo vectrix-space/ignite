@@ -35,7 +35,7 @@ import java.util.Objects;
  * A key to identify a specific {@link Configuration}.
  */
 public final class ConfigurationKey {
-  public static @NonNull ConfigurationKey key(final @NonNull String id, final @NonNull Path path) {
+  public static @NonNull ConfigurationKey key(final @NonNull String id, final @Nullable Path path) {
     return new ConfigurationKey(id, path);
   }
 
