@@ -26,7 +26,7 @@ To depend on the Ignite API in order to create your mod, you will need to add th
 <dependency>
   <groupId>com.mineteria.ignite</groupId>
   <artifactId>ignite-api</artifactId>
-  <version>0.2.1</version>
+  <version>0.2.2</version>
 </dependency>
 ```
 
@@ -37,7 +37,7 @@ repositories {
 }
 
 dependencies {
-  compile "com.mineteria.ignite:ignite-api:0.2.1"
+  compile "com.mineteria.ignite:ignite-api:0.2.2"
 }
 ```
 
