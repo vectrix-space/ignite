@@ -53,7 +53,8 @@ tasks {
     manifest {
       attributes(
         "Main-Class" to "com.mineteria.ignite.applaunch.IgniteBootstrap",
-        "Premain-Class" to "com.mineteria.ignite.applaunch.agent.Agent"
+        "Premain-Class" to "com.mineteria.ignite.applaunch.agent.Agent",
+        "Launcher-Agent-Class" to "com.mineteria.ignite.applaunch.agent.Agent"
       )
 
       attributes("com/mineteria/ignite/applaunch/",
