@@ -27,6 +27,7 @@ package com.mineteria.ignite.applaunch.util;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public final class IgniteConstants {
+  public static final @NonNull String AT_SERVICE = "accesstransformer";
   public static final @NonNull String META_INF = "META-INF";
   public static final @NonNull String AT = "AT";
 

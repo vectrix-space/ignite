@@ -33,7 +33,7 @@ import cpw.mods.modlauncher.api.IEnvironment;
 import cpw.mods.modlauncher.api.ITransformationService;
 import cpw.mods.modlauncher.api.ITransformer;
 import cpw.mods.modlauncher.api.IncompatibleEnvironmentException;
-import net.minecraftforge.accesstransformer.AccessTransformerEngine;
+import cpw.mods.modlauncher.serviceapi.ILaunchPluginService;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.asm.launch.MixinBootstrap;
 
@@ -61,17 +61,21 @@ public final class IgniteTransformationService implements ITransformationService
 
   @Override
   public final @NonNull List<Map.Entry<String, Path>> runScan(final @NonNull IEnvironment environment) {
+    final ILaunchPluginService accessTransformer = environment.findLaunchPlugin(IgniteConstants.AT_SERVICE).orElse(null);
+
     IgniteBootstrap.getInstance().getModEngine().locateResources();
     IgniteBootstrap.getInstance().getModEngine().loadResources();
 
     final List<Map.Entry<String, Path>> launchResources = new ArrayList<>();
     for (final ModResource resource : IgniteBootstrap.getInstance().getModEngine().getResources()) {
-      final String atFiles = resource.getManifest().getMainAttributes().getValue(IgniteConstants.AT);
-      if (atFiles != null) {
-        for (final String atFile : atFiles.split(",")) {
-          if (!atFile.endsWith(".cfg")) continue;
+      if (accessTransformer != null) {
+        final String atFiles = resource.getManifest().getMainAttributes().getValue(IgniteConstants.AT);
+        if (atFiles != null) {
+          for (final String atFile : atFiles.split(",")) {
+            if (!atFile.endsWith(".cfg")) continue;
 
-          AccessTransformerEngine.INSTANCE.addResource(resource.getFileSystem().getPath(IgniteConstants.META_INF).resolve(atFile), atFile);
+            accessTransformer.offerResource(resource.getFileSystem().getPath(IgniteConstants.META_INF).resolve(atFile), atFile);
+          }
         }
       }
 
