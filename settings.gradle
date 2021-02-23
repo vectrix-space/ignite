@@ -1,5 +1,0 @@
-rootProject.name = "Ignite"
-
-include("api")
-include("launcher")
-include("example")
