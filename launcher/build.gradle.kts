@@ -51,6 +51,11 @@ dependencies {
 tasks {
   jar {
     manifest {
+      attributes(
+        "Main-Class" to "com.mineteria.ignite.applaunch.IgniteBootstrap",
+        "Premain-Class" to "com.mineteria.ignite.applaunch.agent.Agent"
+      )
+
       attributes("com/mineteria/ignite/applaunch/",
         "Specification-Title" to "Ignite",
         "Specification-Vendor" to "Mineteria",

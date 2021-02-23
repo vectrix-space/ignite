@@ -28,6 +28,7 @@ import com.mineteria.ignite.api.Blackboard;
 import com.mineteria.ignite.api.mod.ModResource;
 import com.mineteria.ignite.applaunch.IgniteBootstrap;
 import com.mineteria.ignite.applaunch.mod.ModEngine;
+import com.mineteria.ignite.applaunch.util.IgniteExclusions;
 import cpw.mods.gross.Java9ClassLoaderUtil;
 import cpw.mods.modlauncher.api.ILaunchHandlerService;
 import cpw.mods.modlauncher.api.ITransformingClassLoader;
@@ -46,12 +47,11 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -62,50 +62,6 @@ import java.util.jar.Manifest;
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public final class IgniteLaunchService implements ILaunchHandlerService {
   private static final Optional<Manifest> UNKNOWN_MANIFEST = Optional.of(new Manifest());
-
-  /**
-   * A list of class loader exclusions to ignore when
-   * transforming classes.
-   */
-  protected static final @NonNull List<String> EXCLUDED_PACKAGES = Arrays.asList(
-    // Ignite
-    "com.mineteria.ignite.api.",
-    "com.mineteria.ignite.applaunch.",
-    "com.mineteria.ignite.relocate.",
-
-    // Logging
-    "org.apache.logging.log4j.",
-    "org.checkerframework.",
-    "net.minecrell.terminalconsole.",
-    "org.jline.",
-    "com.sun.jna.",
-
-    // Configuration
-    "ninja.leaping.configurate.",
-    "com.typesafe.config.",
-    "com.google.gson.",
-    "org.yaml.snakeyaml.",
-
-    // Common
-    "com.google.common.",
-    "com.google.inject.",
-    "javax.annotation.",
-    "javax.inject.",
-    "org.aopalliance.",
-
-    // ASM
-    "org.objectweb.asm.",
-
-    // Mixin
-    "org.spongepowered.asm.",
-
-    // Access Transformers
-    "net.minecraftforge.accesstransformer.",
-    "org.antlr.v4.runtime.",
-
-    // Core
-    "joptsimple."
-  );
 
   private final Logger logger = LogManager.getLogger("IgniteLaunch");
   private final ConcurrentMap<URL, Optional<Manifest>> manifestCache = new ConcurrentHashMap<>();
@@ -137,9 +93,12 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
   public final @NonNull Callable<Void> launchService(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
     IgniteBootstrap.getInstance().getModEngine().loadTransformers();
 
-    this.logger.info("Transitioning to launch target, please wait...");
+    launchClassLoader.addTargetPackageFilter(packageLocation -> IgniteExclusions.getExclusions().stream()
+      .map(IgniteExclusions.Exclusion::getPackageExclusion)
+      .filter(Objects::nonNull)
+      .noneMatch(packageLocation::startsWith));
 
-    launchClassLoader.addTargetPackageFilter(other -> IgniteLaunchService.EXCLUDED_PACKAGES.stream().noneMatch(other::startsWith));
+    this.logger.info("Transitioning to launch target, please wait...");
 
     return () -> {
       this.launchService0(arguments, launchClassLoader);
@@ -148,10 +107,11 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
   }
 
   protected final @NonNull Function<String, Enumeration<URL>> getResourceLocator() {
-    return string -> {
-      // Save unnecessary searches of mod classes for things that are definitely not mods
-      // In this case: MC and fastutil
-      if (string.startsWith("net/minecraft") || string.startsWith("it/unimi")) {
+    return resourceLocation -> {
+      if (IgniteExclusions.getExclusions().stream()
+        .map(IgniteExclusions.Exclusion::getResourceExclusion)
+        .filter(Objects::nonNull)
+        .anyMatch(resourceLocation::startsWith)) {
         return Collections.emptyEnumeration();
       }
 
@@ -176,7 +136,7 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
         private URL computeNext() {
           while (this.resources.hasNext()) {
             final ModResource resource = this.resources.next();
-            final Path resolved = resource.getFileSystem().getPath(string);
+            final Path resolved = resource.getFileSystem().getPath(resourceLocation);
             if (Files.exists(resolved)) {
               try {
                 return resolved.toUri().toURL();
