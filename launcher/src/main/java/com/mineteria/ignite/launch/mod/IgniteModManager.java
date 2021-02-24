@@ -89,13 +89,8 @@ public final class IgniteModManager implements ModManager {
 
     this.platform.getEventManager().post(new PlatformConstructEvent());
 
-    this.platform.getLogger().info("Constructed [{}] mod(s).", this.containers.values().stream()
-      .map(ModContainer::toString)
-      .collect(Collectors.joining(", "))
-    );
+    this.platform.getLogger().info("Loading [" + this.containers.values().stream().map(ModContainer::toString).collect(Collectors.joining(", ")) + "].");
 
     this.platform.getEventManager().post(new PlatformInitializeEvent());
-
-    this.platform.getLogger().info("Initialized mod(s).");
   }
 }

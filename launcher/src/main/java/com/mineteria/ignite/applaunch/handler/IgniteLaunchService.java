@@ -28,6 +28,7 @@ import com.mineteria.ignite.api.Blackboard;
 import com.mineteria.ignite.api.mod.ModResource;
 import com.mineteria.ignite.applaunch.IgniteBootstrap;
 import com.mineteria.ignite.applaunch.mod.ModEngine;
+import com.mineteria.ignite.applaunch.util.IgniteConstants;
 import com.mineteria.ignite.applaunch.util.IgniteExclusions;
 import cpw.mods.gross.Java9ClassLoaderUtil;
 import cpw.mods.modlauncher.api.ILaunchHandlerService;
@@ -36,7 +37,6 @@ import cpw.mods.modlauncher.api.ITransformingClassLoaderBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.IOException;
 import java.net.JarURLConnection;
@@ -59,29 +59,28 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 import java.util.jar.Manifest;
 
-@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public final class IgniteLaunchService implements ILaunchHandlerService {
-  private static final Optional<Manifest> UNKNOWN_MANIFEST = Optional.of(new Manifest());
-
+  private final ConcurrentMap<String, Manifest> manifests = new ConcurrentHashMap<>();
   private final Logger logger = LogManager.getLogger("IgniteLaunch");
-  private final ConcurrentMap<URL, Optional<Manifest>> manifestCache = new ConcurrentHashMap<>();
 
   @Override
   public final @NonNull String name() {
-    return "ignite_launch";
+    return IgniteConstants.IGNITE_LAUNCH_SERVICE;
   }
 
   @Override
   public void configureTransformationClassLoader(final @NonNull ITransformingClassLoaderBuilder builder) {
     for (final URL url : Java9ClassLoaderUtil.getSystemClassPathURLs()) {
-      if (url.toString().contains("mixin") && url.toString().endsWith(".jar")) {
+      // Exclude mixin from transformations.
+      final String target = url.toString();
+      if (target.contains("mixin") && target.endsWith(".jar")) {
         continue;
       }
 
       try {
         builder.addTransformationPath(Paths.get(url.toURI()));
       } catch (final URISyntaxException exception) {
-        this.logger.error("Failed to add Mixin transformation path", exception);
+        this.logger.error("Failed to add transformation path for '" + target + "'!", exception);
       }
     }
 
@@ -90,15 +89,13 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
   }
 
   @Override
-  public final @NonNull Callable<Void> launchService(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
-    IgniteBootstrap.getInstance().getModEngine().loadTransformers();
+  public final @NonNull Callable<Void> launchService(final @NonNull String @NonNull [] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
+    IgniteBootstrap.getInstance().getModEngine().loadMixins();
 
     launchClassLoader.addTargetPackageFilter(packageLocation -> IgniteExclusions.getExclusions().stream()
       .map(IgniteExclusions.Exclusion::getPackageExclusion)
       .filter(Objects::nonNull)
       .noneMatch(packageLocation::startsWith));
-
-    this.logger.info("Transitioning to launch target, please wait...");
 
     return () -> {
       this.launchService0(arguments, launchClassLoader);
@@ -116,9 +113,8 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
       }
 
       return new Enumeration<URL>() {
-        private final @NonNull Iterator<ModResource> resources = IgniteBootstrap.getInstance().getModEngine().getResources().iterator();
-
-        private @Nullable URL next = this.computeNext();
+        private final Iterator<ModResource> resources = IgniteBootstrap.getInstance().getModEngine().getResources().iterator();
+        private URL next = this.computeNext();
 
         @Override
         public final boolean hasMoreElements() {
@@ -127,21 +123,21 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
 
         @Override
         public final @NonNull URL nextElement() {
-          final URL next = this.next;
-          if (next == null) throw new NoSuchElementException();
+          final URL current = this.next;
+          if (current == null) throw new NoSuchElementException();
           this.next = this.computeNext();
-          return next;
+          return current;
         }
 
         private URL computeNext() {
-          while (this.resources.hasNext()) {
-            final ModResource resource = this.resources.next();
-            final Path resolved = resource.getFileSystem().getPath(resourceLocation);
+          ModResource resource = null;
+          while (this.resources.hasNext() && resource == null) {
+            final Path resolved = (resource = this.resources.next()).getFileSystem().getPath(resourceLocation);
             if (Files.exists(resolved)) {
               try {
                 return resolved.toUri().toURL();
-              } catch (final MalformedURLException ex) {
-                throw new RuntimeException(ex);
+              } catch (final MalformedURLException exception) {
+                IgniteLaunchService.this.logger.error("Failed to compute resource path for '" + resolved.toString() + "'!", exception);
               }
             }
           }
@@ -155,30 +151,31 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
   protected final @NonNull Function<URLConnection, Optional<Manifest>> getManifestLocator() {
     return connection -> {
       if (connection instanceof JarURLConnection) {
-        final URL jarUrl = ((JarURLConnection) connection).getJarFileURL();
-        final Optional<Manifest> manifest = this.manifestCache.computeIfAbsent(jarUrl, key -> {
+        final JarURLConnection jarConnection = (JarURLConnection) connection;
+        final URL url = jarConnection.getJarFileURL();
+        final String target = url.toString();
+
+        final Manifest manifest = this.manifests.computeIfAbsent(target, key -> {
           for (final ModResource resource : IgniteBootstrap.getInstance().getModEngine().getResources()) {
             try {
-              if (resource.getPath().toAbsolutePath().normalize().equals(Paths.get(key.toURI()).toAbsolutePath().normalize())) {
-                return Optional.of(resource.getManifest());
+              if (resource.getPath().toAbsolutePath().normalize().equals(Paths.get(url.toURI()).toAbsolutePath().normalize())) {
+                return resource.getManifest();
               }
             } catch (final URISyntaxException exception) {
-              this.logger.error("Failed to load manifest from jar '{}'!", key, exception);
+              this.logger.error("Failed to load manifest from resource for '" + target + "'!", exception);
             }
           }
 
-          return IgniteLaunchService.UNKNOWN_MANIFEST;
+          try {
+            return jarConnection.getManifest();
+          } catch (final IOException exception) {
+            this.logger.error("Failed to load manifest from connection for '" + target + "'!", exception);
+          }
+
+          return null;
         });
 
-        try {
-          if (manifest == IgniteLaunchService.UNKNOWN_MANIFEST) {
-            return Optional.ofNullable(((JarURLConnection) connection).getManifest());
-          } else {
-            return manifest;
-          }
-        } catch (final IOException exception) {
-          this.logger.error("Failed to load manifest from jar '{}'!", jarUrl, exception);
-        }
+        return Optional.ofNullable(manifest);
       }
 
       return Optional.empty();
@@ -186,20 +183,20 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
   }
 
   /**
-   * Launch the service (Minecraft).
+   * Launch the service.
    *
    * @param arguments The arguments to launch the service with
    * @param launchClassLoader The transforming class loader to load classes with
    */
   protected void launchService0(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) throws Exception {
     final Path launchJar = Blackboard.getProperty(Blackboard.LAUNCH_JAR);
-    if (launchJar == null || !Files.exists(launchJar)) {
-      throw new IllegalStateException("No launch jar was found!");
-    } else {
+    if (launchJar != null && Files.exists(launchJar)) {
       // Invoke the main method on the provided ClassLoader.
       Class.forName("com.mineteria.ignite.launch.IgniteLaunch", true, launchClassLoader.getInstance())
         .getMethod("main", ModEngine.class, String[].class)
         .invoke(null, IgniteBootstrap.getInstance().getModEngine(), arguments);
+    } else {
+      throw new IllegalStateException("No launch jar was found!");
     }
   }
 }

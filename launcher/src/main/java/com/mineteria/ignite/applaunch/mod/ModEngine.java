@@ -24,13 +24,18 @@
  */
 package com.mineteria.ignite.applaunch.mod;
 
+import com.google.common.collect.Maps;
 import com.mineteria.ignite.api.mod.ModContainer;
 import com.mineteria.ignite.api.mod.ModResource;
+import com.mineteria.ignite.applaunch.util.IgniteConstants;
+import cpw.mods.modlauncher.api.IEnvironment;
+import cpw.mods.modlauncher.serviceapi.ILaunchPluginService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.asm.mixin.Mixins;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -69,34 +74,64 @@ public final class ModEngine {
   /**
    * Locates and populates the mod resources list.
    */
-  public void locateResources() {
-    this.getLogger().info("Scanning for mods...");
-
-    this.resources.addAll(this.resourceLocator.locateResources(this));
+  public boolean locateResources() {
+    return this.resources.addAll(this.resourceLocator.locateResources(this));
   }
 
   /**
-   * Loads the located resources and adds them to the containers map.
+   * Loads the located resources, adds them to the containers map
+   * and returns a list of resource paths.
    */
-  public void loadResources() {
+  public @NonNull List<Map.Entry<String, Path>> loadResources() {
+    final List<Map.Entry<String, Path>> targetResources = new ArrayList<>();
     for (final ModContainer container : this.resourceLoader.loadResources(this)) {
+      final ModResource resource = container.getResource();
+
       this.containers.put(container.getId(), container);
+
+      final Map.Entry<String, Path> entry = Maps.immutableEntry(resource.getPath().getFileName().toString(), resource.getPath());
+      targetResources.add(entry);
     }
 
-    this.getLogger().info("Located {} mod(s).", this.containers.size());
+    this.getLogger().info("Located " + this.containers.size() + " mod(s).");
+
+    return targetResources;
   }
 
   /**
    * Loads the mod transformers.
    */
-  public void loadTransformers() {
+  public void loadTransformers(final @NonNull IEnvironment environment) {
+    final ILaunchPluginService accessTransformer = environment.findLaunchPlugin(IgniteConstants.AT_SERVICE).orElse(null);
+
     for (final ModContainer container : this.getContainers()) {
+      final ModResource resource = container.getResource();
+
+      // Access Transformer
+      if (accessTransformer != null) {
+        final String atFiles = resource.getManifest().getMainAttributes().getValue(IgniteConstants.AT);
+        if (atFiles != null) {
+          for (final String atFile : atFiles.split(",")) {
+            if (!atFile.endsWith(".cfg")) continue;
+
+            accessTransformer.offerResource(resource.getFileSystem().getPath(IgniteConstants.META_INF).resolve(atFile), atFile);
+          }
+        }
+      }
+    }
+
+    this.getLogger().info("Applied access transformer(s).");
+  }
+
+  public void loadMixins() {
+    for (final ModContainer container : this.getContainers()) {
+      // Mixins
       final List<String> mixins = container.getConfig().getRequiredMixins();
       if (mixins != null && !mixins.isEmpty()) {
         Mixins.addConfigurations(mixins.toArray(new String[0]));
       }
     }
 
-    this.getLogger().info("Applied mod transformers.");
+    this.getLogger().info("Applied mixin transformer(s).");
   }
 }

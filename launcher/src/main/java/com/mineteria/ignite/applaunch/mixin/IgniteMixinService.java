@@ -32,6 +32,8 @@ import org.spongepowered.asm.service.modlauncher.MixinServiceModLauncher;
 import java.util.Collection;
 
 public final class IgniteMixinService extends MixinServiceModLauncher {
+  private final LauncherContainer container = new LauncherContainer(this.getName());
+
   @Override
   public final boolean isValid() {
     return true;
@@ -39,7 +41,7 @@ public final class IgniteMixinService extends MixinServiceModLauncher {
 
   @Override
   public final @NonNull ContainerHandleModLauncher getPrimaryContainer() {
-    return new LauncherContainer(this.getName());
+    return this.container;
   }
 
   @Override
