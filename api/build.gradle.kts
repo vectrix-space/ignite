@@ -37,7 +37,7 @@ dependencies {
     exclude(group = "com.google.guava", module = "guava")
   }
 
-  api("com.google.code.gson:gson:2.8.0")
+  api("com.google.code.gson:gson:2.8.6")
 
   // Mixins
   api("org.spongepowered:mixin:0.8.2")
