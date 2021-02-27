@@ -126,7 +126,7 @@ public final class ModEngine {
   public void loadMixins() {
     for (final ModContainer container : this.getContainers()) {
       // Mixins
-      final List<String> mixins = container.getConfig().getRequiredMixins();
+      final List<String> mixins = container.getConfig().getMixins();
       if (mixins != null && !mixins.isEmpty()) {
         Mixins.addConfigurations(mixins.toArray(new String[0]));
       }
