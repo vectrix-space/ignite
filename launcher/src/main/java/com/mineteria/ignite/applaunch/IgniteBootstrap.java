@@ -107,7 +107,7 @@ public final class IgniteBootstrap {
 
     // Logger
     final Logger logger = LogManager.getLogger("IgniteBootstrap");
-    logger.info("Ignite Launcher version {}", IgniteBootstrap.class.getPackage().getImplementationVersion());
+    logger.info("Ignite Launcher v" + IgniteBootstrap.class.getPackage().getImplementationVersion());
 
     // Blackboard
     Blackboard.setProperty(Blackboard.LAUNCH_ARGUMENTS, Collections.unmodifiableList(arguments));
@@ -116,7 +116,7 @@ public final class IgniteBootstrap {
     Blackboard.setProperty(Blackboard.MOD_DIRECTORY_PATH, IgniteBootstrap.MOD_TARGET_PATH);
     Blackboard.setProperty(Blackboard.CONFIG_DIRECTORY_PATH, IgniteBootstrap.CONFIG_TARGET_PATH);
 
-    // Elevate Security - Java 9+
+    // Update Security - Java 9+
     Agent.updateSecurity();
 
     // Modlauncher

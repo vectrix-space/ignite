@@ -46,10 +46,10 @@ public interface ModManager {
    * Returns the {@link ModContainer} for the specified {@link Object}
    * mod instance, if it exists.
    *
-   * @param modInstance The mod instance
+   * @param mod The mod instance
    * @return The mod container
    */
-  @NonNull Optional<ModContainer> getContainer(final @NonNull Object modInstance);
+  @NonNull Optional<ModContainer> getContainer(final @NonNull Object mod);
 
   /**
    * Returns {@code true} if a mod with the specified {@link String}
@@ -64,10 +64,10 @@ public interface ModManager {
    * Returns {@code true} if the specified {@link Object} is a mod
    * instance.
    *
-   * @param modInstance The possibly mod instance
+   * @param mod The possible mod instance
    * @return True if the object is a mod instance, otherwise false
    */
-  boolean isInstance(final @NonNull Object modInstance);
+  boolean isInstance(final @NonNull Object mod);
 
   /**
    * Returns a {@link Collection} of {@link ModContainer}s that have

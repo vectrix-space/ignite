@@ -120,6 +120,7 @@ public final class ModDependencyResolver {
 
     currentIteration.addLast(node);
     marks.put(node, Mark.TEMPORARY);
+
     for (final ModContainer edge : dependencyGraph.successors(node)) {
       ModDependencyResolver.visitNode(dependencyGraph, edge, marks, sorted, currentIteration);
     }

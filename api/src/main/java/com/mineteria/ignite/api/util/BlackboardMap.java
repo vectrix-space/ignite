@@ -106,7 +106,7 @@ public final class BlackboardMap {
       if (this == other) return 0;
       if (this.identifier < other.identifier) return -1;
       if (this.identifier > other.identifier) return 1;
-      throw new RuntimeException("Huh?");
+      throw new RuntimeException("Unable to compare provided key!");
     }
   }
 }

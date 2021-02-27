@@ -34,7 +34,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 public final class ModClassLoader extends URLClassLoader {
-  private static final Set<ModClassLoader> loaders = new CopyOnWriteArraySet<>();
+  private static final Set<ModClassLoader> LOADERS = new CopyOnWriteArraySet<>();
 
   static {
     ClassLoader.registerAsParallelCapable();
@@ -45,7 +45,7 @@ public final class ModClassLoader extends URLClassLoader {
   }
 
   public void addLoaders() {
-    ModClassLoader.loaders.add(this);
+    ModClassLoader.LOADERS.add(this);
   }
 
   @Override
@@ -55,12 +55,11 @@ public final class ModClassLoader extends URLClassLoader {
 
   @Override
   public void close() throws IOException {
-    ModClassLoader.loaders.remove(this);
+    ModClassLoader.LOADERS.remove(this);
     super.close();
   }
 
-  private Class<?> loadClass0(final @NonNull String name, final boolean resolve, final boolean checkOther)
-    throws ClassNotFoundException {
+  private Class<?> loadClass0(final @NonNull String name, final boolean resolve, final boolean checkOther) throws ClassNotFoundException {
     try {
       return super.loadClass(name, resolve);
     } catch (ClassNotFoundException ignored) {
@@ -68,7 +67,7 @@ public final class ModClassLoader extends URLClassLoader {
     }
 
     if (checkOther) {
-      for (ModClassLoader loader : ModClassLoader.loaders) {
+      for (final ModClassLoader loader : ModClassLoader.LOADERS) {
         if (loader != this) {
           try {
             return loader.loadClass0(name, resolve, false);
