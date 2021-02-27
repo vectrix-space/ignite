@@ -48,6 +48,24 @@ dependencies {
   }
 }
 
+val launcherJava9 by sourceSets.register("java9") {
+  val main: SourceSet = sourceSets.main.get()
+
+  this.java.setSrcDirs(setOf("src/java9"))
+  compileClasspath += main.compileClasspath
+  compileClasspath += main.runtimeClasspath
+
+  tasks.named(compileJavaTaskName, JavaCompile::class) {
+    options.release.set(9)
+
+    if (JavaVersion.current() < JavaVersion.VERSION_11) {
+      javaCompiler.set(javaToolchains.compilerFor { languageVersion.set(JavaLanguageVersion.of(11)) })
+    }
+  }
+
+  dependencies.add(implementationConfigurationName, objects.fileCollection().from(main.output.classesDirs))
+}
+
 tasks {
   jar {
     manifest {
@@ -70,12 +88,18 @@ tasks {
         zipTree { configurations.runtimeClasspath.get().files.find { entry -> entry.name.contains("modlauncher") } }.matching { include("**/MANIFEST.MF") }.singleFile
       })
     }
+
+    into("META-INF/versions/9/") {
+      from(launcherJava9.output)
+    }
   }
 
   named<ShadowJar>("shadowJar") {
     mergeServiceFiles()
 
     transform(Log4j2PluginsCacheFileTransformer())
+
+    from(jar)
 
     dependencies {
       // API
@@ -132,6 +156,9 @@ tasks {
       include(dependency("cpw.mods:grossjava9hacks"))
       include(dependency("net.sf.jopt-simple:jopt-simple"))
     }
+
+    exclude("META-INF/versions/*/module-info.class")
+    exclude("module-info.class")
   }
 
   create<DefaultTask>("copyJarToTarget") {

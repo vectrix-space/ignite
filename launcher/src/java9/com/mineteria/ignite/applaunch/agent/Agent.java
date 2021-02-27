@@ -32,7 +32,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.instrument.Instrumentation;
 import java.nio.file.Path;
+import java.util.Map;
+import java.util.Set;
 import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 public final class Agent {
   /**
@@ -81,7 +84,17 @@ public final class Agent {
   }
 
   public static void updateSecurity() {
-    // Java 9 only.
+    final Set<Module> systemUnnamed = Set.of(ClassLoader.getSystemClassLoader().getUnnamedModule());
+    Agent.LAUNCH_INSTRUMENTATION.redefineModule(
+      Manifest.class.getModule(),
+      Set.of(),
+      Map.of("sun.security.util", systemUnnamed),
+      Map.of(
+        "java.util.jar", systemUnnamed // ModLauncher
+      ),
+      Set.of(),
+      Map.of()
+    );
   }
 
   private Agent() {}

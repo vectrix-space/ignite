@@ -116,6 +116,9 @@ public final class IgniteBootstrap {
     Blackboard.setProperty(Blackboard.MOD_DIRECTORY_PATH, IgniteBootstrap.MOD_TARGET_PATH);
     Blackboard.setProperty(Blackboard.CONFIG_DIRECTORY_PATH, IgniteBootstrap.CONFIG_TARGET_PATH);
 
+    // Elevate Security - Java 9+
+    Agent.updateSecurity();
+
     // Modlauncher
     logger.info("Preparing ModLauncher with arguments " + launchArguments);
     Launcher.main(launchArguments.toArray(new String[0]));
