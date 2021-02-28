@@ -127,6 +127,7 @@ public final class IgniteEventManager implements EventManager {
   @Override
   public void unregister(final @NonNull Object mod, final @NonNull Object listener) {
     requireNonNull(mod, "mod");
+    requireNonNull(listener, "listener");
 
     this.ensureMod(mod);
 
@@ -138,6 +139,7 @@ public final class IgniteEventManager implements EventManager {
   @Override
   public <E> void unregister(final @NonNull Object mod, final @NonNull EventHandler<E> handler) {
     requireNonNull(mod, "mod");
+    requireNonNull(handler, "handler");
 
     this.ensureMod(mod);
 
@@ -154,7 +156,7 @@ public final class IgniteEventManager implements EventManager {
 
     final PostResult result = this.bus.post(event);
     if (!result.exceptions().isEmpty()) {
-      this.platform.getLogger().error("An error occurred attempting to post an event '{}'!", event);
+      this.platform.getLogger().error("An error occurred attempting to post an event '" + event + "'!");
 
       int i = 0;
       for (final Throwable throwable : result.exceptions().values()) {

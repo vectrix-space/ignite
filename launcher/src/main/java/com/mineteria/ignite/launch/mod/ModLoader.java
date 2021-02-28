@@ -46,32 +46,32 @@ public final class ModLoader {
     try {
       ordered = ModDependencyResolver.resolveDependencies(platform, pending);
     } catch (final IllegalStateException exception) {
-      platform.getLogger().error("Unable to generate mod dependency graph!");
-      platform.getLogger().error("\n", exception);
+      platform.getLogger().error("Unable to generate mod dependency graph!", exception);
       return Collections.emptyList();
     }
 
     for (final ModContainer container : ordered) {
+      final String identifier = container.getId();
+
       try {
         // Instantiate the container.
-        final Object modInstance = this.instantiateContainer(container);
-        identifierTarget.put(container.getId(), container);
+        final Object mod = this.instantiateContainer(container);
+        identifierTarget.put(identifier, container);
 
-        if (modInstance != null) {
-          instanceTarget.put(modInstance, container);
+        if (mod != null) {
+          instanceTarget.put(mod, container);
 
           // Register the instance events.
           try {
-            platform.getEventManager().register(modInstance, modInstance);
+            platform.getEventManager().register(mod, mod);
           } catch (final Exception exception) {
             throw new IllegalStateException("Unable to register mod listeners!", exception);
           }
         } else {
-          platform.getLogger().warn("Loaded '{}' without a target class.", container.getId());
+          platform.getLogger().warn("Loaded '" + identifier + "' without a target class.");
         }
       } catch (final Exception exception) {
-        platform.getLogger().error("Failed to load mod '{}'!", container.getId());
-        platform.getLogger().error("\n", exception);
+        platform.getLogger().error("Failed to load mod '" + identifier + "'!", exception);
       }
     }
 
@@ -81,22 +81,22 @@ public final class ModLoader {
   private Object instantiateContainer(final ModContainer container) throws IllegalStateException {
     try {
       // Add the resource to the class loader.
-      final URL modJar = container.getResource().getPath().toUri().toURL();
-      final ModClassLoader classLoader = new ModClassLoader(new URL[] { modJar });
+      final URL resourceJar = container.getResource().getPath().toUri().toURL();
+      final ModClassLoader classLoader = new ModClassLoader(new URL[] { resourceJar });
       classLoader.addLoaders();
 
-      final String targetClass = container.getConfig().getTarget();
-      if (targetClass != null) {
+      final String target = container.getConfig().getTarget();
+      if (target != null) {
         // Load the class.
-        final Class<?> modClass = classLoader.loadClass(targetClass);
+        final Class<?> clazz = classLoader.loadClass(target);
 
         final Injector parentInjector = IgniteLaunch.getInstance().getInjector();
         if (parentInjector != null) {
-          final Injector childInjector = parentInjector.createChildInjector(new ModModule(container, modClass));
-          return childInjector.getInstance(modClass);
+          final Injector childInjector = parentInjector.createChildInjector(new ModModule(container, clazz));
+          return childInjector.getInstance(clazz);
         }
 
-        return modClass.newInstance();
+        return clazz.newInstance();
       }
 
       return null;

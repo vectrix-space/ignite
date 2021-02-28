@@ -62,9 +62,9 @@ public final class IgniteModManager implements ModManager {
   }
 
   @Override
-  public @NonNull Optional<ModContainer> getContainer(final @NonNull Object modInstance) {
-    requireNonNull(modInstance, "modInstance");
-    return Optional.ofNullable(this.containerInstances.get(modInstance));
+  public @NonNull Optional<ModContainer> getContainer(final @NonNull Object mod) {
+    requireNonNull(mod, "mod");
+    return Optional.ofNullable(this.containerInstances.get(mod));
   }
 
   @Override
@@ -74,9 +74,9 @@ public final class IgniteModManager implements ModManager {
   }
 
   @Override
-  public boolean isInstance(final @NonNull Object modInstance) {
-    requireNonNull(modInstance, "modInstance");
-    return this.containerInstances.containsKey(modInstance);
+  public boolean isInstance(final @NonNull Object mod) {
+    requireNonNull(mod, "mod");
+    return this.containerInstances.containsKey(mod);
   }
 
   @Override
@@ -89,13 +89,8 @@ public final class IgniteModManager implements ModManager {
 
     this.platform.getEventManager().post(new PlatformConstructEvent());
 
-    this.platform.getLogger().info("Constructed [{}] mod(s).", this.containers.values().stream()
-      .map(ModContainer::toString)
-      .collect(Collectors.joining(", "))
-    );
+    this.platform.getLogger().info("Loading [" + this.containers.values().stream().map(ModContainer::toString).collect(Collectors.joining(", ")) + "].");
 
     this.platform.getEventManager().post(new PlatformInitializeEvent());
-
-    this.platform.getLogger().info("Initialized mod(s).");
   }
 }

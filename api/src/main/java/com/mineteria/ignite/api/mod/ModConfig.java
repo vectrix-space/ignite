@@ -43,7 +43,7 @@ public final class ModConfig {
   private String target;
   private List<String> requiredDependencies;
   private List<String> optionalDependencies;
-  private List<String> requiredMixins;
+  private List<String> mixins;
 
   public ModConfig() {}
 
@@ -52,13 +52,13 @@ public final class ModConfig {
                    final @Nullable String target,
                    final @Nullable List<String> requiredDependencies,
                    final @Nullable List<String> optionalDependencies,
-                   final @Nullable List<String> requiredMixins) {
+                   final @Nullable List<String> mixins) {
     this.id = id;
     this.version = version;
     this.target = target;
     this.requiredDependencies = requiredDependencies;
     this.optionalDependencies = optionalDependencies;
-    this.requiredMixins = requiredMixins;
+    this.mixins = mixins;
   }
 
   /**
@@ -107,17 +107,17 @@ public final class ModConfig {
   }
 
   /**
-   * Returns a list of required mixin configurations.
+   * Returns a list of mixin configurations.
    *
-   * @return A list of required mixins
+   * @return A list of mixins
    */
-  public final @Nullable List<String> getRequiredMixins() {
-    return this.requiredMixins;
+  public final @Nullable List<String> getMixins() {
+    return this.mixins;
   }
 
   @Override
   public final int hashCode() {
-    return Objects.hash(this.id, this.version, this.target, this.requiredDependencies, this.optionalDependencies, this.requiredMixins);
+    return Objects.hash(this.id, this.version, this.target, this.requiredDependencies, this.optionalDependencies, this.mixins);
   }
 
   @Override
@@ -130,7 +130,7 @@ public final class ModConfig {
       && Objects.equals(this.target, that.target)
       && Objects.deepEquals(this.requiredDependencies, that.requiredDependencies)
       && Objects.deepEquals(this.optionalDependencies, that.optionalDependencies)
-      && Objects.deepEquals(this.requiredMixins, that.requiredMixins);
+      && Objects.deepEquals(this.mixins, that.mixins);
   }
 
   @Override
@@ -140,7 +140,7 @@ public final class ModConfig {
       ", target=" + this.target +
       ", requiredDependencies=" + (this.requiredDependencies != null ? Arrays.toString(this.requiredDependencies.toArray(new String[0])) : "[]") +
       ", optionalDependencies=" + (this.optionalDependencies != null ? Arrays.toString(this.optionalDependencies.toArray(new String[0])) : "[]") +
-      ", requiredMixins=" + (this.requiredMixins != null ? Arrays.toString(this.requiredMixins.toArray(new String[0])) : "[]") +
+      ", mixins=" + (this.mixins != null ? Arrays.toString(this.mixins.toArray(new String[0])) : "[]") +
       "}";
   }
 }

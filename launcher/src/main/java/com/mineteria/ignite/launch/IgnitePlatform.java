@@ -40,7 +40,6 @@ import java.nio.file.Path;
 
 public final class IgnitePlatform implements Platform {
   private final Logger logger = LogManager.getLogger("IgnitePlatform");
-
   private final ModManager modManager;
   private final EventManager eventManager;
   private final Path configs;

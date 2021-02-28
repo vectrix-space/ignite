@@ -54,14 +54,14 @@ public final class ModResourceLoader {
       try (final JarFile jarFile = new JarFile(resourcePath.toFile())) {
         final JarEntry jarEntry = jarFile.getJarEntry(engine.getResourceLocator().getMetadataPath());
         if (jarEntry == null) {
-          engine.getLogger().debug("'{}' does not contain any mod metadata so it is not a mod. Skipping...", jarFile);
+          engine.getLogger().debug("The resource '" + jarFile.getName() + "' does not contain any mod metadata so it is not a mod. Skipping...");
           continue;
         }
 
         final JsonReader reader = new JsonReader(new InputStreamReader(jarFile.getInputStream(jarEntry), StandardCharsets.UTF_8));
         final ModConfig config = this.gson.fromJson(reader, ModConfig.class);
         if (config.getId() == null || config.getVersion() == null) {
-          engine.getLogger().error("Attempted to load '{}', but found an invalid configuration! Skipping...", jarFile.getName());
+          engine.getLogger().error("Attempted to load the resource '" + jarFile.getName() + "', but found an invalid configuration! Skipping...");
           continue;
         }
 
@@ -73,7 +73,7 @@ public final class ModResourceLoader {
         final Logger logger = LogManager.getLogger(config.getId());
         containers.add(new ModContainer(logger, resource, config));
       } catch (final IOException exception) {
-        engine.getLogger().warn("Failed to open '{}'!", resourcePath);
+        engine.getLogger().warn("Failed to read resource '" + resourcePath + "'!");
       }
     }
 

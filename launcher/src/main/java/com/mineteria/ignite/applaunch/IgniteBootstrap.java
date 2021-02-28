@@ -27,6 +27,7 @@ package com.mineteria.ignite.applaunch;
 import com.mineteria.ignite.api.Blackboard;
 import com.mineteria.ignite.applaunch.agent.Agent;
 import com.mineteria.ignite.applaunch.mod.ModEngine;
+import com.mineteria.ignite.applaunch.util.IgniteConstants;
 import cpw.mods.modlauncher.Launcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -95,7 +96,7 @@ public final class IgniteBootstrap {
 
     // Launch Target
     launchArguments.add("--launchTarget");
-    launchArguments.add("ignite_launch");
+    launchArguments.add(IgniteConstants.IGNITE_LAUNCH_SERVICE);
 
     // Load the server jar on the provided ClassLoader via the Agent.
     try {
@@ -106,7 +107,7 @@ public final class IgniteBootstrap {
 
     // Logger
     final Logger logger = LogManager.getLogger("IgniteBootstrap");
-    logger.info("Ignite Launcher version {}", IgniteBootstrap.class.getPackage().getImplementationVersion());
+    logger.info("Ignite Launcher v" + IgniteBootstrap.class.getPackage().getImplementationVersion());
 
     // Blackboard
     Blackboard.setProperty(Blackboard.LAUNCH_ARGUMENTS, Collections.unmodifiableList(arguments));
@@ -115,8 +116,11 @@ public final class IgniteBootstrap {
     Blackboard.setProperty(Blackboard.MOD_DIRECTORY_PATH, IgniteBootstrap.MOD_TARGET_PATH);
     Blackboard.setProperty(Blackboard.CONFIG_DIRECTORY_PATH, IgniteBootstrap.CONFIG_TARGET_PATH);
 
+    // Update Security - Java 9+
+    Agent.updateSecurity();
+
     // Modlauncher
-    logger.info("Preparing ModLauncher with arguments {}", launchArguments);
+    logger.info("Preparing ModLauncher with arguments " + launchArguments);
     Launcher.main(launchArguments.toArray(new String[0]));
   }
 

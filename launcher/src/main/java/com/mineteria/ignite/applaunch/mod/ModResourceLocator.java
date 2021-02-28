@@ -47,7 +47,7 @@ public final class ModResourceLocator {
 
     final Path modDirectory = Blackboard.getProperty(Blackboard.MOD_DIRECTORY_PATH);
     if (modDirectory == null || Files.notExists(modDirectory)) {
-      engine.getLogger().warn("Mod directory '{}' does not exist for mod resource locator. Skipping...", modDirectory);
+      engine.getLogger().warn("Mod directory '" + modDirectory + "' does not exist for mod resource locator. Skipping...");
       return modResources;
     }
 
@@ -60,7 +60,7 @@ public final class ModResourceLocator {
         try (final JarFile jarFile = new JarFile(childDirectory.toFile())) {
           final JarEntry jarEntry = jarFile.getJarEntry(this.getMetadataPath());
           if (jarEntry == null) {
-            engine.getLogger().debug("'{}' does not contain any mod metadata so it is not a mod. Skipping...", jarFile);
+            engine.getLogger().debug("The resource '" + jarFile.getName() + "' does not contain any mod metadata so it is not a mod. Skipping...");
             continue;
           }
 
@@ -68,7 +68,7 @@ public final class ModResourceLocator {
         }
       }
     } catch (final IOException exception) {
-      engine.getLogger().error("Error walking mods directory '{}'.", modDirectory, exception);
+      engine.getLogger().error("Failed to walk the mods directory '" + modDirectory + "'!", exception);
     }
 
     return modResources;
