@@ -1,3 +1,7 @@
+import net.kyori.indra.sonatype.IndraSonatypePublishingPlugin
+
+apply<IndraSonatypePublishingPlugin>()
+
 dependencies {
   // API
   api("org.checkerframework:checker-qual:3.9.1")
