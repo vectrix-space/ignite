@@ -81,7 +81,7 @@ public final class Agent {
   }
 
   public static void updateSecurity() {
-    // Java 9+ only.
+    // Java 9 only.
   }
 
   private Agent() {}
