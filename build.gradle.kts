@@ -27,7 +27,7 @@ subprojects {
     mavenCentral()
     sonatypeSnapshots()
     maven {
-      url = uri("https://repo.spongepowered.org/maven/")
+      url = uri("https://repo.spongepowered.org/repository/maven-public/")
     }
     maven {
       url = uri("https://files.minecraftforge.net/maven/")
