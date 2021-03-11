@@ -65,7 +65,7 @@ public final class ModDependencyResolver {
           if (dependency != null) {
             graph.putEdge(container, dependency);
           } else {
-            platform.getLogger().error("Unable to resolve required dependency '" + requiredDependency + "' for '" + container.getId() + "!");
+            platform.getLogger().error("Unable to resolve required dependency '" + requiredDependency + "' for '" + container.getId() + "'!");
             graph.removeNode(container);
           }
         }
@@ -79,8 +79,7 @@ public final class ModDependencyResolver {
           if (dependency != null) {
             graph.putEdge(container, dependency);
           } else {
-            platform.getLogger().error("Unable to resolve optional dependency '" + optionalDependency + "' for '" + container.getId() + "!");
-            graph.removeNode(container);
+            platform.getLogger().warn("Unable to resolve optional dependency '" + optionalDependency + "' for '" + container.getId() + "'!");
           }
         }
       }
