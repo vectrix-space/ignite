@@ -1,11 +1,10 @@
-import com.github.jengelman.gradle.plugins.shadow.ShadowPlugin
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 
-apply<ShadowPlugin>()
+apply(plugin = "com.github.johnrengelman.shadow")
 
 dependencies {
   // API
@@ -70,18 +69,19 @@ tasks {
   jar {
     manifest {
       attributes(
-        "Main-Class" to "com.mineteria.ignite.applaunch.IgniteBootstrap",
-        "Premain-Class" to "com.mineteria.ignite.applaunch.agent.Agent",
-        "Launcher-Agent-Class" to "com.mineteria.ignite.applaunch.agent.Agent"
+        "Main-Class" to "space.vectrix.ignite.applaunch.IgniteBootstrap",
+        "Premain-Class" to "space.vectrix.ignite.applaunch.agent.Agent",
+        "Launcher-Agent-Class" to "space.vectrix.ignite.applaunch.agent.Agent",
+        "Automatic-Module-Name" to "space.vectrix.ignite"
       )
 
-      attributes("com/mineteria/ignite/applaunch/",
+      attributes("space/vectrix/ignite/applaunch/",
         "Specification-Title" to "Ignite",
-        "Specification-Vendor" to "Mineteria",
+        "Specification-Vendor" to "vectrix.space",
         "Specification-Version" to 1.0,
         "Implementation-Title" to project.name,
         "Implementation-Version" to project.version.toString(),
-        "Implementation-Vendor" to "Mineteria"
+        "Implementation-Vendor" to "vectrix.space"
       )
 
       from({

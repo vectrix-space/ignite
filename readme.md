@@ -1,6 +1,9 @@
 Ignite
 ======
-[![Build Status](https://travis-ci.com/Mineteria-Development/Ignite.svg?branch=master)](https://travis-ci.com/Mineteria-Development/Ignite)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/vectrix-space/ignite/build/master)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue)](license.txt)
+[![Maven Central](https://img.shields.io/maven-central/v/space.vectrix.ignite/ignite-api?label=stable)](https://search.maven.org/search?q=g:space.vectrix.ignite%20AND%20a:ignite*)
+![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/space.vectrix.ignite/ignite-api?label=dev&server=https%3A%2F%2Fs01.oss.sonatype.org)
 
 Bootstraps the Minecraft Server with [ModLauncher] to apply [Mixins] and [Access Transformers] from Ignite mods.
 
@@ -13,9 +16,9 @@ In order to build Ignite you simply need to run the `gradle` command. You can fi
 
 The Ignite launcher must be executed instead of the Minecraft Server. Ignite will launch the Minecraft Server itself, additionally passing in any extra arguments you provide it.
 
-`java -javaagent:./ignite-launcher.jar -Dignite.launch.jar=./paper.jar -Dignite.launch.target=org.bukkit.craftbukkit.Main -Dignite.mod.directory=./plugins -Dignite.config.directory=./plugins -jar ignite-launcher.jar`
+`java -Dignite.launch.jar=./paper.jar -Dignite.launch.target=org.bukkit.craftbukkit.Main -Dignite.mod.directory=./plugins -Dignite.config.directory=./plugins -jar ignite-launcher.jar`
 
-**Note:** You must use the `-javaagent` flag pointing to the launcher in order for it to start.
+**Note:** You must add the flag `-javaagent:./ignite-launcher.jar` if you're running Java 8 or below.
 
 ## Mod Usage
 
@@ -24,9 +27,9 @@ To depend on the Ignite API in order to create your mod, you will need to add th
 * Maven
 ```xml
 <dependency>
-  <groupId>com.mineteria.ignite</groupId>
+  <groupId>space.vectrix.ignite</groupId>
   <artifactId>ignite-api</artifactId>
-  <version>0.2.2</version>
+  <version>0.3.0</version>
 </dependency>
 ```
 
@@ -37,7 +40,7 @@ repositories {
 }
 
 dependencies {
-  compile "com.mineteria.ignite:ignite-api:0.2.2"
+  compile "space.vectrix.ignite:ignite-api:0.3.0"
 }
 ```
 
@@ -50,7 +53,7 @@ Example `META-INF/ignite-mod.json`:
 {
   "id": "example",
   "version": "1.0.0",
-  "target": "com.mineteria.example.ExampleMod",
+  "target": "space.vectrix.example.ExampleMod",
   "requiredMixins": [
     "mixins.example.core.json"
   ]
@@ -75,6 +78,8 @@ This project has many parts inspired by the following projects:
 - [Sponge]
 - [Velocity]
 - [plugin-spi]
+
+Initially designed for [Mineteria](https://mineteria.com/).
 
 [ModLauncher]: https://github.com/cpw/modlauncher
 [Mixins]: https://github.com/SpongePowered/Mixin

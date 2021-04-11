@@ -1,6 +1,6 @@
 This file is part of Ignite, licensed under the MIT License (MIT).
 
-Copyright (c) Mineteria <https://mineteria.com/>
+Copyright (c) vectrix.space <https://vectrix.space/>
 Copyright (c) contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

@@ -1,7 +1,13 @@
-rootProject.name = "ignite"
+rootProject.name = "ignite-parent"
 
-include("api", "launcher", "example")
+include("api")
+include("launcher")
+include("example")
 
-findProject(":api")?.name = "ignite-api"
-findProject(":launcher")?.name = "ignite-launcher"
-findProject(":example")?.name = "example-mod"
+listOf(
+  "api",
+  "launcher",
+  "example"
+).forEach {
+  findProject(":$it")?.name = "ignite-$it"
+}
