@@ -24,12 +24,6 @@
  */
 package space.vectrix.ignite.applaunch.handler;
 
-import space.vectrix.ignite.api.Blackboard;
-import space.vectrix.ignite.api.mod.ModResource;
-import space.vectrix.ignite.applaunch.IgniteBootstrap;
-import space.vectrix.ignite.applaunch.mod.ModEngine;
-import space.vectrix.ignite.applaunch.util.IgniteConstants;
-import space.vectrix.ignite.applaunch.util.IgniteExclusions;
 import cpw.mods.gross.Java9ClassLoaderUtil;
 import cpw.mods.modlauncher.api.ILaunchHandlerService;
 import cpw.mods.modlauncher.api.ITransformingClassLoader;
@@ -37,6 +31,12 @@ import cpw.mods.modlauncher.api.ITransformingClassLoaderBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import space.vectrix.ignite.api.Blackboard;
+import space.vectrix.ignite.api.mod.ModResource;
+import space.vectrix.ignite.applaunch.IgniteBootstrap;
+import space.vectrix.ignite.applaunch.mod.ModEngine;
+import space.vectrix.ignite.applaunch.util.IgniteConstants;
+import space.vectrix.ignite.applaunch.util.IgniteExclusions;
 
 import java.io.IOException;
 import java.net.JarURLConnection;

@@ -24,16 +24,16 @@
  */
 package space.vectrix.example.mixin.plugins;
 
-import space.vectrix.example.ExampleConfig;
-import space.vectrix.example.ExampleInfo;
-import space.vectrix.ignite.api.config.Configuration;
-import space.vectrix.ignite.api.config.Configurations;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
+import space.vectrix.example.ExampleConfig;
+import space.vectrix.example.ExampleInfo;
+import space.vectrix.ignite.api.config.Configuration;
+import space.vectrix.ignite.api.config.Configurations;
 
 import java.util.List;
 import java.util.Set;

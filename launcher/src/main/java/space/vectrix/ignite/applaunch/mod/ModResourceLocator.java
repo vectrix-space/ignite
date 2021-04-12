@@ -24,10 +24,11 @@
  */
 package space.vectrix.ignite.applaunch.mod;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import space.vectrix.ignite.api.Blackboard;
 import space.vectrix.ignite.api.mod.ModResource;
+import space.vectrix.ignite.applaunch.util.EngineResource;
 import space.vectrix.ignite.applaunch.util.IgniteConstants;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -40,10 +41,13 @@ import java.util.stream.Collectors;
 
 public final class ModResourceLocator {
   public static final @NonNull String DEFAULT_METADATA_FILENAME = "ignite-mod.json";
-  public static final @NonNull String NAME = "java_directory";
+  public static final @NonNull String ENGINE_LOCATOR = "engine_locator";
+  public static final @NonNull String JAVA_LOCATOR = "java_locator";
 
   public final @NonNull List<ModResource> locateResources(final @NonNull ModEngine engine) {
     final List<ModResource> modResources = new ArrayList<>();
+
+    modResources.add(EngineResource.createEngineResource(engine));
 
     final Path modDirectory = Blackboard.getProperty(Blackboard.MOD_DIRECTORY_PATH);
     if (modDirectory == null || Files.notExists(modDirectory)) {
@@ -64,7 +68,7 @@ public final class ModResourceLocator {
             continue;
           }
 
-          modResources.add(new ModResource(ModResourceLocator.NAME, childDirectory, jarFile.getManifest()));
+          modResources.add(new ModResource(ModResourceLocator.JAVA_LOCATOR, childDirectory, jarFile.getManifest()));
         }
       }
     } catch (final IOException exception) {

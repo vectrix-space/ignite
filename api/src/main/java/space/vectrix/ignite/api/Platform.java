@@ -24,9 +24,9 @@
  */
 package space.vectrix.ignite.api;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import space.vectrix.ignite.api.event.EventManager;
 import space.vectrix.ignite.api.mod.ModManager;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.nio.file.Path;
 

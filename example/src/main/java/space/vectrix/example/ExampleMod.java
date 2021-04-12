@@ -25,14 +25,14 @@
 package space.vectrix.example;
 
 import com.google.inject.Inject;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import org.apache.logging.log4j.Logger;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import space.vectrix.ignite.api.Platform;
 import space.vectrix.ignite.api.config.Configuration;
 import space.vectrix.ignite.api.config.Configurations;
 import space.vectrix.ignite.api.event.Subscribe;
 import space.vectrix.ignite.api.event.platform.PlatformInitializeEvent;
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import org.apache.logging.log4j.Logger;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 public final class ExampleMod {
   private final Logger logger;

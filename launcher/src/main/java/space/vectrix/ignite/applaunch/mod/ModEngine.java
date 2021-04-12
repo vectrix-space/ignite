@@ -25,15 +25,15 @@
 package space.vectrix.ignite.applaunch.mod;
 
 import com.google.common.collect.Maps;
-import space.vectrix.ignite.api.mod.ModContainer;
-import space.vectrix.ignite.api.mod.ModResource;
-import space.vectrix.ignite.applaunch.util.IgniteConstants;
 import cpw.mods.modlauncher.api.IEnvironment;
 import cpw.mods.modlauncher.serviceapi.ILaunchPluginService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.asm.mixin.Mixins;
+import space.vectrix.ignite.api.mod.ModContainer;
+import space.vectrix.ignite.api.mod.ModResource;
+import space.vectrix.ignite.applaunch.util.IgniteConstants;
 
 import java.nio.file.Path;
 import java.util.ArrayList;

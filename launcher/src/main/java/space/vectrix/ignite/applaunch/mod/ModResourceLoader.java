@@ -26,12 +26,13 @@ package space.vectrix.ignite.applaunch.mod;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import space.vectrix.ignite.api.mod.ModConfig;
-import space.vectrix.ignite.api.mod.ModContainer;
-import space.vectrix.ignite.api.mod.ModResource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import space.vectrix.ignite.api.mod.ModConfig;
+import space.vectrix.ignite.api.mod.ModContainer;
+import space.vectrix.ignite.api.mod.ModResource;
+import space.vectrix.ignite.applaunch.IgniteBootstrap;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -49,8 +50,21 @@ public final class ModResourceLoader {
     final List<ModContainer> containers = new ArrayList<>();
 
     for (final ModResource resource : engine.getResources()) {
-      final Path resourcePath = resource.getPath();
+      if (resource.getLocator().equals(ModResourceLocator.ENGINE_LOCATOR)) {
+        final ModConfig config = new ModConfig(
+          IgniteBootstrap.class.getPackage().getImplementationTitle(),
+          IgniteBootstrap.class.getPackage().getImplementationVersion(),
+          null,
+          null,
+          null,
+          null
+        );
 
+        containers.add(new ModContainer(engine.getLogger(), resource, config));
+        continue;
+      }
+
+      final Path resourcePath = resource.getPath();
       try (final JarFile jarFile = new JarFile(resourcePath.toFile())) {
         final JarEntry jarEntry = jarFile.getJarEntry(engine.getResourceLocator().getMetadataPath());
         if (jarEntry == null) {

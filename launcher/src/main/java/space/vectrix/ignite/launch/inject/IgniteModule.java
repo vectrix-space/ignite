@@ -27,13 +27,13 @@ package space.vectrix.ignite.launch.inject;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.Scopes;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import space.vectrix.ignite.api.Ignite;
 import space.vectrix.ignite.api.Platform;
 import space.vectrix.ignite.api.config.path.ConfigsPath;
 import space.vectrix.ignite.api.config.path.ModsPath;
 import space.vectrix.ignite.applaunch.IgniteBootstrap;
 import space.vectrix.ignite.launch.IgnitePlatform;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.nio.file.Path;
 

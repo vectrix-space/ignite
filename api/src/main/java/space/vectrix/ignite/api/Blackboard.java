@@ -25,9 +25,9 @@
 package space.vectrix.ignite.api;
 
 import com.google.common.reflect.TypeToken;
-import space.vectrix.ignite.api.util.BlackboardMap;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import space.vectrix.ignite.api.util.BlackboardMap;
 
 import java.nio.file.Path;
 import java.util.List;

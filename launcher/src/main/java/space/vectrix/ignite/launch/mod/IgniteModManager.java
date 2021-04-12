@@ -26,13 +26,13 @@ package space.vectrix.ignite.launch.mod;
 
 import static java.util.Objects.requireNonNull;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import space.vectrix.ignite.api.event.platform.PlatformConstructEvent;
 import space.vectrix.ignite.api.event.platform.PlatformInitializeEvent;
 import space.vectrix.ignite.api.mod.ModContainer;
 import space.vectrix.ignite.api.mod.ModManager;
 import space.vectrix.ignite.applaunch.mod.ModEngine;
 import space.vectrix.ignite.launch.IgnitePlatform;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;

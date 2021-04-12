@@ -1,3 +1,5 @@
+import de.marcphilipp.gradle.nexus.NexusPublishExtension
+
 plugins {
   id("signing")
 }
@@ -79,7 +81,7 @@ signing {
 }
 
 indra {
-  extensions.configure<de.marcphilipp.gradle.nexus.NexusPublishExtension> {
+  extensions.configure<NexusPublishExtension> {
     repositories.sonatype {
       nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
       snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))

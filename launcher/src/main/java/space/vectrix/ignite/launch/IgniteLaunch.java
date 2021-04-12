@@ -26,12 +26,12 @@ package space.vectrix.ignite.launch;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import space.vectrix.ignite.api.Platform;
 import space.vectrix.ignite.applaunch.IgniteBootstrap;
 import space.vectrix.ignite.applaunch.mod.ModEngine;
 import space.vectrix.ignite.launch.inject.IgniteModule;
 import space.vectrix.ignite.launch.mod.IgniteModManager;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.nio.file.Files;
 

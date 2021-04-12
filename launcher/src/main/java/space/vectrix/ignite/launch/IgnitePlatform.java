@@ -25,6 +25,9 @@
 package space.vectrix.ignite.launch;
 
 import com.google.inject.Inject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import space.vectrix.ignite.api.Platform;
 import space.vectrix.ignite.api.config.path.ConfigsPath;
 import space.vectrix.ignite.api.config.path.ModsPath;
@@ -32,9 +35,6 @@ import space.vectrix.ignite.api.event.EventManager;
 import space.vectrix.ignite.api.mod.ModManager;
 import space.vectrix.ignite.launch.event.IgniteEventManager;
 import space.vectrix.ignite.launch.mod.IgniteModManager;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.nio.file.Path;
 

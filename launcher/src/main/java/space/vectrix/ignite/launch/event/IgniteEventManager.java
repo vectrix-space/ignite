@@ -28,12 +28,6 @@ import static java.util.Objects.requireNonNull;
 
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
-import space.vectrix.ignite.api.event.EventHandler;
-import space.vectrix.ignite.api.event.EventManager;
-import space.vectrix.ignite.api.event.PostPriority;
-import space.vectrix.ignite.api.event.Subscribe;
-import space.vectrix.ignite.launch.IgnitePlatform;
-import space.vectrix.ignite.launch.mod.ModClassLoader;
 import net.kyori.event.EventSubscriber;
 import net.kyori.event.PostResult;
 import net.kyori.event.SimpleEventBus;
@@ -42,6 +36,12 @@ import net.kyori.event.method.MethodSubscriptionAdapter;
 import net.kyori.event.method.SimpleMethodSubscriptionAdapter;
 import net.kyori.event.method.asm.ASMEventExecutorFactory;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import space.vectrix.ignite.api.event.EventHandler;
+import space.vectrix.ignite.api.event.EventManager;
+import space.vectrix.ignite.api.event.PostPriority;
+import space.vectrix.ignite.api.event.Subscribe;
+import space.vectrix.ignite.launch.IgnitePlatform;
+import space.vectrix.ignite.launch.mod.ModClassLoader;
 
 import java.lang.reflect.Method;
 import java.net.URL;

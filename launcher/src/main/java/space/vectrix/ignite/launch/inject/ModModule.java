@@ -28,11 +28,11 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Scopes;
+import org.apache.logging.log4j.Logger;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import space.vectrix.ignite.api.config.path.ConfigPath;
 import space.vectrix.ignite.api.config.path.ConfigsPath;
 import space.vectrix.ignite.api.mod.ModContainer;
-import org.apache.logging.log4j.Logger;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.nio.file.Path;
 

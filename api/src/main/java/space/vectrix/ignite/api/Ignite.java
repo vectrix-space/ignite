@@ -25,9 +25,9 @@
 package space.vectrix.ignite.api;
 
 import com.google.inject.Inject;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import space.vectrix.ignite.api.event.EventManager;
 import space.vectrix.ignite.api.mod.ModManager;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * Provides static access to the core functions of Ignite.

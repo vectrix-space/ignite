@@ -24,14 +24,14 @@
  */
 package space.vectrix.ignite.applaunch;
 
-import space.vectrix.ignite.api.Blackboard;
-import space.vectrix.ignite.applaunch.agent.Agent;
-import space.vectrix.ignite.applaunch.mod.ModEngine;
-import space.vectrix.ignite.applaunch.util.IgniteConstants;
 import cpw.mods.modlauncher.Launcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import space.vectrix.ignite.api.Blackboard;
+import space.vectrix.ignite.applaunch.agent.Agent;
+import space.vectrix.ignite.applaunch.mod.ModEngine;
+import space.vectrix.ignite.applaunch.util.IgniteConstants;
 
 import java.io.IOException;
 import java.nio.file.Files;

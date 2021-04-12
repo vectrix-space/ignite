@@ -25,11 +25,12 @@
 package space.vectrix.ignite.launch.mod;
 
 import com.google.inject.Injector;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import space.vectrix.ignite.api.mod.ModContainer;
+import space.vectrix.ignite.applaunch.mod.ModResourceLocator;
 import space.vectrix.ignite.launch.IgniteLaunch;
 import space.vectrix.ignite.launch.IgnitePlatform;
 import space.vectrix.ignite.launch.inject.ModModule;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.net.URL;
 import java.util.Collection;
@@ -52,6 +53,10 @@ public final class ModLoader {
 
     for (final ModContainer container : ordered) {
       final String identifier = container.getId();
+      if (container.getResource().getLocator().equals(ModResourceLocator.ENGINE_LOCATOR)) {
+        identifierTarget.put(identifier, container);
+        continue;
+      }
 
       try {
         // Instantiate the container.
@@ -68,7 +73,7 @@ public final class ModLoader {
             throw new IllegalStateException("Unable to register mod listeners!", exception);
           }
         } else {
-          platform.getLogger().warn("Loaded '" + identifier + "' without a target class.");
+          platform.getLogger().warn("Loading '" + identifier + "' without a target class.");
         }
       } catch (final Exception exception) {
         platform.getLogger().error("Failed to load mod '" + identifier + "'!", exception);

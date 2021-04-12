@@ -31,6 +31,7 @@ public final class IgniteConstants {
   public static final @NonNull String IGNITE_TRANSFORMATION_SERVICE = "ignitetransformer";
   public static final @NonNull String AT_SERVICE = "accesstransformer";
 
+  public static final @NonNull String MANIFEST = "MANIFEST.MF";
   public static final @NonNull String META_INF = "META-INF";
   public static final @NonNull String AT = "AT";
 

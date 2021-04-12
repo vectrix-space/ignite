@@ -25,14 +25,14 @@
 package space.vectrix.ignite.applaunch.handler;
 
 import com.google.common.collect.ImmutableList;
-import space.vectrix.ignite.applaunch.IgniteBootstrap;
-import space.vectrix.ignite.applaunch.util.IgniteConstants;
 import cpw.mods.modlauncher.api.IEnvironment;
 import cpw.mods.modlauncher.api.ITransformationService;
 import cpw.mods.modlauncher.api.ITransformer;
 import cpw.mods.modlauncher.api.IncompatibleEnvironmentException;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.asm.launch.MixinBootstrap;
+import space.vectrix.ignite.applaunch.IgniteBootstrap;
+import space.vectrix.ignite.applaunch.util.IgniteConstants;
 
 import java.nio.file.Path;
 import java.util.Collections;

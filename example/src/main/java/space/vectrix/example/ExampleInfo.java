@@ -24,10 +24,10 @@
  */
 package space.vectrix.example;
 
-import space.vectrix.ignite.api.Blackboard;
-import space.vectrix.ignite.api.config.ConfigurationKey;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import space.vectrix.ignite.api.Blackboard;
+import space.vectrix.ignite.api.config.ConfigurationKey;
 
 import java.nio.file.Path;
 

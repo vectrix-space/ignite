@@ -24,8 +24,8 @@
  */
 package space.vectrix.ignite.launch.mod;
 
-import space.vectrix.ignite.launch.IgniteLaunch;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import space.vectrix.ignite.launch.IgniteLaunch;
 
 import java.io.IOException;
 import java.net.URL;

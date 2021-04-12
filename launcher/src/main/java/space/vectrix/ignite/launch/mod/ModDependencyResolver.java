@@ -28,9 +28,9 @@ import com.google.common.collect.Maps;
 import com.google.common.graph.Graph;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.MutableGraph;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import space.vectrix.ignite.api.mod.ModContainer;
 import space.vectrix.ignite.launch.IgnitePlatform;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
