@@ -32,7 +32,7 @@ dependencies {
   }
 
   // Common
-  api("com.google.guava:guava:21.0") {
+  api("com.google.guava:guava:23.0") {
     exclude(group = "com.google.code.findbugs", module = "jsr305") // We don't want to use jsr305, use checkerframework
     exclude(group = "org.checkerframework", module = "checker-qual") // We use our own version
     exclude(group = "com.google.j2objc", module = "j2objc-annotations")
