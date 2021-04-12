@@ -55,7 +55,7 @@ dependencies {
   api("org.ow2.asm:asm:7.2")
   api("org.ow2.asm:asm-analysis:7.2")
   api("org.ow2.asm:asm-commons:7.2")
-  api("org.ow2.asm:asm-tree:7.2")
+  api("org.ow2.asm:asm-tree:9.1")
   api("org.ow2.asm:asm-util:7.2")
 
   // Access Transformers
