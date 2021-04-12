@@ -48,6 +48,12 @@ public final class ModConfig {
   public ModConfig() {}
 
   public ModConfig(final @NonNull String id,
+                   final @NonNull String version) {
+    this.id = id;
+    this.version = version;
+  }
+
+  public ModConfig(final @NonNull String id,
                    final @NonNull String version,
                    final @Nullable String target,
                    final @Nullable List<String> requiredDependencies,

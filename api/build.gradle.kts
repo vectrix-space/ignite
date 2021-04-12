@@ -49,14 +49,20 @@ dependencies {
   api("com.google.code.gson:gson:2.8.6")
 
   // Mixins
-  api("org.spongepowered:mixin:0.8.2")
+  api("org.spongepowered:mixin:0.8.2") {
+    exclude(group = "org.ow2.asm:asm")
+    exclude(group = "org.ow2.asm:asm-analysis")
+    exclude(group = "org.ow2.asm:asm-commons")
+    exclude(group = "org.ow2.asm:asm-tree")
+    exclude(group = "org.ow2.asm:asm-util")
+  }
 
   // ASM
-  api("org.ow2.asm:asm:7.2")
-  api("org.ow2.asm:asm-analysis:7.2")
-  api("org.ow2.asm:asm-commons:7.2")
-  api("org.ow2.asm:asm-tree:7.2")
-  api("org.ow2.asm:asm-util:7.2")
+  api("org.ow2.asm:asm:9.1")
+  api("org.ow2.asm:asm-analysis:9.1")
+  api("org.ow2.asm:asm-commons:9.1")
+  api("org.ow2.asm:asm-tree:9.1")
+  api("org.ow2.asm:asm-util:9.1")
 
   // Access Transformers
   api("net.minecraftforge:accesstransformers:2.2.1") {

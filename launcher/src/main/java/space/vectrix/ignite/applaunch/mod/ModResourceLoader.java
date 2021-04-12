@@ -53,11 +53,7 @@ public final class ModResourceLoader {
       if (resource.getLocator().equals(ModResourceLocator.ENGINE_LOCATOR)) {
         final ModConfig config = new ModConfig(
           IgniteBootstrap.class.getPackage().getImplementationTitle(),
-          IgniteBootstrap.class.getPackage().getImplementationVersion(),
-          null,
-          null,
-          null,
-          null
+          IgniteBootstrap.class.getPackage().getImplementationVersion()
         );
 
         containers.add(new ModContainer(engine.getLogger(), resource, config));

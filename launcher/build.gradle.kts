@@ -21,7 +21,11 @@ dependencies {
   }
 
   implementation("net.kyori:event-method-asm:4.0.0-SNAPSHOT") {
-    exclude(group = "org.ow2.asm", module = "asm")
+    exclude(group = "org.ow2.asm:asm")
+    exclude(group = "org.ow2.asm:asm-analysis")
+    exclude(group = "org.ow2.asm:asm-commons")
+    exclude(group = "org.ow2.asm:asm-tree")
+    exclude(group = "org.ow2.asm:asm-util")
   }
 
   // Access Transformers
