@@ -1,31 +1,29 @@
-import net.kyori.indra.IndraPlugin
-import net.kyori.indra.IndraLicenseHeaderPlugin
-import net.kyori.indra.sonatypeSnapshots
-
 plugins {
-  id("java")
-  id("java-library")
-  id("signing")
   id("net.kyori.indra") version "1.3.1"
-  id("net.kyori.indra.license-header") version "1.3.1"
-  id("net.kyori.indra.publishing.sonatype") version "1.3.1"
-  id("com.github.johnrengelman.shadow") version "6.1.0"
+  id("net.kyori.indra.publishing") version "1.3.1" apply false
+  id("net.kyori.indra.license-header") version "1.3.1" apply false
+  id("de.marcphilipp.nexus-publish") version "0.4.0" apply false
+  id("com.github.johnrengelman.shadow") version "6.1.0" apply false
 }
 
-group = "com.mineteria.ignite"
+group = "space.vectrix.ignite"
 version = "0.3.0-SNAPSHOT"
 description = "Bootstraps the Minecraft Server with ModLauncher to apply Mixins and Access Transformers from mods."
 
 subprojects {
-  apply<JavaPlugin>()
-  apply<JavaLibraryPlugin>()
-  apply<SigningPlugin>()
-  apply<IndraPlugin>()
-  apply<IndraLicenseHeaderPlugin>()
+  apply(plugin = "net.kyori.indra")
+  apply(plugin = "net.kyori.indra.license-header")
+
+  group = rootProject.group
+  version = rootProject.version
+  description = rootProject.description
 
   repositories {
+    mavenLocal()
     mavenCentral()
-    sonatypeSnapshots()
+    maven {
+      url = uri("https://oss.sonatype.org/content/groups/public/")
+    }
     maven {
       url = uri("https://repo.spongepowered.org/maven/")
     }
@@ -35,12 +33,10 @@ subprojects {
   }
 
   indra {
-    javaVersions {
-      target.set(8)
+    github("vectrix-space", "ignite") {
+      ci = true
     }
 
     mitLicense()
-
-    github("Mineteria-Development", "Ignite")
   }
 }

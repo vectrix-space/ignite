@@ -1,6 +1,11 @@
-import net.kyori.indra.sonatype.IndraSonatypePublishingPlugin
+import de.marcphilipp.gradle.nexus.NexusPublishExtension
 
-apply<IndraSonatypePublishingPlugin>()
+plugins {
+  id("signing")
+}
+
+apply(plugin = "net.kyori.indra.publishing")
+apply(plugin = "de.marcphilipp.nexus-publish")
 
 dependencies {
   // API
@@ -62,6 +67,12 @@ dependencies {
   }
 }
 
+tasks.jar {
+  manifest.attributes(
+    "Automatic-Module-Name" to "space.vectrix.ignite"
+  )
+}
+
 signing {
   val signingKey: String? by project
   val signingPassword: String? by project
@@ -69,14 +80,14 @@ signing {
   sign(configurations.archives.get())
 }
 
-tasks.withType<PublishToMavenRepository>().configureEach {
-  onlyIf {
-    val version: String = project.version.toString()
-    System.getenv("TRAVIS") == null || version.endsWith("-SNAPSHOT")
-  }
-}
-
 indra {
+  extensions.configure<NexusPublishExtension> {
+    repositories.sonatype {
+      nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+      snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+    }
+  }
+
   configurePublications {
     pom {
       developers {
@@ -86,5 +97,12 @@ indra {
         }
       }
     }
+  }
+}
+
+tasks.withType<PublishToMavenRepository>().configureEach {
+  onlyIf {
+    val version: String = project.version.toString()
+    System.getenv("CI") == null || version.endsWith("-SNAPSHOT")
   }
 }
