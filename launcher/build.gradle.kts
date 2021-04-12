@@ -80,7 +80,7 @@ tasks {
       )
 
       attributes("space/vectrix/ignite/applaunch/",
-        "Specification-Title" to "Ignite",
+        "Specification-Title" to "ignite",
         "Specification-Vendor" to "vectrix.space",
         "Specification-Version" to 1.0,
         "Implementation-Title" to project.name,

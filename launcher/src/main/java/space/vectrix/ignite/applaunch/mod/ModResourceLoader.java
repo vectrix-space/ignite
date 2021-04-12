@@ -52,7 +52,7 @@ public final class ModResourceLoader {
     for (final ModResource resource : engine.getResources()) {
       if (resource.getLocator().equals(ModResourceLocator.ENGINE_LOCATOR)) {
         final ModConfig config = new ModConfig(
-          IgniteBootstrap.class.getPackage().getImplementationTitle(),
+          IgniteBootstrap.class.getPackage().getSpecificationTitle(),
           IgniteBootstrap.class.getPackage().getImplementationVersion()
         );
 
