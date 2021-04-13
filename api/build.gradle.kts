@@ -41,7 +41,7 @@ dependencies {
 
   api("com.google.errorprone:error_prone_annotations:2.0.15") // Keeps guava happy
 
-  api("com.google.inject:guice:4.2.0") {
+  api("com.google.inject:guice:5.0.1") {
     exclude(group = "com.google.code.findbugs", module = "jsr305") // We don't want to use jsr305, use checkerframework
     exclude(group = "com.google.guava", module = "guava")
   }
