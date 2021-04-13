@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "space.vectrix.ignite"
-version = "0.3.0"
+version = "0.3.1-SNAPSHOT"
 description = "Bootstraps the Minecraft Server with ModLauncher to apply Mixins and Access Transformers from mods."
 
 subprojects {
