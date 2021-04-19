@@ -85,12 +85,13 @@ public final class Agent {
 
   public static void updateSecurity() {
     final Set<Module> systemUnnamed = Set.of(ClassLoader.getSystemClassLoader().getUnnamedModule());
-    LAUNCH_INSTRUMENTATION.redefineModule(
+    Agent.LAUNCH_INSTRUMENTATION.redefineModule(
       Manifest.class.getModule(),
       Set.of(),
-      Map.of("sun.security.util", systemUnnamed),
+      Map.of("sun.security.util", systemUnnamed), // ModLauncher
       Map.of(
-        "java.util.jar", systemUnnamed // ModLauncher
+        // ModLauncher -- needs Manifest.jv, and various JarVerifier methods
+        "java.util.jar", systemUnnamed
       ),
       Set.of(),
       Map.of()

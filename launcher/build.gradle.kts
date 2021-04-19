@@ -45,7 +45,7 @@ dependencies {
     exclude(group = "org.apache.logging.log4j", module = "log4j-core")
   }
 
-  implementation("cpw.mods:grossjava9hacks:1.3.0") {
+  implementation("cpw.mods:grossjava9hacks:1.3.3") {
     exclude(group = "org.apache.logging.log4j", module = "log4j-api")
     exclude(group = "org.apache.logging.log4j", module = "log4j-core")
   }
@@ -60,7 +60,6 @@ val launcherJava9 by sourceSets.register("java9") {
 
   tasks.named(compileJavaTaskName, JavaCompile::class) {
     options.release.set(9)
-
     if (JavaVersion.current() < JavaVersion.VERSION_11) {
       javaCompiler.set(javaToolchains.compilerFor { languageVersion.set(JavaLanguageVersion.of(11)) })
     }
@@ -73,10 +72,11 @@ tasks {
   jar {
     manifest {
       attributes(
-        "Main-Class" to "space.vectrix.ignite.applaunch.IgniteBootstrap",
         "Premain-Class" to "space.vectrix.ignite.applaunch.agent.Agent",
+        "Agent-Class" to "space.vectrix.ignite.applaunch.agent.Agent",
         "Launcher-Agent-Class" to "space.vectrix.ignite.applaunch.agent.Agent",
-        "Automatic-Module-Name" to "space.vectrix.ignite"
+        "Main-Class" to "space.vectrix.ignite.applaunch.IgniteBootstrap",
+        "Multi-Release" to true
       )
 
       attributes("space/vectrix/ignite/applaunch/",
