@@ -32,7 +32,10 @@ dependencies {
   }
 
   // Common
-  api("com.google.guava:guava:21.0") {
+
+  // Note: While the game usually uses 21.0, it should be fine
+  //       to bump it to 22.0 for the additional features.
+  api("com.google.guava:guava:22.0") {
     exclude(group = "com.google.code.findbugs", module = "jsr305") // We don't want to use jsr305, use checkerframework
     exclude(group = "org.checkerframework", module = "checker-qual") // We use our own version
     exclude(group = "com.google.j2objc", module = "j2objc-annotations")
@@ -41,20 +44,19 @@ dependencies {
 
   api("com.google.errorprone:error_prone_annotations:2.0.15") // Keeps guava happy
 
-  api("com.google.inject:guice:4.2.0") {
+  api("com.google.inject:guice:5.0.1") {
     exclude(group = "com.google.code.findbugs", module = "jsr305") // We don't want to use jsr305, use checkerframework
     exclude(group = "com.google.guava", module = "guava")
+    exclude(group = "org.ow2.asm:asm")
   }
 
+  // Note: While the game usually uses 2.8.0, it should be fine
+  //       to bump it to 2.8.6 for the additional features.
   api("com.google.code.gson:gson:2.8.6")
 
   // Mixins
   api("org.spongepowered:mixin:0.8.2") {
-    exclude(group = "org.ow2.asm:asm")
-    exclude(group = "org.ow2.asm:asm-analysis")
-    exclude(group = "org.ow2.asm:asm-commons")
-    exclude(group = "org.ow2.asm:asm-tree")
-    exclude(group = "org.ow2.asm:asm-util")
+    exclude(group = "org.ow2.asm")
   }
 
   // ASM
