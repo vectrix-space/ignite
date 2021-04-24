@@ -54,7 +54,7 @@ Example `META-INF/ignite-mod.json`:
   "id": "example",
   "version": "1.0.0",
   "target": "space.vectrix.example.ExampleMod",
-  "requiredMixins": [
+  "mixins": [
     "mixins.example.core.json"
   ]
 }
