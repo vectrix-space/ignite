@@ -5,7 +5,7 @@
   "requiredDependencies": [
     "ignite"
   ],
-  "requiredMixins": [
+  "mixins": [
     "mixins.example.core.json"
   ]
 }
