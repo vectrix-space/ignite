@@ -33,8 +33,10 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.asm.mixin.Mixins;
 import space.vectrix.ignite.api.mod.ModContainer;
 import space.vectrix.ignite.api.mod.ModResource;
+import space.vectrix.ignite.applaunch.agent.Agent;
 import space.vectrix.ignite.applaunch.util.IgniteConstants;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -86,6 +88,12 @@ public final class ModEngine {
     final List<Map.Entry<String, Path>> targetResources = new ArrayList<>();
     for (final ModContainer container : this.resourceLoader.loadResources(this)) {
       final ModResource resource = container.getResource();
+
+      try {
+        Agent.addJar(container.getResource().getPath());
+      } catch (final IOException exception) {
+        this.getLogger().error("Unable to add container '" + container.getId() + "' to the classpath!", exception);
+      }
 
       this.containers.put(container.getId(), container);
 

@@ -137,7 +137,7 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
               try {
                 return resolved.toUri().toURL();
               } catch (final MalformedURLException exception) {
-                IgniteLaunchService.this.logger.error("Failed to compute resource path for '" + resolved.toString() + "'!", exception);
+                IgniteLaunchService.this.logger.error("Failed to compute resource path for '" + resolved + "'!", exception);
               }
             }
           }
