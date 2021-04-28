@@ -29,8 +29,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import space.vectrix.ignite.api.Blackboard;
+import space.vectrix.ignite.api.service.IBootstrapService;
 import space.vectrix.ignite.applaunch.agent.Agent;
 import space.vectrix.ignite.applaunch.mod.ModEngine;
+import space.vectrix.ignite.applaunch.service.BootstrapServiceHandler;
+import space.vectrix.ignite.applaunch.service.DummyBootstrapService;
 import space.vectrix.ignite.applaunch.util.IgniteConstants;
 
 import java.io.IOException;
@@ -43,6 +46,11 @@ import java.util.Collections;
 import java.util.List;
 
 public final class IgniteBootstrap {
+  /**
+   * The launch service name.
+   */
+  public static final @NonNull String LAUNCH_SERVICE = System.getProperty(Blackboard.LAUNCH_SERVICE.getName(), "dummy");
+
   /**
    * The launch jar path.
    */
@@ -89,6 +97,13 @@ public final class IgniteBootstrap {
     final List<String> arguments = Arrays.asList(args);
     final List<String> launchArguments = new ArrayList<>(arguments);
 
+    // Blackboard
+    Blackboard.setProperty(Blackboard.LAUNCH_ARGUMENTS, Collections.unmodifiableList(arguments));
+    Blackboard.setProperty(Blackboard.LAUNCH_JAR, IgniteBootstrap.LAUNCH_JAR);
+    Blackboard.setProperty(Blackboard.LAUNCH_TARGET, IgniteBootstrap.LAUNCH_TARGET);
+    Blackboard.setProperty(Blackboard.MOD_DIRECTORY_PATH, IgniteBootstrap.MOD_TARGET_PATH);
+    Blackboard.setProperty(Blackboard.CONFIG_DIRECTORY_PATH, IgniteBootstrap.CONFIG_TARGET_PATH);
+
     // Target Check
     if (!Files.exists(IgniteBootstrap.LAUNCH_JAR)) {
       throw new IllegalStateException("Unable to locate launch jar at '" + IgniteBootstrap.LAUNCH_JAR + "'.");
@@ -105,19 +120,22 @@ public final class IgniteBootstrap {
       throw new IllegalStateException("Unable to add launch jar to classpath!");
     }
 
+    // Update Security - Java 9+
+    Agent.updateSecurity();
+
+    // Bootstrap Launch Service
+    final BootstrapServiceHandler bootstrapServiceHandler = new BootstrapServiceHandler();
+    final IBootstrapService bootstrapService = bootstrapServiceHandler.findService(IgniteBootstrap.LAUNCH_SERVICE).orElseGet(DummyBootstrapService::new);
+    try {
+      if (!bootstrapService.validate()) throw new IllegalStateException("Service failed to validate environment!");
+      bootstrapService.execute();
+    } catch (final Throwable throwable) {
+      throw new RuntimeException("Encountered an exception running the bootstrap service!", throwable);
+    }
+
     // Logger
     final Logger logger = LogManager.getLogger("IgniteBootstrap");
     logger.info("Ignite Launcher v" + IgniteBootstrap.class.getPackage().getImplementationVersion());
-
-    // Blackboard
-    Blackboard.setProperty(Blackboard.LAUNCH_ARGUMENTS, Collections.unmodifiableList(arguments));
-    Blackboard.setProperty(Blackboard.LAUNCH_JAR, IgniteBootstrap.LAUNCH_JAR);
-    Blackboard.setProperty(Blackboard.LAUNCH_TARGET, IgniteBootstrap.LAUNCH_TARGET);
-    Blackboard.setProperty(Blackboard.MOD_DIRECTORY_PATH, IgniteBootstrap.MOD_TARGET_PATH);
-    Blackboard.setProperty(Blackboard.CONFIG_DIRECTORY_PATH, IgniteBootstrap.CONFIG_TARGET_PATH);
-
-    // Update Security - Java 9+
-    Agent.updateSecurity();
 
     // Modlauncher
     logger.info("Preparing ModLauncher with arguments " + launchArguments);
