@@ -52,11 +52,15 @@ public final class Blackboard {
     return Blackboard.BLACKBOARD.get(key).orElse(defaultValue);
   }
 
-  public static <T> @Nullable T setProperty(final BlackboardMap.@NonNull Key<T> key, final @Nullable T value) {
-    return Blackboard.BLACKBOARD.computeIfAbsent(key, k -> value);
+  public static <T> void putProperty(final BlackboardMap.@NonNull Key<T> key, final @NonNull T value) {
+    Blackboard.BLACKBOARD.put(key, value);
   }
 
-  private static <T> BlackboardMap.@NonNull Key<T> key(final @NonNull String key, final @NonNull TypeToken<T> type) {
+  public static <T> void computeProperty(final BlackboardMap.@NonNull Key<T> key, final @Nullable T value) {
+    Blackboard.BLACKBOARD.computeIfAbsent(key, k -> value);
+  }
+
+  public static <T> BlackboardMap.@NonNull Key<T> key(final @NonNull String key, final @NonNull TypeToken<T> type) {
     return BlackboardMap.Key.getOrCreate(Blackboard.BLACKBOARD, key, type.getRawType());
   }
 }

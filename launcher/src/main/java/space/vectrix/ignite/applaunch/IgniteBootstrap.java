@@ -98,40 +98,41 @@ public final class IgniteBootstrap {
     final List<String> launchArguments = new ArrayList<>(arguments);
 
     // Blackboard
-    Blackboard.setProperty(Blackboard.LAUNCH_ARGUMENTS, Collections.unmodifiableList(arguments));
-    Blackboard.setProperty(Blackboard.LAUNCH_JAR, IgniteBootstrap.LAUNCH_JAR);
-    Blackboard.setProperty(Blackboard.LAUNCH_TARGET, IgniteBootstrap.LAUNCH_TARGET);
-    Blackboard.setProperty(Blackboard.MOD_DIRECTORY_PATH, IgniteBootstrap.MOD_TARGET_PATH);
-    Blackboard.setProperty(Blackboard.CONFIG_DIRECTORY_PATH, IgniteBootstrap.CONFIG_TARGET_PATH);
-
-    // Target Check
-    if (!Files.exists(IgniteBootstrap.LAUNCH_JAR)) {
-      throw new IllegalStateException("Unable to locate launch jar at '" + IgniteBootstrap.LAUNCH_JAR + "'.");
-    }
+    Blackboard.computeProperty(Blackboard.LAUNCH_ARGUMENTS, Collections.unmodifiableList(arguments));
+    Blackboard.computeProperty(Blackboard.LAUNCH_SERVICE, IgniteBootstrap.LAUNCH_SERVICE);
+    Blackboard.computeProperty(Blackboard.LAUNCH_JAR, IgniteBootstrap.LAUNCH_JAR);
+    Blackboard.computeProperty(Blackboard.LAUNCH_TARGET, IgniteBootstrap.LAUNCH_TARGET);
+    Blackboard.computeProperty(Blackboard.MOD_DIRECTORY_PATH, IgniteBootstrap.MOD_TARGET_PATH);
+    Blackboard.computeProperty(Blackboard.CONFIG_DIRECTORY_PATH, IgniteBootstrap.CONFIG_TARGET_PATH);
 
     // Launch Target
     launchArguments.add("--launchTarget");
     launchArguments.add(IgniteConstants.IGNITE_LAUNCH_SERVICE);
 
-    // Load the server jar on the provided ClassLoader via the Agent.
-    try {
-      Agent.addJar(IgniteBootstrap.LAUNCH_JAR);
-    } catch (final IOException exception) {
-      throw new IllegalStateException("Unable to add launch jar to classpath!");
-    }
-
-    // Update Security - Java 9+
-    Agent.updateSecurity();
-
     // Bootstrap Launch Service
     final BootstrapServiceHandler bootstrapServiceHandler = new BootstrapServiceHandler();
-    final IBootstrapService bootstrapService = bootstrapServiceHandler.findService(IgniteBootstrap.LAUNCH_SERVICE).orElseGet(DummyBootstrapService::new);
+    final IBootstrapService bootstrapService = bootstrapServiceHandler.findService(Blackboard.getProperty(Blackboard.LAUNCH_SERVICE)).orElseGet(DummyBootstrapService::new);
     try {
       if (!bootstrapService.validate()) throw new IllegalStateException("Service failed to validate environment!");
       bootstrapService.execute();
     } catch (final Throwable throwable) {
       throw new RuntimeException("Encountered an exception running the bootstrap service!", throwable);
     }
+
+    // Target Check
+    if (!Files.exists(Blackboard.getProperty(Blackboard.LAUNCH_JAR))) {
+      throw new IllegalStateException("Unable to locate launch jar at '" + Blackboard.getProperty(Blackboard.LAUNCH_JAR) + "'.");
+    }
+
+    // Load the server jar on the provided ClassLoader via the Agent.
+    try {
+      Agent.addJar(Blackboard.getProperty(Blackboard.LAUNCH_JAR));
+    } catch (final IOException exception) {
+      throw new IllegalStateException("Unable to add launch jar to classpath!");
+    }
+
+    // Update Security - Java 9+
+    Agent.updateSecurity();
 
     // Logger
     final Logger logger = LogManager.getLogger("IgniteBootstrap");

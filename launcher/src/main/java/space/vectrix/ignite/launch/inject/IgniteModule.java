@@ -28,11 +28,11 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.Scopes;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import space.vectrix.ignite.api.Blackboard;
 import space.vectrix.ignite.api.Ignite;
 import space.vectrix.ignite.api.Platform;
 import space.vectrix.ignite.api.config.path.ConfigsPath;
 import space.vectrix.ignite.api.config.path.ModsPath;
-import space.vectrix.ignite.applaunch.IgniteBootstrap;
 import space.vectrix.ignite.launch.IgnitePlatform;
 
 import java.nio.file.Path;
@@ -58,14 +58,14 @@ public final class IgniteModule extends AbstractModule {
   /* package */ static final class ModsPathProvider implements Provider<Path> {
     @Override
     public final @NonNull Path get() {
-      return IgniteBootstrap.MOD_TARGET_PATH;
+      return Blackboard.getProperty(Blackboard.MOD_DIRECTORY_PATH);
     }
   }
 
   /* package */ static final class ConfigsPathProvider implements Provider<Path> {
     @Override
     public final @NonNull Path get() {
-      return IgniteBootstrap.CONFIG_TARGET_PATH;
+      return Blackboard.getProperty(Blackboard.CONFIG_DIRECTORY_PATH);
     }
   }
 }

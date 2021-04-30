@@ -27,8 +27,8 @@ package space.vectrix.ignite.launch;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import space.vectrix.ignite.api.Blackboard;
 import space.vectrix.ignite.api.Platform;
-import space.vectrix.ignite.applaunch.IgniteBootstrap;
 import space.vectrix.ignite.applaunch.mod.ModEngine;
 import space.vectrix.ignite.launch.inject.IgniteModule;
 import space.vectrix.ignite.launch.mod.IgniteModManager;
@@ -60,11 +60,11 @@ public final class IgniteLaunch {
 
     // Launch
     try {
-      if (!Files.exists(IgniteBootstrap.LAUNCH_JAR)) {
+      if (!Files.exists(Blackboard.getProperty(Blackboard.LAUNCH_JAR))) {
         throw new IllegalStateException("No launch jar was found!");
       } else {
         // Invoke the main method on the provided ClassLoader.
-        Class.forName(IgniteBootstrap.LAUNCH_TARGET, true, IgniteLaunch.class.getClassLoader())
+        Class.forName(Blackboard.getProperty(Blackboard.LAUNCH_TARGET), true, IgniteLaunch.class.getClassLoader())
           .getMethod("main", String[].class)
           .invoke(null, (Object) args);
       }
