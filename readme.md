@@ -15,10 +15,36 @@ In order to build Ignite you simply need to run the `gradle` command. You can fi
 ## Launcher Usage
 
 The Ignite launcher must be executed instead of the Minecraft Server. Ignite will launch the Minecraft Server itself, additionally passing in any extra arguments you provide it.
+Usually you would want to put the launcher jar, and the server jar in the same directory. 
 
-`java -Dignite.launch.jar=./paper.jar -Dignite.launch.target=org.bukkit.craftbukkit.Main -Dignite.mod.directory=./plugins -Dignite.config.directory=./plugins -jar ignite-launcher.jar`
+This would then be run like `java -jar ignite-launcher.jar`. Any other parameters will be passed onto and effect the target server.
 
 **Note:** You must add the flag `-javaagent:./ignite-launcher.jar` if you're running Java 8 or below.
+
+**Note:** If the target jar is a Paper jar, then you may want to read about the bootstrap services below to make launching easier.
+
+### Properties
+
+Ignite has some properties that can be set on startup to change the launch target, mod directory and more. The following could be added to your startup script:
+
+- The bootstrap service to use. (e.g `-Dignite.launch.service=dummy`)
+- The path to the server jar. (e.g `-Dignite.launch.jar=./server.jar`)
+- The classpath to the server entry point. (e.g `-Dignite.launch.target=org.bukkit.craftbukkit.Main`)
+- The directory ignite mods will be located. (e.g `-Dignite.mod.directory=./mods`)
+- The directory ignite mod configs will be located. (e.g `-Dignite.config.directory=./configs`)
+
+### Bootstrap Services
+
+Bootstrap services provide platform specific modifications to the launch process. In most cases these platforms may not work without using their specified service.
+The following target jars will require you to use one:
+
+- Paperclip:
+  - Service name: `paperclip` (e.g `-Dignite.launch.service=paperclip`)
+  - The `ignite.launch.jar` property will be overridden by this service, so you do not need to set it manually.
+  - Extra properties:
+    - The minecraft server version paperclip will be patching. (e.g `-Dignite.paperclip.minecraft=1.16.5`)
+    - The path to the paperclip jar. (e.g `-Dignite.paperclip.jar=./paper.jar`)
+    - The classpath to the paperclip entry point. (e.g `-Dignite.paperclip.target=io.papermc.paperclip.Paperclip`)
 
 ## Mod Usage
 

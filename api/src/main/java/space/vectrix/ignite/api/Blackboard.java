@@ -37,6 +37,7 @@ public final class Blackboard {
   private static final BlackboardMap BLACKBOARD = new BlackboardMap();
 
   public static final BlackboardMap.@NonNull Key<List<String>> LAUNCH_ARGUMENTS = key("ignite.launch.arguments", new TypeToken<List<String>>() {});
+  public static final BlackboardMap.@NonNull Key<String>       LAUNCH_SERVICE   = key("ignite.launch.service", TypeToken.of(String.class));
   public static final BlackboardMap.@NonNull Key<Path>         LAUNCH_JAR       = key("ignite.launch.jar", TypeToken.of(Path.class));
   public static final BlackboardMap.@NonNull Key<String>       LAUNCH_TARGET    = key("ignite.launch.target", TypeToken.of(String.class));
 
@@ -51,11 +52,15 @@ public final class Blackboard {
     return Blackboard.BLACKBOARD.get(key).orElse(defaultValue);
   }
 
-  public static <T> @Nullable T setProperty(final BlackboardMap.@NonNull Key<T> key, final @Nullable T value) {
-    return Blackboard.BLACKBOARD.computeIfAbsent(key, k -> value);
+  public static <T> void putProperty(final BlackboardMap.@NonNull Key<T> key, final @NonNull T value) {
+    Blackboard.BLACKBOARD.put(key, value);
   }
 
-  private static <T> BlackboardMap.@NonNull Key<T> key(final @NonNull String key, final @NonNull TypeToken<T> type) {
+  public static <T> void computeProperty(final BlackboardMap.@NonNull Key<T> key, final @Nullable T value) {
+    Blackboard.BLACKBOARD.computeIfAbsent(key, k -> value);
+  }
+
+  public static <T> BlackboardMap.@NonNull Key<T> key(final @NonNull String key, final @NonNull TypeToken<T> type) {
     return BlackboardMap.Key.getOrCreate(Blackboard.BLACKBOARD, key, type.getRawType());
   }
 }

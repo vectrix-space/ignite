@@ -43,8 +43,17 @@ public final class BlackboardMap {
     return Optional.ofNullable(key.type.cast(this.blackboardMap.get(key)));
   }
 
+  public <V> void put(final @NonNull Key<V> key, final V value) {
+    put(this.blackboardMap, key, value);
+  }
+
   public <V> @Nullable V computeIfAbsent(final @NonNull Key<V> key, final @NonNull Function<? super Key<V>, ? extends V> valueFunction) {
     return computeIfAbsent(this.blackboardMap, key, valueFunction);
+  }
+
+  @SuppressWarnings("unchecked")
+  private <C1, C2, V> void put(final ConcurrentHashMap<C1, C2> map, final Key<V> key, final V value) {
+    map.put((C1) key, (C2) value);
   }
 
   @SuppressWarnings("unchecked")
