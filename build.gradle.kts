@@ -3,7 +3,7 @@ plugins {
   id("net.kyori.indra.publishing") version "2.0.2" apply false
   id("net.kyori.indra.license-header") version "2.0.2" apply false
   id("de.marcphilipp.nexus-publish") version "0.4.0" apply false
-  id("com.github.johnrengelman.shadow") version "6.1.0" apply false
+  id("com.github.johnrengelman.shadow") version "7.0.0" apply false
 }
 
 group = "space.vectrix.ignite"
