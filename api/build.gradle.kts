@@ -67,7 +67,7 @@ dependencies {
   api("org.ow2.asm:asm-util:9.1")
 
   // Access Transformers
-  api("net.minecraftforge:accesstransformers:2.2.1") {
+  api("net.minecraftforge:accesstransformers:3.0.1") {
     exclude(group = "org.apache.logging.log4j", module = "log4j-api")
     exclude(group = "org.apache.logging.log4j", module = "log4j-core")
     exclude(group = "cpw.mods", module = "grossjava9hacks")
