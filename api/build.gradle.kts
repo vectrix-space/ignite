@@ -42,7 +42,7 @@ dependencies {
     exclude(group = "org.codehaus.mojo", module = "animal-sniffer-annotations")
   }
 
-  api("com.google.errorprone:error_prone_annotations:2.0.15") // Keeps guava happy
+  api("com.google.errorprone:error_prone_annotations:2.7.1") // Keeps guava happy
 
   api("com.google.inject:guice:5.0.1") {
     exclude(group = "com.google.code.findbugs", module = "jsr305") // We don't want to use jsr305, use checkerframework
