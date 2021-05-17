@@ -15,7 +15,7 @@ dependencies {
   }
 
   // Event
-  implementation("net.kyori:event-api:4.0.0-SNAPSHOT") {
+  implementation("net.kyori:event-api:5.0.0-SNAPSHOT") {
     exclude(group = "com.google.guava", module = "guava")
     exclude(group = "org.checkerframework", module = "checker-qual")
   }
