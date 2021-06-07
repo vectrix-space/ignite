@@ -110,25 +110,24 @@ public final class ModEngine {
    * Loads the mod transformers.
    */
   public void loadTransformers(final @NonNull IEnvironment environment) {
-    final ILaunchPluginService accessTransformer = environment.findLaunchPlugin(IgniteConstants.AT_SERVICE).orElse(null);
+    final ILaunchPluginService accessWidener = environment.findLaunchPlugin(IgniteConstants.ACCESS_WIDENER_SERVICE).orElse(null);
 
     for (final ModContainer container : this.getContainers()) {
       final ModResource resource = container.getResource();
 
-      // Access Transformer
-      if (accessTransformer != null) {
-        final String atFiles = resource.getManifest().getMainAttributes().getValue(IgniteConstants.AT);
-        if (atFiles != null) {
-          for (final String atFile : atFiles.split(",")) {
-            if (!atFile.endsWith(".cfg")) continue;
-
-            accessTransformer.offerResource(resource.getFileSystem().getPath(IgniteConstants.META_INF).resolve(atFile), atFile);
+      // Access Widener
+      if (accessWidener != null) {
+        final String widenerFiles = resource.getManifest().getMainAttributes().getValue(IgniteConstants.ACCESS_WIDENER);
+        if (widenerFiles != null) {
+          for (final String widenerFile : widenerFiles.split(",")) {
+            if (!widenerFile.endsWith(".accesswidener")) continue;
+            accessWidener.offerResource(resource.getFileSystem().getPath(IgniteConstants.META_INF).resolve(widenerFile), widenerFile);
           }
         }
       }
     }
 
-    this.getLogger().info("Applied access transformer(s).");
+    this.getLogger().info("Applied access widener(s).");
   }
 
   public void loadMixins() {
