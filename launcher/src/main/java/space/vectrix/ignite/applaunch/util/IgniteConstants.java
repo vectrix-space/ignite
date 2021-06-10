@@ -33,6 +33,7 @@ public final class IgniteConstants {
   public static final @NonNull String IGNITE_LAUNCH_SERVICE = "ignitelaunch";
   public static final @NonNull String IGNITE_TRANSFORMATION_SERVICE = "ignitetransformer";
   public static final @NonNull String ACCESS_WIDENER_SERVICE = "access_widener";
+  public static final @NonNull String MIXIN_SERVICE = "mixin";
 
   public static final @NonNull String MANIFEST = "MANIFEST.MF";
   public static final @NonNull String META_INF = "META-INF";

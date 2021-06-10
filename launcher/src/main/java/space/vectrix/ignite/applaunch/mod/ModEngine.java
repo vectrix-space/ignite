@@ -111,9 +111,20 @@ public final class ModEngine {
    */
   public void loadTransformers(final @NonNull IEnvironment environment) {
     final ILaunchPluginService accessWidener = environment.findLaunchPlugin(IgniteConstants.ACCESS_WIDENER_SERVICE).orElse(null);
+    final ILaunchPluginService mixin = environment.findLaunchPlugin(IgniteConstants.MIXIN_SERVICE).orElse(null);
 
     for (final ModContainer container : this.getContainers()) {
       final ModResource resource = container.getResource();
+
+      // Mixin
+      if (mixin != null) {
+        mixin.offerResource(resource.getPath(), resource.getPath().getFileName().toString());
+
+        final List<String> mixins = container.getConfig().getMixins();
+        if (mixins != null && !mixins.isEmpty()) {
+          Mixins.addConfigurations(mixins.toArray(new String[0]));
+        }
+      }
 
       // Access Widener
       if (accessWidener != null) {
@@ -121,24 +132,20 @@ public final class ModEngine {
         if (widenerFiles != null) {
           for (final String widenerFile : widenerFiles.split(",")) {
             if (!widenerFile.endsWith(".accesswidener")) continue;
-            accessWidener.offerResource(resource.getFileSystem().getPath(IgniteConstants.META_INF).resolve(widenerFile), widenerFile);
+            accessWidener.offerResource(resource.getFileSystem().getPath(widenerFile), widenerFile);
+          }
+        }
+
+        final List<String> configWideners = container.getConfig().getAccessWideners();
+        if (configWideners != null && !configWideners.isEmpty()) {
+          for (final String widenerFile : configWideners) {
+            if (!widenerFile.endsWith(".accesswidener")) continue;
+            accessWidener.offerResource(resource.getFileSystem().getPath(widenerFile), widenerFile);
           }
         }
       }
     }
 
-    this.getLogger().info("Applied access widener(s).");
-  }
-
-  public void loadMixins() {
-    for (final ModContainer container : this.getContainers()) {
-      // Mixins
-      final List<String> mixins = container.getConfig().getMixins();
-      if (mixins != null && !mixins.isEmpty()) {
-        Mixins.addConfigurations(mixins.toArray(new String[0]));
-      }
-    }
-
-    this.getLogger().info("Applied mixin transformer(s).");
+    this.getLogger().info("Applied transformer(s).");
   }
 }
