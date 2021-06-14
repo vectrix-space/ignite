@@ -40,7 +40,6 @@ import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
 public final class ModResourceLocator {
-  public static final @NonNull String DEFAULT_METADATA_FILENAME = "ignite-mod.json";
   public static final @NonNull String ENGINE_LOCATOR = "engine_locator";
   public static final @NonNull String JAVA_LOCATOR = "java_locator";
 
@@ -62,9 +61,9 @@ public final class ModResourceLocator {
         }
 
         try (final JarFile jarFile = new JarFile(childDirectory.toFile())) {
-          final JarEntry jarEntry = jarFile.getJarEntry(this.getMetadataPath());
+          final JarEntry jarEntry = jarFile.getJarEntry(this.getConfigPath());
           if (jarEntry == null) {
-            engine.getLogger().debug("The resource '" + jarFile.getName() + "' does not contain any mod metadata so it is not a mod. Skipping...");
+            engine.getLogger().debug("The resource '" + jarFile.getName() + "' does not contain any mod configuration so it is not a mod. Skipping...");
             continue;
           }
 
@@ -78,7 +77,7 @@ public final class ModResourceLocator {
     return modResources;
   }
 
-  public final @NonNull String getMetadataPath() {
-    return IgniteConstants.META_INF + "/" + ModResourceLocator.DEFAULT_METADATA_FILENAME;
+  public final @NonNull String getConfigPath() {
+    return IgniteConstants.MOD_CONFIG;
   }
 }

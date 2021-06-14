@@ -25,6 +25,7 @@
 package space.vectrix.ignite.api.mod;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -38,13 +39,13 @@ import java.util.Objects;
  * {@link Gson}.
  */
 public final class ModConfig {
-  private String id;
-  private String version;
-  private String target;
-  private List<String> requiredDependencies;
-  private List<String> optionalDependencies;
-  private List<String> mixins;
-  private List<String> accessWideners;
+  private @SerializedName("id") String id;
+  private @SerializedName("version") String version;
+  private @SerializedName("entry") String entry;
+  private @SerializedName("dependencies") List<String> requiredDependencies;
+  private @SerializedName("optional_dependencies") List<String> optionalDependencies;
+  private @SerializedName("mixins") List<String> mixins;
+  private @SerializedName("access_wideners") List<String> accessWideners;
 
   public ModConfig() {}
 
@@ -56,14 +57,14 @@ public final class ModConfig {
 
   public ModConfig(final @NonNull String id,
                    final @NonNull String version,
-                   final @Nullable String target,
+                   final @Nullable String entry,
                    final @Nullable List<String> requiredDependencies,
                    final @Nullable List<String> optionalDependencies,
                    final @Nullable List<String> mixins,
                    final @Nullable List<String> accessWideners) {
     this.id = id;
     this.version = version;
-    this.target = target;
+    this.entry = entry;
     this.requiredDependencies = requiredDependencies;
     this.optionalDependencies = optionalDependencies;
     this.mixins = mixins;
@@ -93,8 +94,8 @@ public final class ModConfig {
    *
    * @return The mod target class
    */
-  public final @Nullable String getTarget() {
-    return this.target;
+  public final @Nullable String getEntry() {
+    return this.entry;
   }
 
   /**
@@ -135,7 +136,7 @@ public final class ModConfig {
 
   @Override
   public final int hashCode() {
-    return Objects.hash(this.id, this.version, this.target, this.requiredDependencies, this.optionalDependencies, this.mixins);
+    return Objects.hash(this.id, this.version, this.entry, this.requiredDependencies, this.optionalDependencies, this.mixins);
   }
 
   @Override
@@ -145,7 +146,7 @@ public final class ModConfig {
     final ModConfig that = (ModConfig) other;
     return Objects.equals(this.id, that.id)
       && Objects.equals(this.version, that.version)
-      && Objects.equals(this.target, that.target)
+      && Objects.equals(this.entry, that.entry)
       && Objects.deepEquals(this.requiredDependencies, that.requiredDependencies)
       && Objects.deepEquals(this.optionalDependencies, that.optionalDependencies)
       && Objects.deepEquals(this.mixins, that.mixins);
@@ -155,7 +156,7 @@ public final class ModConfig {
   public final @NonNull String toString() {
     return "ModConfig{id=" + this.id +
       ", version=" + this.version +
-      ", target=" + this.target +
+      ", target=" + this.entry +
       ", requiredDependencies=" + (this.requiredDependencies != null ? Arrays.toString(this.requiredDependencies.toArray(new String[0])) : "[]") +
       ", optionalDependencies=" + (this.optionalDependencies != null ? Arrays.toString(this.optionalDependencies.toArray(new String[0])) : "[]") +
       ", mixins=" + (this.mixins != null ? Arrays.toString(this.mixins.toArray(new String[0])) : "[]") +

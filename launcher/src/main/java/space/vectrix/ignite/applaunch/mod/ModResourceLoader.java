@@ -62,9 +62,9 @@ public final class ModResourceLoader {
 
       final Path resourcePath = resource.getPath();
       try (final JarFile jarFile = new JarFile(resourcePath.toFile())) {
-        final JarEntry jarEntry = jarFile.getJarEntry(engine.getResourceLocator().getMetadataPath());
+        final JarEntry jarEntry = jarFile.getJarEntry(engine.getResourceLocator().getConfigPath());
         if (jarEntry == null) {
-          engine.getLogger().debug("The resource '" + jarFile.getName() + "' does not contain any mod metadata so it is not a mod. Skipping...");
+          engine.getLogger().debug("The resource '" + jarFile.getName() + "' does not contain any mod configuration so it is not a mod. Skipping...");
           continue;
         }
 

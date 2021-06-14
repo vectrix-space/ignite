@@ -1,8 +1,8 @@
 {
   "id": "example",
   "version": "1.0.0",
-  "target": "space.vectrix.example.ExampleMod",
-  "requiredDependencies": [
+  "entry": "space.vectrix.example.ExampleMod",
+  "dependencies": [
     "ignite"
   ],
   "mixins": [

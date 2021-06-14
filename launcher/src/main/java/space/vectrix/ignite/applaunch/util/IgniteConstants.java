@@ -30,6 +30,8 @@ import org.objectweb.asm.Opcodes;
 public final class IgniteConstants {
   public static final int ASM_VERSION = Opcodes.ASM9;
 
+  public static final @NonNull String MOD_CONFIG = "ignite.mod.json";
+
   public static final @NonNull String IGNITE_LAUNCH_SERVICE = "ignitelaunch";
   public static final @NonNull String IGNITE_TRANSFORMATION_SERVICE = "ignitetransformer";
   public static final @NonNull String ACCESS_WIDENER_SERVICE = "access_widener";

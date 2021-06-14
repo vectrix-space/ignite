@@ -90,7 +90,7 @@ public final class ModLoader {
       final ModClassLoader classLoader = new ModClassLoader(new URL[] { resourceJar });
       classLoader.addLoaders();
 
-      final String target = container.getConfig().getTarget();
+      final String target = container.getConfig().getEntry();
       if (target != null) {
         // Load the class.
         final Class<?> clazz = classLoader.loadClass(target);
