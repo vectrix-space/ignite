@@ -36,11 +36,12 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * A configuration wrapper to assist in managing the configuration
- * loader and object mapper instance.
+ * A configuration wrapper to assist in managing the configuration loader and
+ * object mapper instance.
  *
- * @param <T> The object mapper instance type
- * @param <N> The configuration node type
+ * @param <T> the object mapper instance type
+ * @param <N> the configuration node type
+ * @since 0.5.0
  */
 public final class Configuration<T, N extends ConfigurationNode> {
   private static <T> ObjectMapper<T> createMapper(final Class<T> instanceType) {
@@ -55,7 +56,7 @@ public final class Configuration<T, N extends ConfigurationNode> {
   private final ObjectMapper<T> mapper;
   private final ConfigurationKey key;
 
-  private @MonotonicNonNull ObjectMapper<T>.BoundInstance instance;
+  private ObjectMapper<T>.@MonotonicNonNull BoundInstance instance;
   private @MonotonicNonNull N node;
 
   /* package */ Configuration(final @NonNull ConfigurationKey key, final @NonNull Class<T> instanceType) {
@@ -72,8 +73,9 @@ public final class Configuration<T, N extends ConfigurationNode> {
    * Loads the configuration from the {@link ConfigurationLoader} if
    * it exists.
    *
-   * @throws IOException If the directory or file could not be created
-   * @throws ObjectMappingException If the instance could not be populated
+   * @throws IOException if the directory or file could not be created
+   * @throws ObjectMappingException if the instance could not be populated
+   * @since 0.5.0
    */
   public void load() throws IOException, ObjectMappingException {
     if (this.loader == null) return;
@@ -88,8 +90,9 @@ public final class Configuration<T, N extends ConfigurationNode> {
    * Saves the configuration to the {@link ConfigurationLoader} if
    * it exists.
    *
-   * @throws IOException If the directory or file could not be created
-   * @throws ObjectMappingException If the instance could not be serialized to
+   * @throws IOException if the directory or file could not be created
+   * @throws ObjectMappingException if the instance could not be serialized to
+   * @since 0.5.0
    */
   public void save() throws IOException, ObjectMappingException {
     if (this.loader == null) return;
@@ -104,7 +107,8 @@ public final class Configuration<T, N extends ConfigurationNode> {
   /**
    * Returns the configuration key.
    *
-   * @return The configuration key
+   * @return the configuration key
+   * @since 0.5.0
    */
   public @NonNull ConfigurationKey getKey() {
     return this.key;
@@ -113,7 +117,8 @@ public final class Configuration<T, N extends ConfigurationNode> {
   /**
    * Returns the object mapper instance.
    *
-   * @return The object mapper instance
+   * @return the object mapper instance
+   * @since 0.5.0
    */
   public @MonotonicNonNull T getInstance() {
     return this.instance != null ? this.instance.getInstance() : null;
@@ -122,7 +127,8 @@ public final class Configuration<T, N extends ConfigurationNode> {
   /**
    * Returns the configuration node.
    *
-   * @return The configuration node
+   * @return the configuration node
+   * @since 0.5.0
    */
   public @MonotonicNonNull N getNode() {
     return this.node;

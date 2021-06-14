@@ -51,6 +51,8 @@ public final class Configurations {
   /**
    * Provides a function to make a general purpose {@link GsonConfigurationLoader}
    * using the input {@link ConfigurationKey}.
+   *
+   * @since 0.5.0
    */
   public static final @NonNull Function<ConfigurationKey, ConfigurationLoader<ConfigurationNode>> GSON_LOADER = key -> Configurations.createLoader(key, path -> GsonConfigurationLoader.builder()
     .setSource(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
@@ -62,6 +64,8 @@ public final class Configurations {
   /**
    * Provides a function to make a general purpose {@link HoconConfigurationLoader}
    * using the input {@link ConfigurationKey}.
+   *
+   * @since 0.5.0
    */
   public static final @NonNull Function<ConfigurationKey, ConfigurationLoader<CommentedConfigurationNode>> HOCON_LOADER = key -> Configurations.createLoader(key, path -> HoconConfigurationLoader.builder()
     .setSource(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
@@ -73,6 +77,8 @@ public final class Configurations {
   /**
    * Provides a function to make a general purpose {@link YAMLConfigurationLoader}
    * using the input {@link ConfigurationKey}.
+   *
+   * @since 0.5.0
    */
   public static final @NonNull Function<ConfigurationKey, ConfigurationLoader<ConfigurationNode>> YAML_LOADER = key -> Configurations.createLoader(key, path -> YAMLConfigurationLoader.builder()
     .setSource(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
@@ -93,11 +99,12 @@ public final class Configurations {
    * Creates a new virtual {@link Configuration} with the specified {@link ConfigurationKey}
    * and {@link Class} instance type.
    *
-   * @param key The configuration key
-   * @param instanceType The instance class
-   * @param <T> The instance type
-   * @param <N> The node type
-   * @return The configuration
+   * @param key the configuration key
+   * @param instanceType the instance class
+   * @param <T> the instance type
+   * @param <N> the node type
+   * @return the configuration
+   * @since 0.5.0
    */
   public static <T, N extends ConfigurationNode> @NonNull Configuration<T, N> createVirtual(final @NonNull ConfigurationKey key, final @NonNull Class<T> instanceType) {
     return new Configuration<>(key, instanceType);
@@ -107,12 +114,13 @@ public final class Configurations {
    * Gets or creates a new {@link Configuration} with the specified {@link ConfigurationLoader},
    * {@link ConfigurationKey} and {@link Class} instance type.
    *
-   * @param loader The loader supplier
-   * @param key The configuration key
-   * @param instanceType The instance class
-   * @param <T> The instance type
-   * @param <N> The node type
-   * @return The configuration
+   * @param loader the loader supplier
+   * @param key the configuration key
+   * @param instanceType the instance class
+   * @param <T> the instance type
+   * @param <N> the node type
+   * @return the configuration
+   * @since 0.5.0
    */
   public static <T, N extends ConfigurationNode> @NonNull Configuration<T, N> getOrCreate(final @Nullable ConfigurationLoader<N> loader, final @NonNull ConfigurationKey key,
                                                                                           final @NonNull Class<T> instanceType) {
@@ -123,12 +131,13 @@ public final class Configurations {
    * Gets or creates a new {@link Configuration} with the specified {@link ConfigurationLoader},
    * {@link ConfigurationKey} and {@link Class} instance type.
    *
-   * @param loaderSupplier The loader supplier
-   * @param key The configuration key
-   * @param instanceType The instance class
-   * @param <T> The instance type
-   * @param <N> The node type
-   * @return The configuration
+   * @param loaderSupplier the loader supplier
+   * @param key the configuration key
+   * @param instanceType the instance class
+   * @param <T> the instance type
+   * @param <N> the node type
+   * @return the configuration
+   * @since 0.5.0
    */
   public static <T, N extends ConfigurationNode> @NonNull Configuration<T, N> getOrCreate(final @NonNull Function<ConfigurationKey, ConfigurationLoader<N>> loaderSupplier,
                                                                                           final @NonNull ConfigurationKey key, final @NonNull Class<T> instanceType) {

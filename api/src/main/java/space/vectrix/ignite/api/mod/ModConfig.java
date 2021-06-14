@@ -37,6 +37,8 @@ import java.util.Objects;
 /**
  * Represents the mod config, which is usually populated using
  * {@link Gson}.
+ *
+ * @since 0.5.0
  */
 public final class ModConfig {
   private @SerializedName("id") String id;
@@ -74,7 +76,8 @@ public final class ModConfig {
   /**
    * Returns the mod identifier.
    *
-   * @return The mod identifier
+   * @return the mod identifier
+   * @since 0.5.0
    */
   public final @MonotonicNonNull String getId() {
     return this.id;
@@ -83,16 +86,18 @@ public final class ModConfig {
   /**
    * Returns the mod version.
    *
-   * @return The mod version
+   * @return the mod version
+   * @since 0.5.0
    */
   public final @MonotonicNonNull String getVersion() {
     return this.version;
   }
 
   /**
-   * Returns the mod target class.
+   * Returns the mod entry point.
    *
-   * @return The mod target class
+   * @return the mod entry point
+   * @since 0.5.0
    */
   public final @Nullable String getEntry() {
     return this.entry;
@@ -101,7 +106,8 @@ public final class ModConfig {
   /**
    * Returns a list of required dependency identifiers.
    *
-   * @return A list of required dependency
+   * @return a list of required dependency
+   * @since 0.5.0
    */
   public final @Nullable List<String> getRequiredDependencies() {
     return this.requiredDependencies;
@@ -110,7 +116,8 @@ public final class ModConfig {
   /**
    * Returns a list of optional dependency identifiers.
    *
-   * @return A list of optional dependency
+   * @return a list of optional dependency
+   * @since 0.5.0
    */
   public final @Nullable List<String> getOptionalDependencies() {
     return this.optionalDependencies;
@@ -119,7 +126,8 @@ public final class ModConfig {
   /**
    * Returns a list of mixin configurations.
    *
-   * @return A list of mixins
+   * @return a list of mixins
+   * @since 0.5.0
    */
   public final @Nullable List<String> getMixins() {
     return this.mixins;
@@ -128,7 +136,8 @@ public final class ModConfig {
   /**
    * Returns a list of access widener files.
    *
-   * @return A list of access wideners
+   * @return a list of access wideners
+   * @since 0.5.0
    */
   public final @Nullable List<String> getAccessWideners() {
     return this.accessWideners;

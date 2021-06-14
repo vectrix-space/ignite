@@ -25,8 +25,10 @@
 package space.vectrix.ignite.api.event;
 
 /**
- * Represents the priority a listener should receive an
- * event in, relative to the other listeners.
+ * Represents the priority a listener should receive an event in, relative to
+ * the other listeners.
+ *
+ * @since 0.5.0
  */
 public enum PostPriority {
   FIRST,

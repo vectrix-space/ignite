@@ -33,6 +33,8 @@ import java.util.Objects;
 
 /**
  * A key to identify a specific {@link Configuration}.
+ *
+ * @since 0.5.0
  */
 public final class ConfigurationKey {
   public static @NonNull ConfigurationKey key(final @NonNull String id, final @Nullable Path path) {
@@ -50,7 +52,8 @@ public final class ConfigurationKey {
   /**
    * The configuration identifier.
    *
-   * @return The configuration identifier
+   * @return the configuration identifier
+   * @since 0.5.0
    */
   public @NonNull String getId() {
     return this.id;
@@ -59,7 +62,8 @@ public final class ConfigurationKey {
   /**
    * The configuration path.
    *
-   * @return The configuration path
+   * @return the configuration path
+   * @since 0.5.0
    */
   public @MonotonicNonNull Path getPath() {
     return this.path;

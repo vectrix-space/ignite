@@ -25,11 +25,12 @@
 package space.vectrix.ignite.api.event.platform;
 
 /**
- * This event is called when the mods should load configurations
- * and prepare for the registration of mixins, mixin plugins and
- * more.
+ * This event is called when the mods should load configurations and prepare
+ * for the registration of mixins, mixin plugins and more.
  *
  * <p>This event occurs after the {@link PlatformConstructEvent}.</p>
+ *
+ * @since 0.5.0
  */
 public final class PlatformInitializeEvent {
   @Override

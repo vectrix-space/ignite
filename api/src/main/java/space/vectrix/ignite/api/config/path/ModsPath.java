@@ -34,8 +34,10 @@ import java.lang.annotation.Target;
 /**
  * Annotation used to specify the mod target paths.
  *
- * <p>By default it is `./mods` at the root directory. However this
- * can be modified with startup arguments.</p>
+ * <p>By default it is `./mods` at the root directory. However this can be
+ * modified with startup arguments.</p>
+ *
+ * @since 0.5.0
  */
 @BindingAnnotation
 @Retention(RetentionPolicy.RUNTIME)

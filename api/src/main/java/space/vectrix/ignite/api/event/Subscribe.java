@@ -34,6 +34,8 @@ import java.lang.annotation.Target;
 /**
  * Annotation used to specify an event listener, with the specified
  * {@link PostPriority} priority.
+ *
+ * @since 0.5.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
@@ -41,7 +43,8 @@ public @interface Subscribe {
   /**
    * Returns the listener specified priority.
    *
-   * @return The listener priority
+   * @return the listener priority
+   * @since 0.5.0
    */
   @NonNull PostPriority priority() default PostPriority.NORMAL;
 }
