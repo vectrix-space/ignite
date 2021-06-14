@@ -18,7 +18,7 @@ jobs:
       - name: "build"
         run: "./gradlew build"
       - name: "publish"
-        if: ${{ runner.os == 'Linux' && github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        if: ${{ runner.os == 'Linux' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         run: "./gradlew publish"
         env:
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
