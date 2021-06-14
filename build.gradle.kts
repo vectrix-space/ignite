@@ -30,6 +30,9 @@ subprojects {
     maven {
       url = uri("https://files.minecraftforge.net/maven/")
     }
+    maven {
+      url = uri("https://maven.quiltmc.org/repository/release/")
+    }
   }
 
   indra {

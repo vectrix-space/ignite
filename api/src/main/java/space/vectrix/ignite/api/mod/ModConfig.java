@@ -44,6 +44,7 @@ public final class ModConfig {
   private List<String> requiredDependencies;
   private List<String> optionalDependencies;
   private List<String> mixins;
+  private List<String> accessWideners;
 
   public ModConfig() {}
 
@@ -58,13 +59,15 @@ public final class ModConfig {
                    final @Nullable String target,
                    final @Nullable List<String> requiredDependencies,
                    final @Nullable List<String> optionalDependencies,
-                   final @Nullable List<String> mixins) {
+                   final @Nullable List<String> mixins,
+                   final @Nullable List<String> accessWideners) {
     this.id = id;
     this.version = version;
     this.target = target;
     this.requiredDependencies = requiredDependencies;
     this.optionalDependencies = optionalDependencies;
     this.mixins = mixins;
+    this.accessWideners = accessWideners;
   }
 
   /**
@@ -121,6 +124,15 @@ public final class ModConfig {
     return this.mixins;
   }
 
+  /**
+   * Returns a list of access widener files.
+   *
+   * @return A list of access wideners
+   */
+  public final @Nullable List<String> getAccessWideners() {
+    return this.accessWideners;
+  }
+
   @Override
   public final int hashCode() {
     return Objects.hash(this.id, this.version, this.target, this.requiredDependencies, this.optionalDependencies, this.mixins);
@@ -147,6 +159,7 @@ public final class ModConfig {
       ", requiredDependencies=" + (this.requiredDependencies != null ? Arrays.toString(this.requiredDependencies.toArray(new String[0])) : "[]") +
       ", optionalDependencies=" + (this.optionalDependencies != null ? Arrays.toString(this.optionalDependencies.toArray(new String[0])) : "[]") +
       ", mixins=" + (this.mixins != null ? Arrays.toString(this.mixins.toArray(new String[0])) : "[]") +
+      ", accessWideners=" + (this.accessWideners != null ? Arrays.toString(this.accessWideners.toArray(new String[0])) : "[]") +
       "}";
   }
 }

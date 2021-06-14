@@ -90,8 +90,6 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
 
   @Override
   public final @NonNull Callable<Void> launchService(final @NonNull String @NonNull [] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
-    IgniteBootstrap.getInstance().getModEngine().loadMixins();
-
     launchClassLoader.addTargetPackageFilter(packageLocation -> IgniteExclusions.getExclusions().stream()
       .map(IgniteExclusions.Exclusion::getPackageExclusion)
       .filter(Objects::nonNull)

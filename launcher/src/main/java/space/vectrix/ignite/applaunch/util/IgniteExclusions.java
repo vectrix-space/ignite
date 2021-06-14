@@ -64,10 +64,6 @@ public final class IgniteExclusions {
     // Mixin
     exclude("org.spongepowered.asm."),
 
-    // Access Transformers
-    exclude("net.minecraftforge.accesstransformer."),
-    exclude("org.antlr.v4.runtime."),
-
     // Core
     exclude("joptsimple.")
   );
