@@ -10,7 +10,11 @@ dependencies {
   // API
   implementation(project(":ignite-api"))
 
-  implementation("net.minecrell:terminalconsoleappender:1.2.0")
+  // Logger
+  implementation("net.minecrell:terminalconsoleappender:1.3.0-SNAPSHOT")
+  implementation("org.jline:jline-terminal:3.20.0")
+  implementation("org.jline:jline-reader:3.20.0")
+  implementation("org.jline:jline-terminal-jansi:3.20.0")
 
   // Event
   implementation("net.kyori:event-api:4.0.0-SNAPSHOT") {
@@ -108,12 +112,11 @@ tasks {
       // Logging
       include(dependency("org.apache.logging.log4j:log4j-api"))
       include(dependency("org.apache.logging.log4j:log4j-core"))
-      include(dependency("org.checkerframework:checker-qual"))
       include(dependency("net.minecrell:terminalconsoleappender"))
       include(dependency("org.jline:jline-reader"))
       include(dependency("org.jline:jline-terminal"))
-      include(dependency("org.jline:jline-terminal-jna"))
-      include(dependency("net.java.dev.jna:jna"))
+      include(dependency("org.jline:jline-terminal-jansi"))
+      include(dependency("org.fusesource.jansi:jansi:2.3.2"))
 
       // Configuration
       include(dependency("org.spongepowered:configurate-core"))
