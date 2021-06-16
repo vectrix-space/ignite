@@ -43,7 +43,7 @@ public final class IgniteExclusions {
     exclude("org.checkerframework."),
     exclude("net.minecrell.terminalconsole."),
     exclude("org.jline."),
-    exclude("com.sun.jna."),
+    exclude("org.fusesource."),
 
     // Configuration
     exclude("ninja.leaping.configurate."),

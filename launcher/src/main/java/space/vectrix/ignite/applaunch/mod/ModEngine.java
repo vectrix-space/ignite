@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.Map;
 
 public final class ModEngine {
-  private final Logger logger = LogManager.getLogger("IgniteEngine");
+  private final Logger logger = LogManager.getLogger("Ignite Engine");
   private final ModResourceLocator resourceLocator = new ModResourceLocator();
   private final ModResourceLoader resourceLoader = new ModResourceLoader();
   private final Map<String, ModContainer> containers = new HashMap<>();

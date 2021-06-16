@@ -48,7 +48,7 @@ public final class IgniteAccessWidenerService implements ILaunchPluginService {
   private static final EnumSet<Phase> MATCH = EnumSet.of(Phase.BEFORE);
   private static final EnumSet<Phase> FAIL = EnumSet.noneOf(Phase.class);
 
-  private final Logger logger = LogManager.getLogger("IgniteAccessWidener");
+  private final Logger logger = LogManager.getLogger("Ignite Access Widener");
   private final AccessWidener widener = new AccessWidener();
   private final AccessWidenerReader reader = new AccessWidenerReader(this.widener);
 

@@ -28,6 +28,7 @@ import cpw.mods.modlauncher.Launcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.fusesource.jansi.AnsiConsole;
 import space.vectrix.ignite.api.Blackboard;
 import space.vectrix.ignite.api.service.IBootstrapService;
 import space.vectrix.ignite.applaunch.agent.Agent;
@@ -70,6 +71,10 @@ public final class IgniteBootstrap {
    * The configs directory.
    */
   public static final @NonNull Path CONFIG_TARGET_PATH = Paths.get(System.getProperty(Blackboard.CONFIG_DIRECTORY_PATH.getName(), "./configs"));
+
+  static {
+    AnsiConsole.systemInstall();
+  }
 
   private static IgniteBootstrap instance;
 
@@ -135,7 +140,7 @@ public final class IgniteBootstrap {
     Agent.updateSecurity();
 
     // Logger
-    final Logger logger = LogManager.getLogger("IgniteBootstrap");
+    final Logger logger = LogManager.getLogger("Ignite Bootstrap");
     logger.info("Ignite Launcher v" + IgniteBootstrap.class.getPackage().getImplementationVersion());
 
     // Modlauncher

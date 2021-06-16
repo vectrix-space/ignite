@@ -61,7 +61,7 @@ import java.util.jar.Manifest;
 
 public final class IgniteLaunchService implements ILaunchHandlerService {
   private final ConcurrentMap<String, Manifest> manifests = new ConcurrentHashMap<>();
-  private final Logger logger = LogManager.getLogger("IgniteLaunch");
+  private final Logger logger = LogManager.getLogger("Ignite Launch");
 
   @Override
   public final @NonNull String name() {
