@@ -35,7 +35,7 @@ dependencies {
   }
 
   // Core
-  implementation("cpw.mods:modlauncher:8.0.9") {
+  implementation("cpw.mods:modlauncher:9.0.0") {
     exclude(group = "org.apache.logging.log4j", module = "log4j-api")
     exclude(group = "org.apache.logging.log4j", module = "log4j-core")
   }
