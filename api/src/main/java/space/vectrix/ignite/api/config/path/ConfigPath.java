@@ -32,15 +32,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation used to specify the mod specific configuration path.
- *
- * <p>Usually the parent is the {@link ConfigsPath} path, with directory being
- * named after the mod ID.</p>
- *
- * @since 0.5.0
+ * Annotation used to specify the mod specific configuration
+ * path.
  */
 @BindingAnnotation
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 public @interface ConfigPath {
+  /**
+   * Set {@code true} to get the parent path containing all other mod
+   * directories.
+   *
+   * @return whether the target is the parent path or not
+   */
+  boolean shared() default false;
 }

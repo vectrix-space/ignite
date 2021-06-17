@@ -24,17 +24,18 @@
  */
 package space.vectrix.ignite.api.config;
 
-import ninja.leaping.configurate.ConfigurationNode;
-import ninja.leaping.configurate.ConfigurationOptions;
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.gson.GsonConfigurationLoader;
-import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
-import ninja.leaping.configurate.loader.AbstractConfigurationLoader;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
-import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.spongepowered.configurate.BasicConfigurationNode;
+import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.ConfigurateException;
+import org.spongepowered.configurate.ConfigurationNode;
+import org.spongepowered.configurate.ConfigurationOptions;
+import org.spongepowered.configurate.ScopedConfigurationNode;
+import org.spongepowered.configurate.gson.GsonConfigurationLoader;
+import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
+import org.spongepowered.configurate.loader.AbstractConfigurationLoader;
+import org.spongepowered.configurate.loader.ConfigurationLoader;
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -50,44 +51,38 @@ import java.util.function.Function;
 public final class Configurations {
   /**
    * Provides a function to make a general purpose {@link GsonConfigurationLoader}
-   * using the input {@link ConfigurationKey}.
-   *
-   * @since 0.5.0
+   * using the input {@link Configuration.Key}.
    */
-  public static final @NonNull Function<ConfigurationKey, ConfigurationLoader<ConfigurationNode>> GSON_LOADER = key -> Configurations.createLoader(key, path -> GsonConfigurationLoader.builder()
-    .setSource(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
-    .setSink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8, Configurations.SINK_OPTIONS))
-    .setDefaultOptions(ConfigurationOptions.defaults())
+  public static final @NonNull Function<Configuration.Key<?>, ConfigurationLoader<BasicConfigurationNode>> GSON_LOADER = key -> Configurations.createLoader(key, path -> GsonConfigurationLoader.builder()
+    .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
+    .sink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8, Configurations.SINK_OPTIONS))
+    .defaultOptions(ConfigurationOptions.defaults())
     .build()
   );
 
   /**
    * Provides a function to make a general purpose {@link HoconConfigurationLoader}
-   * using the input {@link ConfigurationKey}.
-   *
-   * @since 0.5.0
+   * using the input {@link Configuration.Key}.
    */
-  public static final @NonNull Function<ConfigurationKey, ConfigurationLoader<CommentedConfigurationNode>> HOCON_LOADER = key -> Configurations.createLoader(key, path -> HoconConfigurationLoader.builder()
-    .setSource(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
-    .setSink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8, Configurations.SINK_OPTIONS))
-    .setDefaultOptions(ConfigurationOptions.defaults())
+  public static final @NonNull Function<Configuration.Key<?>, ConfigurationLoader<CommentedConfigurationNode>> HOCON_LOADER = key -> Configurations.createLoader(key, path -> HoconConfigurationLoader.builder()
+    .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
+    .sink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8, Configurations.SINK_OPTIONS))
+    .defaultOptions(ConfigurationOptions.defaults())
     .build()
   );
 
   /**
-   * Provides a function to make a general purpose {@link YAMLConfigurationLoader}
-   * using the input {@link ConfigurationKey}.
-   *
-   * @since 0.5.0
+   * Provides a function to make a general purpose {@link YamlConfigurationLoader}
+   * using the input {@link Configuration.Key}.
    */
-  public static final @NonNull Function<ConfigurationKey, ConfigurationLoader<ConfigurationNode>> YAML_LOADER = key -> Configurations.createLoader(key, path -> YAMLConfigurationLoader.builder()
-    .setSource(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
-    .setSink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8, Configurations.SINK_OPTIONS))
-    .setDefaultOptions(ConfigurationOptions.defaults())
+  public static final @NonNull Function<Configuration.Key<?>, ConfigurationLoader<CommentedConfigurationNode>> YAML_LOADER = key -> Configurations.createLoader(key, path -> YamlConfigurationLoader.builder()
+    .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
+    .sink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8, Configurations.SINK_OPTIONS))
+    .defaultOptions(ConfigurationOptions.defaults())
     .build()
   );
 
-  private static final ConcurrentMap<ConfigurationKey, Configuration<?, ?>> CONFIGURATIONS = new ConcurrentHashMap<>();
+  private static final ConcurrentMap<Configuration.Key<?>, Configuration<?, ?>> CONFIGURATIONS = new ConcurrentHashMap<>();
   private static final OpenOption[] SINK_OPTIONS = new OpenOption[] {
     StandardOpenOption.CREATE,
     StandardOpenOption.TRUNCATE_EXISTING,
@@ -96,71 +91,50 @@ public final class Configurations {
   };
 
   /**
-   * Creates a new virtual {@link Configuration} with the specified {@link ConfigurationKey}
-   * and {@link Class} instance type.
-   *
-   * @param key the configuration key
-   * @param instanceType the instance class
-   * @param <T> the instance type
-   * @param <N> the node type
-   * @return the configuration
-   * @since 0.5.0
-   */
-  public static <T, N extends ConfigurationNode> @NonNull Configuration<T, N> createVirtual(final @NonNull ConfigurationKey key, final @NonNull Class<T> instanceType) {
-    return new Configuration<>(key, instanceType);
-  }
-
-  /**
    * Gets or creates a new {@link Configuration} with the specified {@link ConfigurationLoader},
-   * {@link ConfigurationKey} and {@link Class} instance type.
+   * {@link Configuration.Key} and {@link Class} instance type.
    *
    * @param loader the loader supplier
    * @param key the configuration key
-   * @param instanceType the instance class
    * @param <T> the instance type
    * @param <N> the node type
    * @return the configuration
-   * @since 0.5.0
    */
-  public static <T, N extends ConfigurationNode> @NonNull Configuration<T, N> getOrCreate(final @Nullable ConfigurationLoader<N> loader, final @NonNull ConfigurationKey key,
-                                                                                          final @NonNull Class<T> instanceType) {
-    return Configurations.loadConfiguration(ignored -> loader, key, instanceType);
+  public static <T, N extends ConfigurationNode> @NonNull Configuration<T, N> getOrCreate(final @NonNull ConfigurationLoader<N> loader,
+                                                                                          final Configuration.@NonNull Key<T> key) {
+    return Configurations.loadConfiguration(ignored -> loader, key);
   }
 
   /**
    * Gets or creates a new {@link Configuration} with the specified {@link ConfigurationLoader},
-   * {@link ConfigurationKey} and {@link Class} instance type.
+   * {@link Configuration.Key} and {@link Class} instance type.
    *
    * @param loaderSupplier the loader supplier
    * @param key the configuration key
-   * @param instanceType the instance class
    * @param <T> the instance type
    * @param <N> the node type
    * @return the configuration
-   * @since 0.5.0
    */
-  public static <T, N extends ConfigurationNode> @NonNull Configuration<T, N> getOrCreate(final @NonNull Function<ConfigurationKey, ConfigurationLoader<N>> loaderSupplier,
-                                                                                          final @NonNull ConfigurationKey key, final @NonNull Class<T> instanceType) {
-    return Configurations.loadConfiguration(loaderSupplier, key, instanceType);
+  public static <T, N extends ConfigurationNode> @NonNull Configuration<T, N> getOrCreate(final @NonNull Function<Configuration.Key<?>, ConfigurationLoader<N>> loaderSupplier,
+                                                                                          final Configuration.@NonNull Key<T> key) {
+    return Configurations.loadConfiguration(loaderSupplier, key);
   }
 
-  private static <T, N extends ConfigurationNode> @NonNull Configuration<T, N> loadConfiguration(final @NonNull Function<ConfigurationKey, ConfigurationLoader<N>> loaderSupplier,
-                                                                                                 final @NonNull ConfigurationKey key, final @NonNull Class<T> instanceType) {
+  private static <T, N extends ConfigurationNode> @NonNull Configuration<T, N> loadConfiguration(final @NonNull Function<Configuration.Key<?>, ConfigurationLoader<N>> loaderSupplier,
+                                                                                                 final Configuration.@NonNull Key<T> key) {
     return (Configuration<T, N>) Configurations.CONFIGURATIONS.computeIfAbsent(key, ignored -> {
       try {
-        final Configuration<T, N> configuration = new Configuration<>(key, instanceType, loaderSupplier.apply(key));
+        final Configuration<T, N> configuration = new Configuration<>(key, loaderSupplier.apply(key));
         configuration.load();
         return configuration;
-      } catch (final IOException | ObjectMappingException exception) {
+      } catch (final ConfigurateException exception) {
         throw new AssertionError("Unable to load configuration.", exception);
       }
     });
   }
 
-  private static <N extends ConfigurationNode, L extends AbstractConfigurationLoader<N>> L createLoader(final @NonNull ConfigurationKey key, final @NonNull Function<Path, L> loader) {
-    final Path path = key.getPath();
-    if (path == null) return null;
-
+  private static <T, N extends ScopedConfigurationNode<N>, L extends AbstractConfigurationLoader<N>> L createLoader(final Configuration.@NonNull Key<T> key, final @NonNull Function<Path, L> loader) {
+    final Path path = key.path();
     try {
       Files.createDirectories(path.getParent());
 

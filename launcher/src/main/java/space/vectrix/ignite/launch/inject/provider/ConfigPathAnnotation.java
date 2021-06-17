@@ -22,71 +22,49 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package space.vectrix.ignite.api.config;
+package space.vectrix.ignite.launch.inject.provider;
 
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import space.vectrix.ignite.api.config.path.ConfigPath;
 
-import java.nio.file.Path;
+import java.lang.annotation.Annotation;
 import java.util.Objects;
 
-/**
- * A key to identify a specific {@link Configuration}.
- *
- * @since 0.5.0
- */
-public final class ConfigurationKey {
-  public static @NonNull ConfigurationKey key(final @NonNull String id, final @Nullable Path path) {
-    return new ConfigurationKey(id, path);
+public final class ConfigPathAnnotation implements ConfigPath {
+  public static final ConfigPath NON_SHARED = new ConfigPathAnnotation(false);
+  public static final ConfigPath SHARED = new ConfigPathAnnotation(true);
+
+  private final boolean shared;
+
+  private ConfigPathAnnotation(final boolean shared) {
+    this.shared = shared;
   }
 
-  private final String id;
-  private final Path path;
-
-  /* package */ ConfigurationKey(final @NonNull String id, final @Nullable Path path) {
-    this.id = id;
-    this.path = path;
+  @Override
+  public boolean shared() {
+    return false;
   }
 
-  /**
-   * The configuration identifier.
-   *
-   * @return the configuration identifier
-   * @since 0.5.0
-   */
-  public @NonNull String getId() {
-    return this.id;
-  }
-
-  /**
-   * The configuration path.
-   *
-   * @return the configuration path
-   * @since 0.5.0
-   */
-  public @MonotonicNonNull Path getPath() {
-    return this.path;
+  @Override
+  public Class<? extends Annotation> annotationType() {
+    return ConfigPath.class;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.id, this.path);
+    return Objects.hashCode(this.shared);
   }
 
   @Override
   public boolean equals(final @Nullable Object other) {
-    if (this == other) return true;
-    if (!(other instanceof ConfigurationKey)) return false;
-    final ConfigurationKey that = (ConfigurationKey) other;
-    return Objects.equals(this.id, that.id)
-      && Objects.equals(this.path, that.path);
+    if(this == other) return true;
+    if(!(other instanceof ConfigPath)) return false;
+    final ConfigPath that = (ConfigPath) other;
+    return this.shared() == that.shared();
   }
 
   @Override
   public String toString() {
-    return "ConfigurationKey{id=" + this.id +
-      ", path=" + this.path +
-      "}";
+    return "ConfigPath{shared=" + this.shared() + "}";
   }
 }

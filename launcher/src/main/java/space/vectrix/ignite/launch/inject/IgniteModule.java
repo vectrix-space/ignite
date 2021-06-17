@@ -31,7 +31,6 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import space.vectrix.ignite.api.Blackboard;
 import space.vectrix.ignite.api.Ignite;
 import space.vectrix.ignite.api.Platform;
-import space.vectrix.ignite.api.config.path.ConfigsPath;
 import space.vectrix.ignite.api.config.path.ModsPath;
 import space.vectrix.ignite.launch.IgnitePlatform;
 
@@ -48,24 +47,12 @@ public final class IgniteModule extends AbstractModule {
       .annotatedWith(ModsPath.class)
       .toProvider(ModsPathProvider.class)
       .in(Scopes.SINGLETON);
-
-    this.bind(Path.class)
-      .annotatedWith(ConfigsPath.class)
-      .toProvider(ConfigsPathProvider.class)
-      .in(Scopes.SINGLETON);
   }
 
   /* package */ static final class ModsPathProvider implements Provider<Path> {
     @Override
     public final @NonNull Path get() {
       return Blackboard.getProperty(Blackboard.MOD_DIRECTORY_PATH);
-    }
-  }
-
-  /* package */ static final class ConfigsPathProvider implements Provider<Path> {
-    @Override
-    public final @NonNull Path get() {
-      return Blackboard.getProperty(Blackboard.CONFIG_DIRECTORY_PATH);
     }
   }
 }

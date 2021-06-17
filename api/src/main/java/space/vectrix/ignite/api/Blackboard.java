@@ -25,6 +25,7 @@
 package space.vectrix.ignite.api;
 
 import com.google.common.reflect.TypeToken;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import space.vectrix.ignite.api.util.BlackboardMap;
@@ -58,7 +59,7 @@ public final class Blackboard {
    * @return the property, if present
    * @since 0.5.0
    */
-  public static <T> @Nullable T getProperty(final BlackboardMap.@NonNull Key<T> key) {
+  public static <T> @MonotonicNonNull T getProperty(final BlackboardMap.@NonNull Key<T> key) {
     return Blackboard.BLACKBOARD.get(key).orElse(null);
   }
 

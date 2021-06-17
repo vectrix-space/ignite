@@ -24,140 +24,128 @@
  */
 package space.vectrix.ignite.api.config;
 
-import ninja.leaping.configurate.ConfigurationNode;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
-import ninja.leaping.configurate.objectmapping.ObjectMapper;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.spongepowered.configurate.ConfigurateException;
+import org.spongepowered.configurate.ConfigurationNode;
+import org.spongepowered.configurate.loader.ConfigurationLoader;
 
-import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Objects;
 
-/**
- * A configuration wrapper to assist in managing the configuration loader and
- * object mapper instance.
- *
- * @param <T> the object mapper instance type
- * @param <N> the configuration node type
- * @since 0.5.0
- */
 public final class Configuration<T, N extends ConfigurationNode> {
-  private static <T> ObjectMapper<T> createMapper(final Class<T> instanceType) {
-    try {
-      return ObjectMapper.forClass(instanceType);
-    } catch (final ObjectMappingException exception) {
-      throw new AssertionError(exception);
-    }
+  public static <T> Configuration.@NonNull Key<T> key(final @NonNull Class<T> type, final @NonNull Path path) {
+    return new Configuration.Key<>(type, type.getSimpleName(), path);
   }
 
-  private final @Nullable ConfigurationLoader<N> loader;
-  private final ObjectMapper<T> mapper;
-  private final ConfigurationKey key;
-
-  private ObjectMapper<T>.@MonotonicNonNull BoundInstance instance;
-  private @MonotonicNonNull N node;
-
-  /* package */ Configuration(final @NonNull ConfigurationKey key, final @NonNull Class<T> instanceType) {
-    this(key, instanceType, null);
+  public static <T> Configuration.@NonNull Key<T> key(final @NonNull Class<T> type, final @NonNull String id, final @NonNull Path path) {
+    return new Configuration.Key<>(type, id, path);
   }
 
-  /* package */ Configuration(final @NonNull ConfigurationKey key, final @NonNull Class<T> instanceType, final @Nullable ConfigurationLoader<N> loader) {
-    this.mapper = Configuration.createMapper(instanceType);
+  private final Configuration.Key<T> key;
+  private final ConfigurationLoader<N> loader;
+
+  private N node;
+  private T instance;
+
+  /* package */ Configuration(final Configuration.@NonNull Key<T> key, final @NonNull ConfigurationLoader<N> loader) {
     this.key = key;
     this.loader = loader;
   }
 
-  /**
-   * Loads the configuration from the {@link ConfigurationLoader} if
-   * it exists.
-   *
-   * @throws IOException if the directory or file could not be created
-   * @throws ObjectMappingException if the instance could not be populated
-   * @since 0.5.0
-   */
-  public void load() throws IOException, ObjectMappingException {
-    if (this.loader == null) return;
-    if (this.instance == null) this.instance = this.mapper.bindToNew();
-
+  public void load() throws ConfigurateException {
     this.node = this.loader.load();
-    this.instance.populate(this.node);
-    this.save();
+    this.instance = this.node.get(this.key.type());
   }
 
-  /**
-   * Saves the configuration to the {@link ConfigurationLoader} if
-   * it exists.
-   *
-   * @throws IOException if the directory or file could not be created
-   * @throws ObjectMappingException if the instance could not be serialized to
-   * @since 0.5.0
-   */
-  public void save() throws IOException, ObjectMappingException {
-    if (this.loader == null) return;
-    if (this.node == null) this.node = this.loader.createEmptyNode();
-    if (this.instance != null) {
-      this.instance.serialize(this.node);
-    }
-
+  public void save() throws ConfigurateException {
+    if(this.node == null) this.node = this.loader.createNode();
+    if(this.instance != null) this.node.set(this.key.type(), this.instance);
     this.loader.save(this.node);
   }
 
-  /**
-   * Returns the configuration key.
-   *
-   * @return the configuration key
-   * @since 0.5.0
-   */
-  public @NonNull ConfigurationKey getKey() {
+  public Configuration.@NonNull Key<T> key() {
     return this.key;
   }
 
-  /**
-   * Returns the object mapper instance.
-   *
-   * @return the object mapper instance
-   * @since 0.5.0
-   */
-  public @MonotonicNonNull T getInstance() {
-    return this.instance != null ? this.instance.getInstance() : null;
+  public @MonotonicNonNull N node() {
+    return this.node;
   }
 
-  /**
-   * Returns the configuration node.
-   *
-   * @return the configuration node
-   * @since 0.5.0
-   */
-  public @MonotonicNonNull N getNode() {
-    return this.node;
+  public @MonotonicNonNull T instance() {
+    return this.instance;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.loader, this.mapper, this.key, this.instance, this.node);
+    return Objects.hash(this.key, this.loader, this.node, this.instance);
   }
 
   @Override
   public boolean equals(final @Nullable Object other) {
-    if (this == other) return true;
-    if (!(other instanceof Configuration)) return false;
+    if(this == other) return true;
+    if(!(other instanceof Configuration)) return false;
     final Configuration<?, ?> that = (Configuration<?, ?>) other;
-    return Objects.equals(this.loader, that.loader)
-      && Objects.equals(this.mapper, that.mapper)
-      && Objects.equals(this.key, that.key)
-      && Objects.equals(this.instance, that.instance)
-      && Objects.equals(this.node, that.node);
+    return Objects.equals(this.key, that.key)
+      && Objects.equals(this.loader, that.loader)
+      && Objects.equals(this.node, that.node)
+      && Objects.equals(this.instance, that.instance);
   }
 
   @Override
   public String toString() {
-    return "Configuration{loader=" + this.loader +
-      ", mapper=" + this.mapper +
-      ", key=" + this.key +
-      ", instance=" + this.instance +
+    return "Configuration{key=" + this.key +
+      ", loader=" + this.loader +
       ", node=" + this.node +
+      ", instance=" + this.instance +
       "}";
+  }
+
+  public static final class Key<T> {
+    private final Class<T> type;
+    private final String id;
+    private final Path path;
+
+    /* package */ Key(final @NonNull Class<T> type, final @NonNull String id, final @NonNull Path path) {
+      this.type = type;
+      this.id = id;
+      this.path = path;
+    }
+
+    public @NonNull Class<T> type() {
+      return this.type;
+    }
+
+    public @NonNull String id() {
+      return this.id;
+    }
+
+    public @NonNull Path path() {
+      return this.path;
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(this.type, this.id, this.path);
+    }
+
+    @Override
+    public boolean equals(final @Nullable Object other) {
+      if (this == other) return true;
+      if (!(other instanceof Configuration.Key)) return false;
+      final Configuration.Key<?> that = (Configuration.Key<?>) other;
+      return Objects.equals(this.type, that.type)
+        && Objects.equals(this.id, that.id)
+        && Objects.equals(this.path, that.path);
+    }
+
+    @Override
+    public String toString() {
+      return "Configuration.Key{type=" + this.type +
+        ", id=" + this.id +
+        ", path=" + this.path +
+        "}";
+    }
   }
 }
