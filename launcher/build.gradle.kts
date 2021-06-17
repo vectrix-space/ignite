@@ -116,13 +116,14 @@ tasks {
       include(dependency("org.jline:jline-reader"))
       include(dependency("org.jline:jline-terminal"))
       include(dependency("org.jline:jline-terminal-jansi"))
-      include(dependency("org.fusesource.jansi:jansi:2.3.2"))
+      include(dependency("org.fusesource.jansi:jansi"))
 
       // Configuration
       include(dependency("org.spongepowered:configurate-core"))
       include(dependency("org.spongepowered:configurate-hocon"))
       include(dependency("org.spongepowered:configurate-yaml"))
       include(dependency("org.spongepowered:configurate-gson"))
+      include(dependency("io.leangen.geantyref:geantyref"))
       include(dependency("com.typesafe:config"))
       include(dependency("com.google.code.gson:gson"))
       include(dependency("org.yaml:snakeyaml"))
