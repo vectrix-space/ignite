@@ -32,8 +32,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation used to specify the mod specific configuration
- * path.
+ * Annotation used to inject the mod specific configuration directory, or the
+ * parent if shared.
+ *
+ * <p>By default it is `./configs/[mod]` (or `./configs` if shared) at the root
+ * directory. However this can be modified with startup arguments.</p>
+ *
+ * @since 0.5.0
  */
 @BindingAnnotation
 @Retention(RetentionPolicy.RUNTIME)
@@ -41,9 +46,10 @@ import java.lang.annotation.Target;
 public @interface ConfigPath {
   /**
    * Set {@code true} to get the parent path containing all other mod
-   * directories.
+   * configuration directories.
    *
    * @return whether the target is the parent path or not
+   * @since 0.5.0
    */
   boolean shared() default false;
 }

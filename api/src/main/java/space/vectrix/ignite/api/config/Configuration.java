@@ -34,11 +34,41 @@ import org.spongepowered.configurate.loader.ConfigurationLoader;
 import java.nio.file.Path;
 import java.util.Objects;
 
+/**
+ * A configuration wrapper to assist in managing the configuration loader
+ * and configuration object.
+ *
+ * @param <T> the configuration object type
+ * @param <N> the configuration node type
+ * @since 0.5.0
+ */
 public final class Configuration<T, N extends ConfigurationNode> {
+  /**
+   * Returns a new {@link Configuration.Key} for the specified {@link Class}
+   * and {@link Path} to be associated with a {@link Configuration}.
+   *
+   * @param type the configuration object class
+   * @param path the configuration path
+   * @param <T> the configuration object type
+   * @return a configuration key
+   * @since 0.5.0
+   */
   public static <T> Configuration.@NonNull Key<T> key(final @NonNull Class<T> type, final @NonNull Path path) {
     return new Configuration.Key<>(type, type.getSimpleName(), path);
   }
 
+  /**
+   * Returns a new {@link Configuration.Key} for the specified {@link Class},
+   * with the {@link String} identifier, and {@link Path} to be associated with
+   * a {@link Configuration}.
+   *
+   * @param type the configuration object class
+   * @param id the configuration identifier
+   * @param path the configuration path
+   * @param <T> the configuration object type
+   * @return a configuration key
+   * @since 0.5.0
+   */
   public static <T> Configuration.@NonNull Key<T> key(final @NonNull Class<T> type, final @NonNull String id, final @NonNull Path path) {
     return new Configuration.Key<>(type, id, path);
   }
@@ -54,25 +84,55 @@ public final class Configuration<T, N extends ConfigurationNode> {
     this.loader = loader;
   }
 
+  /**
+   * Loads the configuration from the {@link ConfigurationLoader} if it exists.
+   *
+   * @throws ConfigurateException if the configuration could not be loaded
+   * @since 0.5.0
+   */
   public void load() throws ConfigurateException {
     this.node = this.loader.load();
     this.instance = this.node.get(this.key.type());
   }
 
+  /**
+   * Saves the configuration to the {@link ConfigurationLoader}.
+   *
+   * @throws ConfigurateException if the configuration could not be saved
+   * @since 0.5.0
+   */
   public void save() throws ConfigurateException {
     if(this.node == null) this.node = this.loader.createNode();
     if(this.instance != null) this.node.set(this.key.type(), this.instance);
     this.loader.save(this.node);
   }
 
+  /**
+   * Returns the {@link Configuration.Key}.
+   *
+   * @return the configuration key
+   * @since 0.5.0
+   */
   public Configuration.@NonNull Key<T> key() {
     return this.key;
   }
 
+  /**
+   * Returns the {@code N} node.
+   *
+   * @return the configuration node
+   * @since 0.5.0
+   */
   public @MonotonicNonNull N node() {
     return this.node;
   }
 
+  /**
+   * Returns the {@code T} configuration object.
+   *
+   * @return the configuration object
+   * @since 0.5.0
+   */
   public @MonotonicNonNull T instance() {
     return this.instance;
   }
@@ -102,6 +162,13 @@ public final class Configuration<T, N extends ConfigurationNode> {
       "}";
   }
 
+  /**
+   * Represents a key to a potential {@link Configuration} that could exist or
+   * be created.
+   *
+   * @param <T> the configuration object type
+   * @since 0.5.0
+   */
   public static final class Key<T> {
     private final Class<T> type;
     private final String id;
@@ -113,14 +180,32 @@ public final class Configuration<T, N extends ConfigurationNode> {
       this.path = path;
     }
 
+    /**
+     * Returns the configuration object {@link Class}.
+     *
+     * @return the configuration object class
+     * @since 0.5.0
+     */
     public @NonNull Class<T> type() {
       return this.type;
     }
 
+    /**
+     * Returns the configuration {@link String} identifier.
+     *
+     * @return the configuration identifier
+     * @since 0.5.0
+     */
     public @NonNull String id() {
       return this.id;
     }
 
+    /**
+     * Returns the configuration {@link Path}.
+     *
+     * @return the configuration path
+     * @since 0.5.0
+     */
     public @NonNull Path path() {
       return this.path;
     }

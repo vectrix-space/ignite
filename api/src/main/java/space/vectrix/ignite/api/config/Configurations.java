@@ -47,11 +47,19 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 
+/**
+ * Provides a useful way of retrieving {@link Configuration}s for a specific
+ * {@link ConfigurationLoader} and {@link Configuration.Key}.
+ *
+ * @since 0.5.0
+ */
 @SuppressWarnings("unchecked")
 public final class Configurations {
   /**
    * Provides a function to make a general purpose {@link GsonConfigurationLoader}
    * using the input {@link Configuration.Key}.
+   *
+   * @since 0.5.0
    */
   public static final @NonNull Function<Configuration.Key<?>, ConfigurationLoader<BasicConfigurationNode>> GSON_LOADER = key -> Configurations.createLoader(key, path -> GsonConfigurationLoader.builder()
     .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
@@ -63,6 +71,8 @@ public final class Configurations {
   /**
    * Provides a function to make a general purpose {@link HoconConfigurationLoader}
    * using the input {@link Configuration.Key}.
+   *
+   * @since 0.5.0
    */
   public static final @NonNull Function<Configuration.Key<?>, ConfigurationLoader<CommentedConfigurationNode>> HOCON_LOADER = key -> Configurations.createLoader(key, path -> HoconConfigurationLoader.builder()
     .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
@@ -74,6 +84,8 @@ public final class Configurations {
   /**
    * Provides a function to make a general purpose {@link YamlConfigurationLoader}
    * using the input {@link Configuration.Key}.
+   *
+   * @since 0.5.0
    */
   public static final @NonNull Function<Configuration.Key<?>, ConfigurationLoader<CommentedConfigurationNode>> YAML_LOADER = key -> Configurations.createLoader(key, path -> YamlConfigurationLoader.builder()
     .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
@@ -99,6 +111,7 @@ public final class Configurations {
    * @param <T> the instance type
    * @param <N> the node type
    * @return the configuration
+   * @since 0.5.0
    */
   public static <T, N extends ConfigurationNode> @NonNull Configuration<T, N> getOrCreate(final @NonNull ConfigurationLoader<N> loader,
                                                                                           final Configuration.@NonNull Key<T> key) {
@@ -114,6 +127,7 @@ public final class Configurations {
    * @param <T> the instance type
    * @param <N> the node type
    * @return the configuration
+   * @since 0.5.0
    */
   public static <T, N extends ConfigurationNode> @NonNull Configuration<T, N> getOrCreate(final @NonNull Function<Configuration.Key<?>, ConfigurationLoader<N>> loaderSupplier,
                                                                                           final Configuration.@NonNull Key<T> key) {
