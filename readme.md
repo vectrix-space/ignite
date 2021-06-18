@@ -5,7 +5,7 @@ Ignite [![Discord](https://img.shields.io/discord/819522977586348052?style=for-t
 [![Maven Central](https://img.shields.io/maven-central/v/space.vectrix.ignite/ignite-api?label=stable)](https://search.maven.org/search?q=g:space.vectrix.ignite%20AND%20a:ignite*)
 ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/space.vectrix.ignite/ignite-api?label=dev&server=https%3A%2F%2Fs01.oss.sonatype.org)
 
-Bootstraps the Minecraft Server with [ModLauncher] to apply [Mixins] and [Access Transformers] from Ignite mods.
+Bootstraps the Minecraft Server with [ModLauncher] to apply [Mixins] and [Access Wideners] from Ignite mods.
 
 ## Building
 __Note:__ If you do not have [Gradle] installed then use `./gradlew` for Unix systems or Git Bash and gradlew.bat for Windows systems in place of any 'gradle' command.
@@ -17,7 +17,7 @@ In order to build Ignite you simply need to run the `gradle` command. You can fi
 The Ignite launcher must be executed instead of the Minecraft Server. Ignite will launch the Minecraft Server itself, additionally passing in any extra arguments you provide it.
 Usually you would want to put the launcher jar, and the server jar in the same directory. 
 
-This would then be run like `java -jar ignite-launcher.jar`. Any other parameters will be passed onto and effect the target server.
+This would be run like `java -jar ignite-launcher.jar`. Any other parameters will be passed onto and effect the target server.
 
 **Note:** You must add the flag `-javaagent:./ignite-launcher.jar` if you're running Java 8 or below.
 
@@ -55,7 +55,7 @@ To depend on the Ignite API in order to create your mod, you will need to add th
 <dependency>
   <groupId>space.vectrix.ignite</groupId>
   <artifactId>ignite-api</artifactId>
-  <version>0.4.0</version>
+  <version>0.5.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -66,20 +66,23 @@ repositories {
 }
 
 dependencies {
-  compile "space.vectrix.ignite:ignite-api:0.4.0"
+  compile "space.vectrix.ignite:ignite-api:0.5.0-SNAPSHOT"
 }
 ```
 
 ### Setup
 
-Your mod will require a `META-INF/ignite-mod.json` in order to be located as a mod. The `META-INF/ignite-mod.json` provides the ID of the mod, and a list of Mixin configuration file names.
+Your mod will require a `ignite.mod.json` in order to be located as a mod. The `ignite.mod.json` provides the metadata needed to load your mixins and access wideners.
 
-Example `META-INF/ignite-mod.json`:
+Example `ignite.mod.json`:
 ```json
 {
   "id": "example",
   "version": "1.0.0",
-  "target": "space.vectrix.example.ExampleMod",
+  "entry": "space.vectrix.example.ExampleMod",
+  "dependencies": [
+    "ignite"
+  ],
   "mixins": [
     "mixins.example.core.json"
   ]
@@ -92,9 +95,11 @@ The mods will need to be placed in the directory the launcher will be targeting 
 
 The Mixin configuration files will need to be a resource inside the mod jar, which will be used to apply the configured mixins. [Mixin Specification]
 
-#### Access Transformers
+#### Access Wideners
 
-The Access Transformers configuration file path should be provided in the manifest with the key `AT`. [AT Specification]
+The Access Wideners configuration files will need to be a resource inside the mod jar, which will be used to apply the access modifications. [Access Widener Specification]
+
+**Note:** Access wideners should only be used in situations where Mixin will not work!
 
 ## Inspiration
 
@@ -109,9 +114,9 @@ Initially designed for [Mineteria](https://mineteria.com/).
 
 [ModLauncher]: https://github.com/cpw/modlauncher
 [Mixins]: https://github.com/SpongePowered/Mixin
-[Access Transformers]: https://github.com/MinecraftForge/AccessTransformers
+[Access Wideners]: https://github.com/QuiltMC/access-widener
 [Mixin Specification]: https://github.com/SpongePowered/Mixin/wiki/Introduction-to-Mixins---The-Mixin-Environment#mixin-configuration-files
-[AT Specification]: https://github.com/MinecraftForge/AccessTransformers/blob/master/FMLAT.md
+[Access Widener Specification]: https://fabricmc.net/wiki/tutorial:accesswideners
 
 [Gradle]: https://www.gradle.org/
 [Orion]: https://github.com/OrionMinecraft/Orion
