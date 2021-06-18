@@ -53,21 +53,8 @@ public final class ModModule extends AbstractModule {
     this.bind(Logger.class).toInstance(this.container.getLogger());
 
     this.bind(Path.class)
-      .annotatedWith(ConfigPathAnnotation.SHARED)
-      .toProvider(SharedConfigPathProvider.class)
-      .in(Scopes.SINGLETON);
-
-    this.bind(Path.class)
       .annotatedWith(ConfigPathAnnotation.NON_SHARED)
-      .toProvider(NonSharedConfigPathProvider.class)
-      .in(Scopes.SINGLETON);
-  }
-
-  /* package */ static final class SharedConfigPathProvider implements Provider<Path> {
-    @Override
-    public final @NonNull Path get() {
-      return Blackboard.getProperty(Blackboard.CONFIG_DIRECTORY_PATH);
-    }
+      .toProvider(NonSharedConfigPathProvider.class);
   }
 
   /* package */ static final class NonSharedConfigPathProvider implements Provider<Path> {

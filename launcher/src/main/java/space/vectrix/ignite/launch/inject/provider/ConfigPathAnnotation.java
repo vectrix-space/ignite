@@ -28,7 +28,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import space.vectrix.ignite.api.config.path.ConfigPath;
 
 import java.lang.annotation.Annotation;
-import java.util.Objects;
 
 public final class ConfigPathAnnotation implements ConfigPath {
   public static final ConfigPath NON_SHARED = new ConfigPathAnnotation(false);
@@ -42,7 +41,7 @@ public final class ConfigPathAnnotation implements ConfigPath {
 
   @Override
   public boolean shared() {
-    return false;
+    return this.shared;
   }
 
   @Override
@@ -52,7 +51,7 @@ public final class ConfigPathAnnotation implements ConfigPath {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(this.shared);
+    return (127 * "shared".hashCode()) ^ Boolean.valueOf(this.shared()).hashCode();
   }
 
   @Override
@@ -65,6 +64,6 @@ public final class ConfigPathAnnotation implements ConfigPath {
 
   @Override
   public String toString() {
-    return "ConfigPath{shared=" + this.shared() + "}";
+    return "@ConfigPath(shared=" + this.shared() + ")";
   }
 }
