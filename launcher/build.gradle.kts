@@ -45,7 +45,7 @@ dependencies {
     exclude(group = "org.apache.logging.log4j", module = "log4j-core")
   }
 
-  implementation("cpw.mods:grossjava9hacks:1.3.3") {
+  implementation("cpw.mods:grossjava9hacks:2.0.7") {
     exclude(group = "org.apache.logging.log4j", module = "log4j-api")
     exclude(group = "org.apache.logging.log4j", module = "log4j-core")
   }
