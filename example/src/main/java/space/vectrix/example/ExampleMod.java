@@ -52,7 +52,7 @@ public final class ExampleMod {
     final Configuration<ExampleConfig, CommentedConfigurationNode> configWrapper = Configurations.getOrCreate(Configurations.HOCON_LOADER, ExampleInfo.getExampleConfig());
     final ExampleConfig config = configWrapper.instance();
     if (config != null) {
-      this.logger.info("Foo is set to: " + (config.container.foo ? "Enabled" : "Disabled"));
+      this.logger.info("Foo is set to: " + (config.container().foo() ? "Enabled" : "Disabled"));
     }
   }
 }

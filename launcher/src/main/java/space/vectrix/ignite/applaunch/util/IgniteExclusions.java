@@ -46,7 +46,7 @@ public final class IgniteExclusions {
     exclude("org.fusesource."),
 
     // Configuration
-    exclude("ninja.leaping.configurate."),
+    exclude("org.spongepowered.configurate."),
     exclude("io.leangen.geantyref."),
     exclude("com.typesafe.config."),
     exclude("com.google.gson."),

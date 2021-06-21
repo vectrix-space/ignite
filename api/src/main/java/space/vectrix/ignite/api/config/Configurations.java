@@ -29,7 +29,6 @@ import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.ScopedConfigurationNode;
 import org.spongepowered.configurate.gson.GsonConfigurationLoader;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
@@ -64,7 +63,7 @@ public final class Configurations {
   public static final @NonNull Function<Configuration.Key<?>, ConfigurationLoader<BasicConfigurationNode>> GSON_LOADER = key -> Configurations.createLoader(key, path -> GsonConfigurationLoader.builder()
     .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
     .sink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8, Configurations.SINK_OPTIONS))
-    .defaultOptions(ConfigurationOptions.defaults())
+    .defaultOptions(options -> options.shouldCopyDefaults(true))
     .build()
   );
 
@@ -77,7 +76,7 @@ public final class Configurations {
   public static final @NonNull Function<Configuration.Key<?>, ConfigurationLoader<CommentedConfigurationNode>> HOCON_LOADER = key -> Configurations.createLoader(key, path -> HoconConfigurationLoader.builder()
     .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
     .sink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8, Configurations.SINK_OPTIONS))
-    .defaultOptions(ConfigurationOptions.defaults())
+    .defaultOptions(options -> options.shouldCopyDefaults(true))
     .build()
   );
 
@@ -90,7 +89,7 @@ public final class Configurations {
   public static final @NonNull Function<Configuration.Key<?>, ConfigurationLoader<CommentedConfigurationNode>> YAML_LOADER = key -> Configurations.createLoader(key, path -> YamlConfigurationLoader.builder()
     .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
     .sink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8, Configurations.SINK_OPTIONS))
-    .defaultOptions(ConfigurationOptions.defaults())
+    .defaultOptions(options -> options.shouldCopyDefaults(true))
     .build()
   );
 
