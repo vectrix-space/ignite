@@ -40,6 +40,7 @@ import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
 public final class ModResourceLocator {
+  public static final @NonNull String LAUNCH_LOCATOR = "launch_locator";
   public static final @NonNull String ENGINE_LOCATOR = "engine_locator";
   public static final @NonNull String JAVA_LOCATOR = "java_locator";
 
@@ -47,6 +48,7 @@ public final class ModResourceLocator {
     final List<ModResource> modResources = new ArrayList<>();
 
     modResources.add(EngineResource.createEngineResource(engine));
+    modResources.add(EngineResource.createLaunchResource(engine));
 
     final Path modDirectory = Blackboard.getProperty(Blackboard.MOD_DIRECTORY_PATH);
     if (modDirectory == null || Files.notExists(modDirectory)) {

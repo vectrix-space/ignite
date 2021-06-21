@@ -50,7 +50,7 @@ public final class ModResourceLoader {
     final List<ModContainer> containers = new ArrayList<>();
 
     for (final ModResource resource : engine.getResources()) {
-      if (resource.getLocator().equals(ModResourceLocator.ENGINE_LOCATOR)) {
+      if (resource.getLocator().equals(ModResourceLocator.ENGINE_LOCATOR) || resource.getLocator().equals(ModResourceLocator.LAUNCH_LOCATOR)) {
         final ModConfig config = new ModConfig(
           IgniteBootstrap.class.getPackage().getSpecificationTitle(),
           IgniteBootstrap.class.getPackage().getImplementationVersion()

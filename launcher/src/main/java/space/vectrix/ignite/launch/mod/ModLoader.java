@@ -53,7 +53,7 @@ public final class ModLoader {
 
     for (final ModContainer container : ordered) {
       final String identifier = container.getId();
-      if (container.getResource().getLocator().equals(ModResourceLocator.ENGINE_LOCATOR)) {
+      if (container.getResource().getLocator().equals(ModResourceLocator.ENGINE_LOCATOR) || container.getResource().getLocator().equals(ModResourceLocator.LAUNCH_LOCATOR)) {
         identifierTarget.put(identifier, container);
         continue;
       }
