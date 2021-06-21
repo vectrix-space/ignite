@@ -9,7 +9,7 @@ apply(plugin = "de.marcphilipp.nexus-publish")
 
 dependencies {
   // API
-  api("org.checkerframework:checker-qual:3.13.0")
+  api("org.checkerframework:checker-qual:3.15.0")
   api("org.apache.logging.log4j:log4j-api:2.8.1")
 
   // Configuration
