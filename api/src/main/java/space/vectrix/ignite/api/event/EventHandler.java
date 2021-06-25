@@ -29,14 +29,16 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 /**
  * Represents an interface to perform a direct dispatch of an event.
  *
- * @param <E> The event type
+ * @param <E> the event type
+ * @since 0.5.0
  */
 @FunctionalInterface
 public interface EventHandler<E> {
   /**
    * Called when an event is dispatched.
    *
-   * @param event The event
+   * @param event the event
+   * @since 0.5.0
    */
   void execute(final @NonNull E event);
 }

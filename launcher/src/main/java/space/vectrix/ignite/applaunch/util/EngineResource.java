@@ -26,6 +26,7 @@ package space.vectrix.ignite.applaunch.util;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import space.vectrix.ignite.api.Blackboard;
 import space.vectrix.ignite.api.mod.ModResource;
 import space.vectrix.ignite.applaunch.IgniteBootstrap;
 import space.vectrix.ignite.applaunch.mod.ModEngine;
@@ -38,6 +39,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.util.Enumeration;
 import java.util.jar.Attributes;
+import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 public final class EngineResource {
@@ -46,6 +48,13 @@ public final class EngineResource {
     final Manifest manifest = EngineResource.getEngineManifest(engine);
     if (path == null || manifest == null) throw new IllegalStateException("Unable to create engine container!");
     return new ModResource(ModResourceLocator.ENGINE_LOCATOR, path, manifest);
+  }
+
+  public static @NonNull ModResource createLaunchResource(final ModEngine engine) {
+    final Path path = Blackboard.getProperty(Blackboard.LAUNCH_JAR);
+    final Manifest manifest = EngineResource.getLaunchManifest(engine, path);
+    if (path == null || manifest == null) throw new IllegalStateException("Unable to create launch container!");
+    return new ModResource(ModResourceLocator.LAUNCH_LOCATOR, path, manifest);
   }
 
   private static @Nullable Manifest getEngineManifest(final ModEngine engine) {
@@ -58,6 +67,16 @@ public final class EngineResource {
       }
     } catch (final IOException exception) {
       engine.getLogger().error("Failed to read launcher manifest!", exception);
+    }
+
+    return null;
+  }
+
+  private static @Nullable Manifest getLaunchManifest(final ModEngine engine, final Path path) {
+    try (final JarFile jarFile = new JarFile(path.toFile())) {
+      return jarFile.getManifest();
+    } catch (final IOException exception) {
+      engine.getLogger().error("Failed to walk the launch jar '" + path + "'!", exception);
     }
 
     return null;

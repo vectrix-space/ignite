@@ -31,6 +31,8 @@ import space.vectrix.ignite.api.mod.ModManager;
 
 /**
  * Provides static access to the core functions of Ignite.
+ *
+ * @since 0.5.0
  */
 public final class Ignite {
   @Inject private static Platform platform;
@@ -38,7 +40,8 @@ public final class Ignite {
   /**
    * Returns the {@link Platform}, if it is initialized.
    *
-   * @return The platform
+   * @return the platform
+   * @since 0.5.0
    */
   public static @NonNull Platform getPlatform() {
     if (Ignite.platform == null) throw new IllegalStateException("Ignite has not been initialized yet!");
@@ -48,7 +51,8 @@ public final class Ignite {
   /**
    * Returns the {@link ModManager}, if it is initialized.
    *
-   * @return The mod manager
+   * @return the mod manager
+   * @since 0.5.0
    */
   public static @NonNull ModManager getModManager() {
     return Ignite.getPlatform().getModManager();
@@ -57,7 +61,8 @@ public final class Ignite {
   /**
    * Returns the {@link EventManager}, if it is initialized.
    *
-   * @return The event manager
+   * @return the event manager
+   * @since 0.5.0
    */
   public static @NonNull EventManager getEventManager() {
     return Ignite.getPlatform().getEventManager();

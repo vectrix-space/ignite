@@ -25,15 +25,23 @@
 package space.vectrix.ignite.applaunch.util;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.objectweb.asm.Opcodes;
 
 public final class IgniteConstants {
+  public static final int ASM_VERSION = Opcodes.ASM9;
+
+  public static final @NonNull String MOD_CONFIG = "ignite.mod.json";
+
   public static final @NonNull String IGNITE_LAUNCH_SERVICE = "ignitelaunch";
   public static final @NonNull String IGNITE_TRANSFORMATION_SERVICE = "ignitetransformer";
-  public static final @NonNull String AT_SERVICE = "accesstransformer";
+  public static final @NonNull String ACCESS_WIDENER_SERVICE = "access_widener";
+  public static final @NonNull String MIXIN_SERVICE = "mixin";
 
   public static final @NonNull String MANIFEST = "MANIFEST.MF";
   public static final @NonNull String META_INF = "META-INF";
-  public static final @NonNull String AT = "AT";
+  public static final @NonNull String ACCESS_WIDENER = "AccessWidener";
+
+  public static final @NonNull String ACCESS_WIDENER_EXTENSION = "accesswidener";
 
   private IgniteConstants() {}
 }

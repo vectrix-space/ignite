@@ -29,7 +29,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import space.vectrix.ignite.api.Platform;
-import space.vectrix.ignite.api.config.path.ConfigsPath;
+import space.vectrix.ignite.api.config.path.ConfigPath;
 import space.vectrix.ignite.api.config.path.ModsPath;
 import space.vectrix.ignite.api.event.EventManager;
 import space.vectrix.ignite.api.mod.ModManager;
@@ -39,14 +39,14 @@ import space.vectrix.ignite.launch.mod.IgniteModManager;
 import java.nio.file.Path;
 
 public final class IgnitePlatform implements Platform {
-  private final Logger logger = LogManager.getLogger("IgnitePlatform");
+  private final Logger logger = LogManager.getLogger("Ignite Platform");
   private final ModManager modManager;
   private final EventManager eventManager;
   private final Path configs;
   private final Path mods;
 
   @Inject
-  public IgnitePlatform(final @NonNull @ConfigsPath Path configs,
+  public IgnitePlatform(final @NonNull @ConfigPath(shared = true) Path configs,
                         final @NonNull @ModsPath Path mods) {
     this.mods = mods;
     this.configs = configs;

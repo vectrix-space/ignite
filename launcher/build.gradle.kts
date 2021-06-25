@@ -10,9 +10,11 @@ dependencies {
   // API
   implementation(project(":ignite-api"))
 
-  implementation("net.minecrell:terminalconsoleappender:1.2.0") {
-    exclude(group = "org.apache.logging.log4j", module = "log4j-api")
-  }
+  // Logger
+  implementation("net.minecrell:terminalconsoleappender:1.3.0-SNAPSHOT")
+  implementation("org.jline:jline-terminal:3.20.0")
+  implementation("org.jline:jline-reader:3.20.0")
+  implementation("org.jline:jline-terminal-jansi:3.20.0")
 
   // Event
   implementation("net.kyori:event-api:4.0.0-SNAPSHOT") {
@@ -28,26 +30,24 @@ dependencies {
     exclude(group = "org.ow2.asm:asm-util")
   }
 
-  // Access Transformers
-  implementation("net.minecraftforge:accesstransformers:2.2.1:service") {
-    exclude(group = "org.apache.logging.log4j", module = "log4j-api")
-    exclude(group = "org.apache.logging.log4j", module = "log4j-core")
+  // Access Widener
+  implementation("org.quiltmc:access-widener:1.0.2") {
+    exclude(group = "org.apache.logging.log4j")
   }
 
   // Core
   implementation("cpw.mods:modlauncher:8.0.9") {
-    exclude(group = "org.apache.logging.log4j", module = "log4j-api")
-    exclude(group = "org.apache.logging.log4j", module = "log4j-core")
+    exclude(group = "org.apache.logging.log4j")
+    exclude(group = "net.sf.jopt-simple")
   }
 
   implementation("cpw.mods:modlauncher:8.0.9:api") {
-    exclude(group = "org.apache.logging.log4j", module = "log4j-api")
-    exclude(group = "org.apache.logging.log4j", module = "log4j-core")
+    exclude(group = "org.apache.logging.log4j")
+    exclude(group = "net.sf.jopt-simple")
   }
 
   implementation("cpw.mods:grossjava9hacks:1.3.3") {
-    exclude(group = "org.apache.logging.log4j", module = "log4j-api")
-    exclude(group = "org.apache.logging.log4j", module = "log4j-core")
+    exclude(group = "org.apache.logging.log4j")
   }
 }
 
@@ -112,18 +112,18 @@ tasks {
       // Logging
       include(dependency("org.apache.logging.log4j:log4j-api"))
       include(dependency("org.apache.logging.log4j:log4j-core"))
-      include(dependency("org.checkerframework:checker-qual"))
       include(dependency("net.minecrell:terminalconsoleappender"))
       include(dependency("org.jline:jline-reader"))
       include(dependency("org.jline:jline-terminal"))
-      include(dependency("org.jline:jline-terminal-jna"))
-      include(dependency("net.java.dev.jna:jna"))
+      include(dependency("org.jline:jline-terminal-jansi"))
+      include(dependency("org.fusesource.jansi:jansi"))
 
       // Configuration
       include(dependency("org.spongepowered:configurate-core"))
       include(dependency("org.spongepowered:configurate-hocon"))
       include(dependency("org.spongepowered:configurate-yaml"))
       include(dependency("org.spongepowered:configurate-gson"))
+      include(dependency("io.leangen.geantyref:geantyref"))
       include(dependency("com.typesafe:config"))
       include(dependency("com.google.code.gson:gson"))
       include(dependency("org.yaml:snakeyaml"))
@@ -151,9 +151,8 @@ tasks {
       // Mixin
       include(dependency("org.spongepowered:mixin"))
 
-      // Access Transformers
-      include(dependency("net.minecraftforge:accesstransformers"))
-      include(dependency("org.antlr:antlr4-runtime"))
+      // Access Widener
+      include(dependency("org.quiltmc:access-widener"))
 
       // Core
       include(dependency("cpw.mods:modlauncher"))

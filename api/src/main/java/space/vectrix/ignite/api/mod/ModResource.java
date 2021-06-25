@@ -35,9 +35,10 @@ import java.util.Objects;
 import java.util.jar.Manifest;
 
 /**
- * Represents a mod resource that could contain the
- * relevant information to create a {@link ModContainer}
- * from.
+ * Represents a mod resource that could contain the relevant information to
+ * create a {@link ModContainer} from.
+ *
+ * @since 0.5.0
  */
 public final class ModResource {
   private final String locator;
@@ -57,7 +58,8 @@ public final class ModResource {
   /**
    * Returns the {@link String} locator identifier for this resource.
    *
-   * @return The resource locator identifier
+   * @return the resource locator identifier
+   * @since 0.5.0
    */
   public final @NonNull String getLocator() {
     return this.locator;
@@ -66,7 +68,8 @@ public final class ModResource {
   /**
    * Returns the {@link Path} path for this resource.
    *
-   * @return The resource path
+   * @return the resource path
+   * @since 0.5.0
    */
   public final @NonNull Path getPath() {
     return this.path;
@@ -75,7 +78,8 @@ public final class ModResource {
   /**
    * Returns the {@link Manifest} manifest for this resource.
    *
-   * @return The resource manifest
+   * @return the resource manifest
+   * @since 0.5.0
    */
   public final @NonNull Manifest getManifest() {
     return this.manifest;
@@ -84,7 +88,8 @@ public final class ModResource {
   /**
    * Returns the {@link FileSystem} file system for this resource.
    *
-   * @return The resource file system
+   * @return the resource file system
+   * @since 0.5.0
    */
   public final @NonNull FileSystem getFileSystem() {
     if (this.fileSystem == null) {

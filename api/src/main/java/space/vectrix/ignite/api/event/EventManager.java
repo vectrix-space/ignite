@@ -28,14 +28,17 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * Provides access to manage event listeners for event handlers.
+ *
+ * @since 0.5.0
  */
 public interface EventManager {
   /**
    * Registers the specified {@link Object} listener for the specified
    * {@link Object} mod instance.
    *
-   * @param mod The mod instance
-   * @param listener The event listener
+   * @param mod the mod instance
+   * @param listener the event listener
+   * @since 0.5.0
    */
   void register(final @NonNull Object mod, final @NonNull Object listener);
 
@@ -43,10 +46,11 @@ public interface EventManager {
    * Registers the specified {@link EventHandler} handler and {@link Class} event,
    * for the specified {@link Object} mod instance.
    *
-   * @param mod The mod instance
-   * @param event The event class
-   * @param handler The event handler
-   * @param <E> The event type
+   * @param mod the mod instance
+   * @param event the event class
+   * @param handler the event handler
+   * @param <E> the event type
+   * @since 0.5.0
    */
   default <E> void register(final @NonNull Object mod, final @NonNull Class<E> event, final @NonNull EventHandler<E> handler) {
     this.register(mod, event, PostPriority.NORMAL, handler);
@@ -56,18 +60,20 @@ public interface EventManager {
    * Registers the specified {@link EventHandler} handler and {@link Class} event,
    * under the {@link PostPriority}, for the specified {@link Object} mod instance.
    *
-   * @param mod The mod instance
-   * @param event The event class
-   * @param priority The post priority
-   * @param handler The event handler
-   * @param <E> The event type
+   * @param mod the mod instance
+   * @param event the event class
+   * @param priority the post priority
+   * @param handler the event handler
+   * @param <E> the event type
+   * @since 0.5.0
    */
   <E> void register(final @NonNull Object mod, final @NonNull Class<E> event, final @NonNull PostPriority priority, final @NonNull EventHandler<E> handler);
 
   /**
    * Unregisters all listeners for the specified {@link Object} mod instance.
    *
-   * @param mod The mod instance
+   * @param mod the mod instance
+   * @since 0.5.0
    */
   void unregister(final @NonNull Object mod);
 
@@ -75,8 +81,9 @@ public interface EventManager {
    * Unregisters the specified {@link Object} listener, for the specified
    * {@link Object} mod instance.
    *
-   * @param mod The mod instance
-   * @param listener The event listener
+   * @param mod the mod instance
+   * @param listener the event listener
+   * @since 0.5.0
    */
   void unregister(final @NonNull Object mod, final @NonNull Object listener);
 
@@ -84,9 +91,10 @@ public interface EventManager {
    * Unregisters the specified {@link EventHandler} listener, for the specified
    * {@link Object} mod instance.
    *
-   * @param mod The mod instance
-   * @param handler The event handler
-   * @param <E> The event type
+   * @param mod the mod instance
+   * @param handler the event handler
+   * @param <E> the event type
+   * @since 0.5.0
    */
   <E> void unregister(final @NonNull Object mod, final @NonNull EventHandler<E> handler);
 
@@ -95,7 +103,8 @@ public interface EventManager {
    *
    * <p>Any errors thrown from handling events will be handled.</p>
    *
-   * @param event The event
+   * @param event the event
+   * @since 0.5.0
    */
   void post(final @NonNull Object event);
 }

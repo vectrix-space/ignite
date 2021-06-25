@@ -32,6 +32,8 @@ import java.util.Objects;
 
 /**
  * Represents a mod that can be loaded.
+ *
+ * @since 0.5.0
  */
 public final class ModContainer {
   private final Logger logger;
@@ -49,7 +51,8 @@ public final class ModContainer {
   /**
    * Returns the {@link Logger} logger for this container.
    *
-   * @return The container logger
+   * @return the container logger
+   * @since 0.5.0
    */
   public final @NonNull Logger getLogger() {
     return this.logger;
@@ -58,7 +61,8 @@ public final class ModContainer {
   /**
    * Returns the {@link String} identifier for this container.
    *
-   * @return The container identifier
+   * @return the container identifier
+   * @since 0.5.0
    */
   public final @NonNull String getId() {
     return this.config.getId();
@@ -67,7 +71,8 @@ public final class ModContainer {
   /**
    * Returns the {@link String} version for this container.
    *
-   * @return The container version
+   * @return the container version
+   * @since 0.5.0
    */
   public final @NonNull String getVersion() {
     return this.config.getVersion();
@@ -76,7 +81,8 @@ public final class ModContainer {
   /**
    * Returns the {@link ModResource} resource for this container.
    *
-   * @return The container resource
+   * @return the container resource
+   * @since 0.5.0
    */
   public final @NonNull ModResource getResource() {
     return this.resource;
@@ -85,7 +91,8 @@ public final class ModContainer {
   /**
    * Returns the {@link ModConfig} config for this container.
    *
-   * @return The container config
+   * @return the container config
+   * @since 0.5.0
    */
   public final @NonNull ModConfig getConfig() {
     return this.config;

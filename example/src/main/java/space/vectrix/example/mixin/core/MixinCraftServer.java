@@ -32,7 +32,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.logging.Logger;
 
-@Mixin(targets = "org.bukkit.craftbukkit.v1_12_R1.CraftServer", remap = false)
+@Mixin(targets = "org.bukkit.craftbukkit.v1_16_R3.CraftServer", remap = false)
 public abstract class MixinCraftServer {
   @Shadow public abstract Logger getLogger();
 

@@ -29,12 +29,15 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 /**
  * A singleton instance of this, loaded by the bootstrapper to manipulate
  * launch properties before they occur.
+ *
+ * @since 0.5.0
  */
 public interface IBootstrapService {
   /**
    * The bootstrap service name.
    *
-   * @return The name
+   * @return the name
+   * @since 0.5.0
    */
   @NonNull String name();
 
@@ -42,14 +45,16 @@ public interface IBootstrapService {
    * Returns {@code true} if the service is in the right environment
    * to be used, otherwise returns {@code false}.
    *
-   * @return Whether the service is in a valid environment
+   * @return whether the service is in a valid environment
+   * @since 0.5.0
    */
   boolean validate();
 
   /**
    * Executes the underlying functions to manipulate the launch properties.
    *
-   * @throws Throwable Any errors from the functions
+   * @throws Throwable any errors from the functions
+   * @since 0.5.0
    */
   void execute() throws Throwable;
 }

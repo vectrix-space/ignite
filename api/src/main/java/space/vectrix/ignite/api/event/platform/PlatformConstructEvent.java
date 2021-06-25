@@ -27,10 +27,12 @@ package space.vectrix.ignite.api.event.platform;
 import space.vectrix.ignite.api.mod.ModContainer;
 
 /**
- * This event is called when all loaded {@link ModContainer}s
- * have been created and all target classes have been injected.
+ * This event is called when all loaded {@link ModContainer}s have been created
+ * and all target classes have been injected.
  *
  * <p>This event occurs before the {@link PlatformInitializeEvent}.</p>
+ *
+ * @since 0.5.0
  */
 public final class PlatformConstructEvent {
   @Override

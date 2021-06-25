@@ -43,10 +43,11 @@ public final class IgniteExclusions {
     exclude("org.checkerframework."),
     exclude("net.minecrell.terminalconsole."),
     exclude("org.jline."),
-    exclude("com.sun.jna."),
+    exclude("org.fusesource."),
 
     // Configuration
-    exclude("ninja.leaping.configurate."),
+    exclude("org.spongepowered.configurate."),
+    exclude("io.leangen.geantyref."),
     exclude("com.typesafe.config."),
     exclude("com.google.gson."),
     exclude("org.yaml.snakeyaml."),
@@ -63,10 +64,6 @@ public final class IgniteExclusions {
 
     // Mixin
     exclude("org.spongepowered.asm."),
-
-    // Access Transformers
-    exclude("net.minecraftforge.accesstransformer."),
-    exclude("org.antlr.v4.runtime."),
 
     // Core
     exclude("joptsimple.")

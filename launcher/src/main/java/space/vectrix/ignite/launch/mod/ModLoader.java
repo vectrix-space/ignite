@@ -53,7 +53,7 @@ public final class ModLoader {
 
     for (final ModContainer container : ordered) {
       final String identifier = container.getId();
-      if (container.getResource().getLocator().equals(ModResourceLocator.ENGINE_LOCATOR)) {
+      if (container.getResource().getLocator().equals(ModResourceLocator.ENGINE_LOCATOR) || container.getResource().getLocator().equals(ModResourceLocator.LAUNCH_LOCATOR)) {
         identifierTarget.put(identifier, container);
         continue;
       }
@@ -90,7 +90,7 @@ public final class ModLoader {
       final ModClassLoader classLoader = new ModClassLoader(new URL[] { resourceJar });
       classLoader.addLoaders();
 
-      final String target = container.getConfig().getTarget();
+      final String target = container.getConfig().getEntry();
       if (target != null) {
         // Load the class.
         final Class<?> clazz = classLoader.loadClass(target);

@@ -22,23 +22,48 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package space.vectrix.ignite.api.config.path;
+package space.vectrix.ignite.launch.inject.provider;
 
-import com.google.inject.BindingAnnotation;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import space.vectrix.ignite.api.config.path.ConfigPath;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.Annotation;
 
-/**
- * Annotation used to specify the mod configuration paths.
- *
- * <p>By default it is `./configs` at the root directory. However this
- * can be modified with startup arguments.</p>
- */
-@BindingAnnotation
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.PARAMETER})
-public @interface ConfigsPath {
+public final class ConfigPathAnnotation implements ConfigPath {
+  public static final ConfigPath NON_SHARED = new ConfigPathAnnotation(false);
+  public static final ConfigPath SHARED = new ConfigPathAnnotation(true);
+
+  private final boolean shared;
+
+  private ConfigPathAnnotation(final boolean shared) {
+    this.shared = shared;
+  }
+
+  @Override
+  public boolean shared() {
+    return this.shared;
+  }
+
+  @Override
+  public Class<? extends Annotation> annotationType() {
+    return ConfigPath.class;
+  }
+
+  @Override
+  public int hashCode() {
+    return (127 * "shared".hashCode()) ^ Boolean.valueOf(this.shared()).hashCode();
+  }
+
+  @Override
+  public boolean equals(final @Nullable Object other) {
+    if(this == other) return true;
+    if(!(other instanceof ConfigPath)) return false;
+    final ConfigPath that = (ConfigPath) other;
+    return this.shared() == that.shared();
+  }
+
+  @Override
+  public String toString() {
+    return "@ConfigPath(shared=" + this.shared() + ")";
+  }
 }

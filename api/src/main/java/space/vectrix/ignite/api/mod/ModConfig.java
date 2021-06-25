@@ -25,6 +25,7 @@
 package space.vectrix.ignite.api.mod;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -36,14 +37,17 @@ import java.util.Objects;
 /**
  * Represents the mod config, which is usually populated using
  * {@link Gson}.
+ *
+ * @since 0.5.0
  */
 public final class ModConfig {
-  private String id;
-  private String version;
-  private String target;
-  private List<String> requiredDependencies;
-  private List<String> optionalDependencies;
-  private List<String> mixins;
+  private @SerializedName("id") String id;
+  private @SerializedName("version") String version;
+  private @SerializedName("entry") String entry;
+  private @SerializedName("dependencies") List<String> requiredDependencies;
+  private @SerializedName("optional_dependencies") List<String> optionalDependencies;
+  private @SerializedName("mixins") List<String> mixins;
+  private @SerializedName("access_wideners") List<String> accessWideners;
 
   public ModConfig() {}
 
@@ -55,22 +59,25 @@ public final class ModConfig {
 
   public ModConfig(final @NonNull String id,
                    final @NonNull String version,
-                   final @Nullable String target,
+                   final @Nullable String entry,
                    final @Nullable List<String> requiredDependencies,
                    final @Nullable List<String> optionalDependencies,
-                   final @Nullable List<String> mixins) {
+                   final @Nullable List<String> mixins,
+                   final @Nullable List<String> accessWideners) {
     this.id = id;
     this.version = version;
-    this.target = target;
+    this.entry = entry;
     this.requiredDependencies = requiredDependencies;
     this.optionalDependencies = optionalDependencies;
     this.mixins = mixins;
+    this.accessWideners = accessWideners;
   }
 
   /**
    * Returns the mod identifier.
    *
-   * @return The mod identifier
+   * @return the mod identifier
+   * @since 0.5.0
    */
   public final @MonotonicNonNull String getId() {
     return this.id;
@@ -79,25 +86,28 @@ public final class ModConfig {
   /**
    * Returns the mod version.
    *
-   * @return The mod version
+   * @return the mod version
+   * @since 0.5.0
    */
   public final @MonotonicNonNull String getVersion() {
     return this.version;
   }
 
   /**
-   * Returns the mod target class.
+   * Returns the mod entry point.
    *
-   * @return The mod target class
+   * @return the mod entry point
+   * @since 0.5.0
    */
-  public final @Nullable String getTarget() {
-    return this.target;
+  public final @Nullable String getEntry() {
+    return this.entry;
   }
 
   /**
    * Returns a list of required dependency identifiers.
    *
-   * @return A list of required dependency
+   * @return a list of required dependency
+   * @since 0.5.0
    */
   public final @Nullable List<String> getRequiredDependencies() {
     return this.requiredDependencies;
@@ -106,7 +116,8 @@ public final class ModConfig {
   /**
    * Returns a list of optional dependency identifiers.
    *
-   * @return A list of optional dependency
+   * @return a list of optional dependency
+   * @since 0.5.0
    */
   public final @Nullable List<String> getOptionalDependencies() {
     return this.optionalDependencies;
@@ -115,15 +126,26 @@ public final class ModConfig {
   /**
    * Returns a list of mixin configurations.
    *
-   * @return A list of mixins
+   * @return a list of mixins
+   * @since 0.5.0
    */
   public final @Nullable List<String> getMixins() {
     return this.mixins;
   }
 
+  /**
+   * Returns a list of access widener files.
+   *
+   * @return a list of access wideners
+   * @since 0.5.0
+   */
+  public final @Nullable List<String> getAccessWideners() {
+    return this.accessWideners;
+  }
+
   @Override
   public final int hashCode() {
-    return Objects.hash(this.id, this.version, this.target, this.requiredDependencies, this.optionalDependencies, this.mixins);
+    return Objects.hash(this.id, this.version, this.entry, this.requiredDependencies, this.optionalDependencies, this.mixins);
   }
 
   @Override
@@ -133,7 +155,7 @@ public final class ModConfig {
     final ModConfig that = (ModConfig) other;
     return Objects.equals(this.id, that.id)
       && Objects.equals(this.version, that.version)
-      && Objects.equals(this.target, that.target)
+      && Objects.equals(this.entry, that.entry)
       && Objects.deepEquals(this.requiredDependencies, that.requiredDependencies)
       && Objects.deepEquals(this.optionalDependencies, that.optionalDependencies)
       && Objects.deepEquals(this.mixins, that.mixins);
@@ -143,10 +165,11 @@ public final class ModConfig {
   public final @NonNull String toString() {
     return "ModConfig{id=" + this.id +
       ", version=" + this.version +
-      ", target=" + this.target +
+      ", target=" + this.entry +
       ", requiredDependencies=" + (this.requiredDependencies != null ? Arrays.toString(this.requiredDependencies.toArray(new String[0])) : "[]") +
       ", optionalDependencies=" + (this.optionalDependencies != null ? Arrays.toString(this.optionalDependencies.toArray(new String[0])) : "[]") +
       ", mixins=" + (this.mixins != null ? Arrays.toString(this.mixins.toArray(new String[0])) : "[]") +
+      ", accessWideners=" + (this.accessWideners != null ? Arrays.toString(this.accessWideners.toArray(new String[0])) : "[]") +
       "}";
   }
 }

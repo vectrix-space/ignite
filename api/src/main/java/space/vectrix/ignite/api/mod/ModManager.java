@@ -31,14 +31,17 @@ import java.util.Optional;
 
 /**
  * Provides access to manage mods.
+ *
+ * @since 0.5.0
  */
 public interface ModManager {
   /**
    * Returns the {@link ModContainer} for the specified {@link String}
    * identifier, if it exists.
    *
-   * @param mod The mod identifier
-   * @return The mod container
+   * @param mod the mod identifier
+   * @return the mod container
+   * @since 0.5.0
    */
   @NonNull Optional<ModContainer> getContainer(final @NonNull String mod);
 
@@ -46,8 +49,9 @@ public interface ModManager {
    * Returns the {@link ModContainer} for the specified {@link Object}
    * mod instance, if it exists.
    *
-   * @param mod The mod instance
-   * @return The mod container
+   * @param mod the mod instance
+   * @return the mod container
+   * @since 0.5.0
    */
   @NonNull Optional<ModContainer> getContainer(final @NonNull Object mod);
 
@@ -55,8 +59,9 @@ public interface ModManager {
    * Returns {@code true} if a mod with the specified {@link String}
    * mod identifier if loaded.
    *
-   * @param mod The mod identifier
-   * @return True if the mod is loaded, otherwise false
+   * @param mod the mod identifier
+   * @return true if the mod is loaded, otherwise false
+   * @since 0.5.0
    */
   boolean isLoaded(final @NonNull String mod);
 
@@ -64,8 +69,9 @@ public interface ModManager {
    * Returns {@code true} if the specified {@link Object} is a mod
    * instance.
    *
-   * @param mod The possible mod instance
-   * @return True if the object is a mod instance, otherwise false
+   * @param mod the possible mod instance
+   * @return true if the object is a mod instance, otherwise false
+   * @since 0.5.0
    */
   boolean isInstance(final @NonNull Object mod);
 
@@ -73,7 +79,8 @@ public interface ModManager {
    * Returns a {@link Collection} of {@link ModContainer}s that have
    * been loaded.
    *
-   * @return A collection of loaded mod containers
+   * @return a collection of loaded mod containers
+   * @since 0.5.0
    */
   @NonNull Collection<ModContainer> getContainers();
 }

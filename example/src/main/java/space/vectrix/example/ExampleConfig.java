@@ -24,20 +24,36 @@
  */
 package space.vectrix.example;
 
-import ninja.leaping.configurate.objectmapping.Setting;
-import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
+import org.spongepowered.configurate.objectmapping.meta.Setting;
 
 @ConfigSerializable
 public final class ExampleConfig {
-  @Setting(value = "test", comment = "Test configuration property.")
-  public boolean test = true;
+  @Setting(value = "test")
+  @Comment(value = "Test configuration property.")
+  private boolean test;
 
-  @Setting(value = "container", comment = "A test container.")
-  public TestContainer container = new TestContainer();
+  @Setting(value = "container")
+  @Comment(value = "A test container.")
+  private TestContainer container;
+
+  public boolean test() {
+    return this.test;
+  }
+
+  public TestContainer container() {
+    return this.container;
+  }
 
   @ConfigSerializable
   public static class TestContainer {
-    @Setting(value = "foo", comment = "A test boolean in a container.")
-    public boolean foo = false;
+    @Setting(value = "foo")
+    @Comment(value = "A test boolean in a container.")
+    private boolean foo;
+
+    public boolean foo() {
+      return this.foo;
+    }
   }
 }

@@ -30,9 +30,9 @@ import com.google.inject.Provider;
 import com.google.inject.Scopes;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import space.vectrix.ignite.api.config.path.ConfigPath;
-import space.vectrix.ignite.api.config.path.ConfigsPath;
+import space.vectrix.ignite.api.Blackboard;
 import space.vectrix.ignite.api.mod.ModContainer;
+import space.vectrix.ignite.launch.inject.provider.ConfigPathAnnotation;
 
 import java.nio.file.Path;
 
@@ -53,24 +53,22 @@ public final class ModModule extends AbstractModule {
     this.bind(Logger.class).toInstance(this.container.getLogger());
 
     this.bind(Path.class)
-      .annotatedWith(ConfigPath.class)
-      .toProvider(ConfigPathProvider.class)
-      .in(Scopes.SINGLETON);
+      .annotatedWith(ConfigPathAnnotation.NON_SHARED)
+      .toProvider(NonSharedConfigPathProvider.class);
   }
 
-  /* package */ static final class ConfigPathProvider implements Provider<Path> {
-    private final Path configs;
+  /* package */ static final class NonSharedConfigPathProvider implements Provider<Path> {
     private final ModContainer container;
 
     @Inject
-    public ConfigPathProvider(final @NonNull @ConfigsPath Path configs, final @NonNull ModContainer container) {
-      this.configs = configs;
+    public NonSharedConfigPathProvider(final @NonNull ModContainer container) {
       this.container = container;
     }
 
     @Override
-    public final @NonNull Path get() {
-      return this.configs.resolve(this.container.getId());
+    public Path get() {
+      return Blackboard.getProperty(Blackboard.CONFIG_DIRECTORY_PATH)
+        .resolve(this.container.getId());
     }
   }
 }

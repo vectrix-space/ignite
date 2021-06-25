@@ -50,7 +50,7 @@ public final class ModResourceLoader {
     final List<ModContainer> containers = new ArrayList<>();
 
     for (final ModResource resource : engine.getResources()) {
-      if (resource.getLocator().equals(ModResourceLocator.ENGINE_LOCATOR)) {
+      if (resource.getLocator().equals(ModResourceLocator.ENGINE_LOCATOR) || resource.getLocator().equals(ModResourceLocator.LAUNCH_LOCATOR)) {
         final ModConfig config = new ModConfig(
           IgniteBootstrap.class.getPackage().getSpecificationTitle(),
           IgniteBootstrap.class.getPackage().getImplementationVersion()
@@ -62,9 +62,9 @@ public final class ModResourceLoader {
 
       final Path resourcePath = resource.getPath();
       try (final JarFile jarFile = new JarFile(resourcePath.toFile())) {
-        final JarEntry jarEntry = jarFile.getJarEntry(engine.getResourceLocator().getMetadataPath());
+        final JarEntry jarEntry = jarFile.getJarEntry(engine.getResourceLocator().getConfigPath());
         if (jarEntry == null) {
-          engine.getLogger().debug("The resource '" + jarFile.getName() + "' does not contain any mod metadata so it is not a mod. Skipping...");
+          engine.getLogger().debug("The resource '" + jarFile.getName() + "' does not contain any mod configuration so it is not a mod. Skipping...");
           continue;
         }
 

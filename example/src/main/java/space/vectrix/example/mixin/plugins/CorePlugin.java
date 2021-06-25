@@ -24,12 +24,12 @@
  */
 package space.vectrix.example.mixin.plugins;
 
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
+import org.spongepowered.configurate.CommentedConfigurationNode;
 import space.vectrix.example.ExampleConfig;
 import space.vectrix.example.ExampleInfo;
 import space.vectrix.ignite.api.config.Configuration;
@@ -50,10 +50,10 @@ public final class CorePlugin implements IMixinConfigPlugin {
 
   @Override
   public final boolean shouldApplyMixin(final @NonNull String targetClassName, final @NonNull String mixinClassName) {
-    final Configuration<ExampleConfig, CommentedConfigurationNode> configWrapper = Configurations.getOrCreate(Configurations.HOCON_LOADER, ExampleInfo.getExampleConfig(), ExampleConfig.class);
-    final ExampleConfig config = configWrapper.getInstance();
+    final Configuration<ExampleConfig, CommentedConfigurationNode> configWrapper = Configurations.getOrCreate(Configurations.HOCON_LOADER, ExampleInfo.getExampleConfig());
+    final ExampleConfig config = configWrapper.instance();
     if (config != null) {
-      return config.test;
+      return config.test();
     }
 
     return false;

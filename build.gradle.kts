@@ -1,14 +1,14 @@
 plugins {
-  id("net.kyori.indra") version "2.0.4"
-  id("net.kyori.indra.publishing") version "2.0.4" apply false
-  id("net.kyori.indra.license-header") version "2.0.4" apply false
+  id("net.kyori.indra") version "2.0.5"
+  id("net.kyori.indra.publishing") version "2.0.5" apply false
+  id("net.kyori.indra.license-header") version "2.0.5" apply false
   id("de.marcphilipp.nexus-publish") version "0.4.0" apply false
   id("com.github.johnrengelman.shadow") version "6.1.0" apply false
 }
 
 group = "space.vectrix.ignite"
-version = "0.4.1-SNAPSHOT"
-description = "Bootstraps the Minecraft Server with ModLauncher to apply Mixins and Access Transformers from mods."
+version = "0.5.0-SNAPSHOT"
+description = "Bootstraps the Minecraft Server with ModLauncher to apply Mixins and Access Wideners from mods."
 
 subprojects {
   apply(plugin = "net.kyori.indra")
@@ -29,6 +29,9 @@ subprojects {
     }
     maven {
       url = uri("https://files.minecraftforge.net/maven/")
+    }
+    maven {
+      url = uri("https://maven.quiltmc.org/repository/release/")
     }
   }
 

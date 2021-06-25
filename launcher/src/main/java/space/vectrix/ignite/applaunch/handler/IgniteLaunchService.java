@@ -61,7 +61,7 @@ import java.util.jar.Manifest;
 
 public final class IgniteLaunchService implements ILaunchHandlerService {
   private final ConcurrentMap<String, Manifest> manifests = new ConcurrentHashMap<>();
-  private final Logger logger = LogManager.getLogger("IgniteLaunch");
+  private final Logger logger = LogManager.getLogger("Ignite Launch");
 
   @Override
   public final @NonNull String name() {
@@ -90,8 +90,6 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
 
   @Override
   public final @NonNull Callable<Void> launchService(final @NonNull String @NonNull [] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
-    IgniteBootstrap.getInstance().getModEngine().loadMixins();
-
     launchClassLoader.addTargetPackageFilter(packageLocation -> IgniteExclusions.getExclusions().stream()
       .map(IgniteExclusions.Exclusion::getPackageExclusion)
       .filter(Objects::nonNull)

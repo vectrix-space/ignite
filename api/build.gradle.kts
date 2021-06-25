@@ -9,23 +9,23 @@ apply(plugin = "de.marcphilipp.nexus-publish")
 
 dependencies {
   // API
-  api("org.checkerframework:checker-qual:3.13.0")
+  api("org.checkerframework:checker-qual:3.15.0")
   api("org.apache.logging.log4j:log4j-api:2.8.1")
 
   // Configuration
-  api("org.spongepowered:configurate-hocon:3.7.1") {
+  api("org.spongepowered:configurate-hocon:4.1.1") {
     exclude(group = "org.checkerframework", module = "checker-qual") // We use our own version
     exclude(group = "com.google.guava", module = "guava") // We use our own version
     exclude(group = "com.google.inject", module = "guice") // We use our own version
   }
 
-  api("org.spongepowered:configurate-yaml:3.7.1") {
+  api("org.spongepowered:configurate-yaml:4.1.1") {
     exclude(group = "org.checkerframework", module = "checker-qual") // We use our own version
     exclude(group = "com.google.guava", module = "guava") // We use our own version
     exclude(group = "com.google.inject", module = "guice") // We use our own version
   }
 
-  api("org.spongepowered:configurate-gson:3.7.1") {
+  api("org.spongepowered:configurate-gson:4.1.1") {
     exclude(group = "org.checkerframework", module = "checker-qual") // We use our own version
     exclude(group = "com.google.guava", module = "guava") // We use our own version
     exclude(group = "com.google.inject", module = "guice") // We use our own version
@@ -51,8 +51,8 @@ dependencies {
   }
 
   // Note: While the game usually uses 2.8.0, it should be fine
-  //       to bump it to 2.8.6 for the additional features.
-  api("com.google.code.gson:gson:2.8.6")
+  //       to bump it to 2.8.7 for the additional features.
+  api("com.google.code.gson:gson:2.8.7")
 
   // Mixins
   api("org.spongepowered:mixin:0.8.2") {
@@ -65,14 +65,6 @@ dependencies {
   api("org.ow2.asm:asm-commons:9.1")
   api("org.ow2.asm:asm-tree:9.1")
   api("org.ow2.asm:asm-util:9.1")
-
-  // Access Transformers
-  api("net.minecraftforge:accesstransformers:2.2.1") {
-    exclude(group = "org.apache.logging.log4j", module = "log4j-api")
-    exclude(group = "org.apache.logging.log4j", module = "log4j-core")
-    exclude(group = "cpw.mods", module = "grossjava9hacks")
-    exclude(group = "cpw.mods", module = "modlauncher")
-  }
 }
 
 tasks.jar {
