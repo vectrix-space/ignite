@@ -62,7 +62,7 @@ dependencies {
   // ASM
   api("org.ow2.asm:asm:9.1")
   api("org.ow2.asm:asm-analysis:9.1")
-  api("org.ow2.asm:asm-commons:9.1")
+  api("org.ow2.asm:asm-commons:9.2")
   api("org.ow2.asm:asm-tree:9.1")
   api("org.ow2.asm:asm-util:9.1")
 }
