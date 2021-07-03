@@ -55,16 +55,16 @@ dependencies {
   api("com.google.code.gson:gson:2.8.7")
 
   // Mixins
-  api("org.spongepowered:mixin:0.8.2") {
+  api("org.spongepowered:mixin:0.8.3") {
     exclude(group = "org.ow2.asm")
   }
 
   // ASM
-  api("org.ow2.asm:asm:9.1")
-  api("org.ow2.asm:asm-analysis:9.1")
-  api("org.ow2.asm:asm-commons:9.1")
-  api("org.ow2.asm:asm-tree:9.1")
-  api("org.ow2.asm:asm-util:9.1")
+  api("org.ow2.asm:asm:9.2")
+  api("org.ow2.asm:asm-analysis:9.2")
+  api("org.ow2.asm:asm-commons:9.2")
+  api("org.ow2.asm:asm-tree:9.2")
+  api("org.ow2.asm:asm-util:9.2")
 }
 
 tasks.jar {
