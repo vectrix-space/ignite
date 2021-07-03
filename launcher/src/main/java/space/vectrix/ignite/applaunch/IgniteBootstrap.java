@@ -27,6 +27,8 @@ package space.vectrix.ignite.applaunch;
 import cpw.mods.modlauncher.Launcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configuration;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.fusesource.jansi.AnsiConsole;
 import space.vectrix.ignite.api.Blackboard;
@@ -47,6 +49,11 @@ import java.util.Collections;
 import java.util.List;
 
 public final class IgniteBootstrap {
+  /**
+   * The debug mode.
+   */
+  public static final boolean DEBUG = Boolean.parseBoolean(System.getProperty(Blackboard.DEBUG.getName(), "true"));
+
   /**
    * The launch service name.
    */
@@ -104,6 +111,7 @@ public final class IgniteBootstrap {
 
     // Blackboard
     Blackboard.computeProperty(Blackboard.LAUNCH_ARGUMENTS, Collections.unmodifiableList(arguments));
+    Blackboard.computeProperty(Blackboard.DEBUG, IgniteBootstrap.DEBUG);
     Blackboard.computeProperty(Blackboard.LAUNCH_SERVICE, IgniteBootstrap.LAUNCH_SERVICE);
     Blackboard.computeProperty(Blackboard.LAUNCH_JAR, IgniteBootstrap.LAUNCH_JAR);
     Blackboard.computeProperty(Blackboard.LAUNCH_TARGET, IgniteBootstrap.LAUNCH_TARGET);
@@ -138,6 +146,15 @@ public final class IgniteBootstrap {
 
     // Update Security - Java 9+
     Agent.updateSecurity();
+
+    // Logger Debug
+    if(!Blackboard.getProperty(Blackboard.DEBUG)) {
+      final LoggerContext context = (LoggerContext) LogManager.getContext(false);
+      final Configuration config = context.getConfiguration();
+
+      config.getRootLogger().removeAppender("DebugFile");
+      context.updateLoggers();
+    }
 
     // Logger
     final Logger logger = LogManager.getLogger("Ignite Bootstrap");
