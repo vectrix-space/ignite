@@ -25,7 +25,7 @@ dependencies {
     exclude(group = "com.google.inject", module = "guice") // We use our own version
   }
 
-  api("org.spongepowered:configurate-gson:4.1.1") {
+  api("org.spongepowered:configurate-gson:4.1.2") {
     exclude(group = "org.checkerframework", module = "checker-qual") // We use our own version
     exclude(group = "com.google.guava", module = "guava") // We use our own version
     exclude(group = "com.google.inject", module = "guice") // We use our own version
