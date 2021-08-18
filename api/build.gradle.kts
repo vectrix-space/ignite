@@ -13,7 +13,7 @@ dependencies {
   api("org.apache.logging.log4j:log4j-api:2.8.1")
 
   // Configuration
-  api("org.spongepowered:configurate-hocon:4.1.1") {
+  api("org.spongepowered:configurate-hocon:4.1.2") {
     exclude(group = "org.checkerframework", module = "checker-qual") // We use our own version
     exclude(group = "com.google.guava", module = "guava") // We use our own version
     exclude(group = "com.google.inject", module = "guice") // We use our own version
