@@ -52,7 +52,7 @@ dependencies {
 
   // Note: While the game usually uses 2.8.0, it should be fine
   //       to bump it to 2.8.7 for the additional features.
-  api("com.google.code.gson:gson:2.8.7")
+  api("com.google.code.gson:gson:2.8.8")
 
   // Mixins
   api("org.spongepowered:mixin:0.8.3") {
