@@ -55,7 +55,7 @@ To depend on the Ignite API in order to create your mod, you will need to add th
 <dependency>
   <groupId>space.vectrix.ignite</groupId>
   <artifactId>ignite-api</artifactId>
-  <version>0.5.0</version>
+  <version>0.5.1</version>
 </dependency>
 ```
 
@@ -66,7 +66,7 @@ repositories {
 }
 
 dependencies {
-  compile "space.vectrix.ignite:ignite-api:0.5.0"
+  compile "space.vectrix.ignite:ignite-api:0.5.1"
 }
 ```
 
