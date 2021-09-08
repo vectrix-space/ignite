@@ -1,12 +1,17 @@
-dependencies {
-  // API
-  api(project(":ignite-api"))
+plugins {
+  id("ignite.base-conventions")
 }
 
-tasks.jar {
-  manifest.attributes(
-    "Specification-Title" to "example",
-    "Specification-Vendor" to "vectrix.space",
-    "Specification-Version" to 1
-  )
+repositories {
+  maven {
+    url = uri("https://repo.spongepowered.org/maven/")
+  }
 }
+
+dependencies {
+  implementation(project(":ignite-api"))
+
+  implementation("org.spongepowered:mixin:0.8.4")
+}
+
+applyJarMetadata("space.vectrix.example")

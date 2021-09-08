@@ -1,13 +1,14 @@
+pluginManagement {
+  includeBuild("build-logic")
+}
+
 rootProject.name = "ignite-parent"
 
-include("api")
-include("launcher")
-include("example")
-
-listOf(
+sequenceOf(
   "api",
   "launcher",
   "example"
 ).forEach {
-  findProject(":$it")?.name = "ignite-$it"
+  include("ignite-$it")
+  project(":ignite-$it").projectDir = file(it)
 }
