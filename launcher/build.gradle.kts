@@ -11,7 +11,7 @@ dependencies {
   implementation(project(":ignite-api"))
 
   // Logger
-  implementation("net.minecrell:terminalconsoleappender:1.3.0-SNAPSHOT")
+  implementation("net.minecrell:terminalconsoleappender:1.3.0")
   implementation("org.jline:jline-terminal:3.20.0")
   implementation("org.jline:jline-reader:3.20.0")
   implementation("org.jline:jline-terminal-jansi:3.20.0")
