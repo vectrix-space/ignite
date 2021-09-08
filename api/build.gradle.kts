@@ -56,7 +56,7 @@ dependencies {
   api("com.google.code.gson:gson:2.8.8")
 
   // Mixins
-  api("org.spongepowered:mixin:0.8.3") {
+  api("org.spongepowered:mixin:0.8.4") {
     exclude(group = "org.ow2.asm")
   }
 
