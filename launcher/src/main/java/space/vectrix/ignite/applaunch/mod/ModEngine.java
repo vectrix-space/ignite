@@ -128,11 +128,13 @@ public final class ModEngine {
 
       // Access Widener
       if (accessWidener != null) {
-        final String widenerFiles = resource.getManifest().getMainAttributes().getValue(IgniteConstants.ACCESS_WIDENER);
-        if (widenerFiles != null) {
-          for (final String widenerFile : widenerFiles.split(",")) {
-            if (!widenerFile.endsWith(".accesswidener")) continue;
-            accessWidener.offerResource(resource.getFileSystem().getPath(widenerFile), widenerFile);
+        if (resource.getManifest() != null) {
+          final String widenerFiles = resource.getManifest().getMainAttributes().getValue(IgniteConstants.ACCESS_WIDENER);
+          if (widenerFiles != null) {
+            for (final String widenerFile : widenerFiles.split(",")) {
+              if (!widenerFile.endsWith(".accesswidener")) continue;
+              accessWidener.offerResource(resource.getFileSystem().getPath(widenerFile), widenerFile);
+            }
           }
         }
 

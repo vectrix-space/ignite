@@ -24,6 +24,7 @@
  */
 package space.vectrix.ignite.api.mod;
 
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -49,7 +50,7 @@ public final class ModResource {
 
   public ModResource(final @NonNull String locator,
                      final @NonNull Path path,
-                     final @NonNull Manifest manifest) {
+                     final @MonotonicNonNull Manifest manifest) {
     this.locator = locator;
     this.path = path;
     this.manifest = manifest;
@@ -81,7 +82,7 @@ public final class ModResource {
    * @return the resource manifest
    * @since 0.5.0
    */
-  public final @NonNull Manifest getManifest() {
+  public final @MonotonicNonNull Manifest getManifest() {
     return this.manifest;
   }
 
