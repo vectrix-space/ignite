@@ -23,6 +23,8 @@ This would be run like `java -jar ignite-launcher.jar`. Any other parameters wil
 
 **Note:** If the target jar is a Paper jar, then you may want to read about the bootstrap services below to make launching easier.
 
+**Note:** Absolute-Paths containing 'mixin' will break the transformation process. To disable this , you must add the flag `-Dignite.exclude.mixinPath=false`
+
 ### Setting the Custom Properties
 
 Ignite has some properties that can be set on startup to change the launch target, mod directory and more. The following could be added to your startup script:
