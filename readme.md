@@ -32,6 +32,7 @@ Ignite has some properties that can be set on startup to change the launch targe
 - The classpath to the server entry point. (e.g `-Dignite.launch.target=org.bukkit.craftbukkit.Main`)
 - The directory ignite mods will be located. (e.g `-Dignite.mod.directory=./mods`)
 - The directory ignite mod configs will be located. (e.g `-Dignite.config.directory=./configs`)
+- Directories with 'mixin' in its absolute path will be removed from transformations. (e.g `-Dignite.exclude.mixinPath=true`)
 
 ### Setting the Bootstrap Service
 
