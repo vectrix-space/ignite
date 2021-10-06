@@ -42,15 +42,16 @@ import java.util.List;
 public final class Blackboard {
   private static final BlackboardMap BLACKBOARD = new BlackboardMap();
 
-  public static final BlackboardMap.@NonNull Key<Boolean>      DEBUG            = key("ignite.debug", TypeToken.of(Boolean.class));
+  public static final BlackboardMap.@NonNull Key<Boolean>      DEBUG                        = key("ignite.debug", TypeToken.of(Boolean.class));
 
-  public static final BlackboardMap.@NonNull Key<List<String>> LAUNCH_ARGUMENTS = key("ignite.launch.arguments", new TypeToken<List<String>>() {});
-  public static final BlackboardMap.@NonNull Key<String>       LAUNCH_SERVICE   = key("ignite.launch.service", TypeToken.of(String.class));
-  public static final BlackboardMap.@NonNull Key<Path>         LAUNCH_JAR       = key("ignite.launch.jar", TypeToken.of(Path.class));
-  public static final BlackboardMap.@NonNull Key<String>       LAUNCH_TARGET    = key("ignite.launch.target", TypeToken.of(String.class));
+  public static final BlackboardMap.@NonNull Key<List<String>> LAUNCH_ARGUMENTS             = key("ignite.launch.arguments", new TypeToken<List<String>>() {});
+  public static final BlackboardMap.@NonNull Key<String>       LAUNCH_SERVICE               = key("ignite.launch.service", TypeToken.of(String.class));
+  public static final BlackboardMap.@NonNull Key<Path>         LAUNCH_JAR                   = key("ignite.launch.jar", TypeToken.of(Path.class));
+  public static final BlackboardMap.@NonNull Key<String>       LAUNCH_TARGET                = key("ignite.launch.target", TypeToken.of(String.class));
 
-  public static final BlackboardMap.@NonNull Key<Path> MOD_DIRECTORY_PATH       = key("ignite.mod.directory", TypeToken.of(Path.class));
-  public static final BlackboardMap.@NonNull Key<Path> CONFIG_DIRECTORY_PATH    = key("ignite.config.directory", TypeToken.of(Path.class));
+  public static final BlackboardMap.@NonNull Key<Path> MOD_DIRECTORY_PATH                   = key("ignite.mod.directory", TypeToken.of(Path.class));
+  public static final BlackboardMap.@NonNull Key<Path> CONFIG_DIRECTORY_PATH                = key("ignite.config.directory", TypeToken.of(Path.class));
+  public static final BlackboardMap.@NonNull Key<Boolean> EXCLUDE_MIXIN_FROM_TRANSFORMATION = key("ignite.exclude.mixinPath", TypeToken.of(Boolean.class));
 
   /**
    * Returns the property for the specified {@link BlackboardMap.Key}, if it

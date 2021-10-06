@@ -79,6 +79,11 @@ public final class IgniteBootstrap {
    */
   public static final @NonNull Path CONFIG_TARGET_PATH = Paths.get(System.getProperty(Blackboard.CONFIG_DIRECTORY_PATH.getName(), "./configs"));
 
+  /**
+   * Ignore mixin from path.
+   */
+  public static final boolean EXCLUDE_MIXIN_FROM_TRANSFORMATION = Boolean.parseBoolean(System.getProperty(Blackboard.EXCLUDE_MIXIN_FROM_TRANSFORMATION.getName(), "true"));
+
   static {
     AnsiConsole.systemInstall();
   }
@@ -117,6 +122,7 @@ public final class IgniteBootstrap {
     Blackboard.computeProperty(Blackboard.LAUNCH_TARGET, IgniteBootstrap.LAUNCH_TARGET);
     Blackboard.computeProperty(Blackboard.MOD_DIRECTORY_PATH, IgniteBootstrap.MOD_TARGET_PATH);
     Blackboard.computeProperty(Blackboard.CONFIG_DIRECTORY_PATH, IgniteBootstrap.CONFIG_TARGET_PATH);
+    Blackboard.computeProperty(Blackboard.EXCLUDE_MIXIN_FROM_TRANSFORMATION, IgniteBootstrap.EXCLUDE_MIXIN_FROM_TRANSFORMATION);
 
     // Launch Target
     launchArguments.add("--launchTarget");
@@ -162,6 +168,9 @@ public final class IgniteBootstrap {
 
     // Modlauncher
     logger.info("Preparing ModLauncher with arguments " + launchArguments);
+    if (!EXCLUDE_MIXIN_FROM_TRANSFORMATION) {
+      logger.info("Not excluding 'mixin' from transformations!");
+    }
     Launcher.main(launchArguments.toArray(new String[0]));
   }
 

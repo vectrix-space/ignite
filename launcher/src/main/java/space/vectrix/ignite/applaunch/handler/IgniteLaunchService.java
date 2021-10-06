@@ -73,7 +73,7 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
     for (final URL url : Java9ClassLoaderUtil.getSystemClassPathURLs()) {
       // Exclude mixin from transformations.
       final String target = url.toString();
-      if (target.contains("mixin") && target.endsWith(".jar")) {
+      if (IgniteBootstrap.EXCLUDE_MIXIN_FROM_TRANSFORMATION && target.contains("mixin") && target.endsWith(".jar")) {
         continue;
       }
 
