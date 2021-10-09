@@ -24,7 +24,6 @@
  */
 package space.vectrix.ignite.applaunch.service;
 
-import com.google.common.reflect.TypeToken;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import space.vectrix.ignite.api.Blackboard;
 import space.vectrix.ignite.api.service.IBootstrapService;
@@ -38,11 +37,10 @@ import java.nio.file.Paths;
 import java.security.Permission;
 import java.util.regex.Pattern;
 
-@SuppressWarnings("UnstableApiUsage")
 public final class PaperclipBootstrapService implements IBootstrapService {
-  private static final BlackboardMap.@NonNull Key<String> MINECRAFT_VERSION_KEY = Blackboard.key("ignite.paperclip.minecraft", TypeToken.of(String.class));
-  private static final BlackboardMap.@NonNull Key<Path>   PAPERCLIP_JAR_KEY     = Blackboard.key("ignite.paperclip.jar", TypeToken.of(Path.class));
-  private static final BlackboardMap.@NonNull Key<String> PAPERCLIP_TARGET_KEY  = Blackboard.key("ignite.paperclip.target", TypeToken.of(String.class));
+  private static final BlackboardMap.@NonNull Key<String> MINECRAFT_VERSION_KEY = Blackboard.key("ignite.paperclip.minecraft", String.class);
+  private static final BlackboardMap.@NonNull Key<Path>   PAPERCLIP_JAR_KEY     = Blackboard.key("ignite.paperclip.jar", Path.class);
+  private static final BlackboardMap.@NonNull Key<String> PAPERCLIP_TARGET_KEY  = Blackboard.key("ignite.paperclip.target", String.class);
 
   /**
    * The minecraft version.

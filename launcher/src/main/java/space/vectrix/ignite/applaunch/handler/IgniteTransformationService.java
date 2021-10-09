@@ -24,7 +24,6 @@
  */
 package space.vectrix.ignite.applaunch.handler;
 
-import com.google.common.collect.ImmutableList;
 import cpw.mods.modlauncher.api.IEnvironment;
 import cpw.mods.modlauncher.api.ITransformationService;
 import cpw.mods.modlauncher.api.ITransformer;
@@ -78,6 +77,6 @@ public final class IgniteTransformationService implements ITransformationService
   @Override
   @SuppressWarnings("rawtypes")
   public final @NonNull List<ITransformer> transformers() {
-    return ImmutableList.of();
+    return Collections.emptyList();
   }
 }

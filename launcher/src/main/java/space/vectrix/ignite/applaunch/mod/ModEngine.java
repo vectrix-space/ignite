@@ -24,7 +24,6 @@
  */
 package space.vectrix.ignite.applaunch.mod;
 
-import com.google.common.collect.Maps;
 import cpw.mods.modlauncher.api.IEnvironment;
 import cpw.mods.modlauncher.serviceapi.ILaunchPluginService;
 import org.apache.logging.log4j.LogManager;
@@ -38,6 +37,7 @@ import space.vectrix.ignite.applaunch.util.IgniteConstants;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -97,7 +97,7 @@ public final class ModEngine {
 
       this.containers.put(container.getId(), container);
 
-      final Map.Entry<String, Path> entry = Maps.immutableEntry(resource.getPath().getFileName().toString(), resource.getPath());
+      final Map.Entry<String, Path> entry = new AbstractMap.SimpleImmutableEntry<>(resource.getPath().getFileName().toString(), resource.getPath());
       targetResources.add(entry);
     }
 

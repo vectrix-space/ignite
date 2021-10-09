@@ -24,8 +24,6 @@
  */
 package space.vectrix.ignite.launch.mod;
 
-import static java.util.Objects.requireNonNull;
-
 import org.checkerframework.checker.nullness.qual.NonNull;
 import space.vectrix.ignite.api.event.platform.PlatformConstructEvent;
 import space.vectrix.ignite.api.event.platform.PlatformInitializeEvent;
@@ -43,6 +41,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.requireNonNull;
 
 public final class IgniteModManager implements ModManager {
   private final Map<Object, ModContainer> containerInstances = new IdentityHashMap<>();

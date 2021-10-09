@@ -35,12 +35,15 @@ import space.vectrix.ignite.api.Blackboard;
 import space.vectrix.ignite.api.mod.ModResource;
 import space.vectrix.ignite.applaunch.IgniteBootstrap;
 import space.vectrix.ignite.applaunch.mod.ModEngine;
+import space.vectrix.ignite.applaunch.mod.ModResourceLocator;
 import space.vectrix.ignite.applaunch.util.IgniteConstants;
 import space.vectrix.ignite.applaunch.util.IgniteExclusions;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -51,16 +54,20 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
+import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public final class IgniteLaunchService implements ILaunchHandlerService {
-  private final ConcurrentMap<String, Manifest> manifests = new ConcurrentHashMap<>();
+  private static final String JAVA_HOME_PATH = System.getProperty("java.home");
+  private static final Optional<Manifest> DEFAULT_MANIFEST = Optional.of(new Manifest());
+
+  private final ConcurrentMap<URL, Optional<Manifest>> manifests = new ConcurrentHashMap<>();
   private final Logger logger = LogManager.getLogger("Ignite Launch");
 
   @Override
@@ -71,16 +78,17 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
   @Override
   public void configureTransformationClassLoader(final @NonNull ITransformingClassLoaderBuilder builder) {
     for (final URL url : Java9ClassLoaderUtil.getSystemClassPathURLs()) {
-      // Exclude mixin from transformations.
-      final String target = url.toString();
-      if (target.contains("mixin") && target.endsWith(".jar")) {
-        continue;
-      }
-
       try {
+        final URI uri = url.toURI();
+        if (!this.isTransformable(uri)) {
+          this.logger.debug("Skipped adding transformation path for '" + uri + "'!");
+          continue;
+        }
+
         builder.addTransformationPath(Paths.get(url.toURI()));
-      } catch (final URISyntaxException exception) {
-        this.logger.error("Failed to add transformation path for '" + target + "'!", exception);
+        this.logger.debug("Added transformation path for '" + uri + "'");
+      } catch (final URISyntaxException | IOException exception) {
+        this.logger.error("Failed to add transformation path for '" + url + "'!", exception);
       }
     }
 
@@ -90,10 +98,15 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
 
   @Override
   public final @NonNull Callable<Void> launchService(final @NonNull String @NonNull [] arguments, final @NonNull ITransformingClassLoader launchClassLoader) {
-    launchClassLoader.addTargetPackageFilter(packageLocation -> IgniteExclusions.getExclusions().stream()
-      .map(IgniteExclusions.Exclusion::getPackageExclusion)
-      .filter(Objects::nonNull)
-      .noneMatch(packageLocation::startsWith));
+    launchClassLoader.addTargetPackageFilter(packageLocation -> {
+      for (final String packageTest : IgniteExclusions.TRANSFORMATION_EXCLUDED_PACKAGES) {
+        if (packageLocation.startsWith(packageTest)) {
+          return false;
+        }
+      }
+
+      return true;
+    });
 
     return () -> {
       this.launchService0(arguments, launchClassLoader);
@@ -101,13 +114,12 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
     };
   }
 
-  protected final @NonNull Function<String, Enumeration<URL>> getResourceLocator() {
+  private final @NonNull Function<String, Enumeration<URL>> getResourceLocator() {
     return resourceLocation -> {
-      if (IgniteExclusions.getExclusions().stream()
-        .map(IgniteExclusions.Exclusion::getResourceExclusion)
-        .filter(Objects::nonNull)
-        .anyMatch(resourceLocation::startsWith)) {
-        return Collections.emptyEnumeration();
+      for (final String test : IgniteExclusions.RESOURCE_EXCLUDED_PATHS) {
+        if (resourceLocation.startsWith(test)) {
+          return Collections.emptyEnumeration();
+        }
       }
 
       return new Enumeration<URL>() {
@@ -131,6 +143,10 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
           ModResource resource = null;
           while (this.resources.hasNext() && resource == null) {
             final Path resolved = (resource = this.resources.next()).getFileSystem().getPath(resourceLocation);
+            if (!resource.getLocator().equals(ModResourceLocator.JAVA_LOCATOR)) {
+              continue;
+            }
+
             if (Files.exists(resolved)) {
               try {
                 return resolved.toUri().toURL();
@@ -146,34 +162,37 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
     };
   }
 
-  protected final @NonNull Function<URLConnection, Optional<Manifest>> getManifestLocator() {
+  private final @NonNull Function<URLConnection, Optional<Manifest>> getManifestLocator() {
     return connection -> {
       if (connection instanceof JarURLConnection) {
-        final JarURLConnection jarConnection = (JarURLConnection) connection;
-        final URL url = jarConnection.getJarFileURL();
-        final String target = url.toString();
-
-        final Manifest manifest = this.manifests.computeIfAbsent(target, key -> {
+        final URL url = ((JarURLConnection) connection).getJarFileURL();
+        final Optional<Manifest> manifest = this.manifests.computeIfAbsent(url, key -> {
           for (final ModResource resource : IgniteBootstrap.getInstance().getModEngine().getResources()) {
+            if (!resource.getLocator().equals(ModResourceLocator.JAVA_LOCATOR)) {
+              continue;
+            }
+
             try {
-              if (resource.getPath().toAbsolutePath().normalize().equals(Paths.get(url.toURI()).toAbsolutePath().normalize())) {
-                return resource.getManifest();
+              if (resource.getPath().toAbsolutePath().normalize().equals(Paths.get(key.toURI()).toAbsolutePath().normalize())) {
+                return Optional.ofNullable(resource.getManifest());
               }
             } catch (final URISyntaxException exception) {
-              this.logger.error("Failed to load manifest from resource for '" + target + "'!", exception);
+              this.logger.error("Failed to load manifest from jar '" + url + "'!", exception);
             }
           }
 
-          try {
-            return jarConnection.getManifest();
-          } catch (final IOException exception) {
-            this.logger.error("Failed to load manifest from connection for '" + target + "'!", exception);
-          }
-
-          return null;
+          return IgniteLaunchService.DEFAULT_MANIFEST;
         });
 
-        return Optional.ofNullable(manifest);
+        try {
+          if (manifest == IgniteLaunchService.DEFAULT_MANIFEST) {
+            return Optional.ofNullable(((JarURLConnection) connection).getManifest());
+          } else {
+            return manifest;
+          }
+        } catch (final IOException exception) {
+          this.logger.error("Failed to load manifest from connection for '" + url + "'!", exception);
+        }
       }
 
       return Optional.empty();
@@ -186,7 +205,7 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
    * @param arguments The arguments to launch the service with
    * @param launchClassLoader The transforming class loader to load classes with
    */
-  protected void launchService0(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) throws Exception {
+  private void launchService0(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) throws Exception {
     final Path launchJar = Blackboard.getProperty(Blackboard.LAUNCH_JAR);
     if (launchJar != null && Files.exists(launchJar)) {
       // Invoke the main method on the provided ClassLoader.
@@ -196,5 +215,32 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
     } else {
       throw new IllegalStateException("No launch jar was found!");
     }
+  }
+
+  private boolean isTransformable(final URI uri) throws URISyntaxException, IOException {
+    final File file = new File(uri);
+
+    // Ensure JVM internals are not transformable.
+    if (file.getAbsolutePath().startsWith(IgniteLaunchService.JAVA_HOME_PATH)) {
+      return false;
+    }
+
+    if (file.isDirectory()) {
+      for (final String test : IgniteExclusions.TRANSFORMATION_EXCLUDED_PATHS) {
+        if (new File(file, test).exists()) {
+          return false;
+        }
+      }
+    } else if (file.isFile()) {
+      try (final JarFile jarFile = new JarFile(new File(uri))) {
+        for (final String test : IgniteExclusions.TRANSFORMATION_EXCLUDED_PATHS) {
+          if (jarFile.getEntry(test) != null) {
+            return false;
+          }
+        }
+      }
+    }
+
+    return true;
   }
 }

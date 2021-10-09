@@ -24,12 +24,12 @@
  */
 package space.vectrix.ignite.applaunch.mixin;
 
-import com.google.common.collect.ImmutableList;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.asm.launch.platform.container.ContainerHandleModLauncher;
 import org.spongepowered.asm.service.modlauncher.MixinServiceModLauncher;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public final class IgniteMixinService extends MixinServiceModLauncher {
   private final LauncherContainer container = new LauncherContainer(this.getName());
@@ -46,9 +46,7 @@ public final class IgniteMixinService extends MixinServiceModLauncher {
 
   @Override
   public final @NonNull Collection<String> getPlatformAgents() {
-    return ImmutableList.<String>of(
-      "space.vectrix.ignite.applaunch.mixin.IgniteMixinPlatformService"
-    );
+    return Collections.singleton("space.vectrix.ignite.applaunch.mixin.IgniteMixinPlatformService");
   }
 
   private static final class LauncherContainer extends ContainerHandleModLauncher {

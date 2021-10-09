@@ -24,8 +24,6 @@
  */
 package space.vectrix.ignite.launch.event;
 
-import static java.util.Objects.requireNonNull;
-
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
 import net.kyori.event.EventSubscriber;
@@ -50,6 +48,8 @@ import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.IdentityHashMap;
+
+import static java.util.Objects.requireNonNull;
 
 public final class IgniteEventManager implements EventManager {
   private final ListMultimap<Object, Object> registeredListenersByMod = Multimaps

@@ -24,7 +24,6 @@
  */
 package space.vectrix.ignite.api;
 
-import com.google.common.reflect.TypeToken;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -38,19 +37,18 @@ import java.util.List;
  *
  * @since 0.5.0
  */
-@SuppressWarnings("UnstableApiUsage")
 public final class Blackboard {
   private static final BlackboardMap BLACKBOARD = new BlackboardMap();
 
-  public static final BlackboardMap.@NonNull Key<Boolean>      DEBUG            = key("ignite.debug", TypeToken.of(Boolean.class));
+  public static final BlackboardMap.@NonNull Key<Boolean>      DEBUG            = key("ignite.debug", Boolean.class);
 
-  public static final BlackboardMap.@NonNull Key<List<String>> LAUNCH_ARGUMENTS = key("ignite.launch.arguments", new TypeToken<List<String>>() {});
-  public static final BlackboardMap.@NonNull Key<String>       LAUNCH_SERVICE   = key("ignite.launch.service", TypeToken.of(String.class));
-  public static final BlackboardMap.@NonNull Key<Path>         LAUNCH_JAR       = key("ignite.launch.jar", TypeToken.of(Path.class));
-  public static final BlackboardMap.@NonNull Key<String>       LAUNCH_TARGET    = key("ignite.launch.target", TypeToken.of(String.class));
+  public static final BlackboardMap.@NonNull Key<List<String>> LAUNCH_ARGUMENTS = key("ignite.launch.arguments", List.class);
+  public static final BlackboardMap.@NonNull Key<String>       LAUNCH_SERVICE   = key("ignite.launch.service", String.class);
+  public static final BlackboardMap.@NonNull Key<Path>         LAUNCH_JAR       = key("ignite.launch.jar", Path.class);
+  public static final BlackboardMap.@NonNull Key<String>       LAUNCH_TARGET    = key("ignite.launch.target", String.class);
 
-  public static final BlackboardMap.@NonNull Key<Path> MOD_DIRECTORY_PATH       = key("ignite.mod.directory", TypeToken.of(Path.class));
-  public static final BlackboardMap.@NonNull Key<Path> CONFIG_DIRECTORY_PATH    = key("ignite.config.directory", TypeToken.of(Path.class));
+  public static final BlackboardMap.@NonNull Key<Path> MOD_DIRECTORY_PATH       = key("ignite.mod.directory", Path.class);
+  public static final BlackboardMap.@NonNull Key<Path> CONFIG_DIRECTORY_PATH    = key("ignite.config.directory", Path.class);
 
   /**
    * Returns the property for the specified {@link BlackboardMap.Key}, if it
@@ -107,7 +105,7 @@ public final class Blackboard {
 
   /**
    * Returns a new {@link BlackboardMap.Key} with the specified {@code key}
-   * and {@link TypeToken}.
+   * and {@link Class<T>}.
    *
    * @param key the property key
    * @param type the property type token
@@ -115,7 +113,7 @@ public final class Blackboard {
    * @return the property key
    * @since 0.5.0
    */
-  public static <T> BlackboardMap.@NonNull Key<T> key(final @NonNull String key, final @NonNull TypeToken<T> type) {
-    return BlackboardMap.Key.getOrCreate(Blackboard.BLACKBOARD, key, type.getRawType());
+  public static <T> BlackboardMap.@NonNull Key<T> key(final @NonNull String key, final @NonNull Class<? super T> type) {
+    return BlackboardMap.Key.getOrCreate(Blackboard.BLACKBOARD, key, type);
   }
 }
