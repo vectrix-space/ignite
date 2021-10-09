@@ -105,10 +105,10 @@ public final class Blackboard {
 
   /**
    * Returns a new {@link BlackboardMap.Key} with the specified {@code key}
-   * and {@link Class<T>}.
+   * and {@link Class}.
    *
    * @param key the property key
-   * @param type the property type token
+   * @param type the property class
    * @param <T> the property type
    * @return the property key
    * @since 0.5.0
