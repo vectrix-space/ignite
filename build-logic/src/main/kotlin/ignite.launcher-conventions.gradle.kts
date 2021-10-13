@@ -54,7 +54,7 @@ tasks {
         "Specification-Vendor" to "vectrix.space",
         "Specification-Version" to 1.0,
         "Implementation-Title" to project.name,
-        "Implementation-Version" to project.version.toString(),
+        "Implementation-Version" to rootProject.version.toString(),
         "Implementation-Vendor" to "vectrix.space"
       )
 
@@ -68,18 +68,9 @@ tasks {
     }
   }
 
-  named<ShadowJar>("shadowJar") {
-    mergeServiceFiles()
+  register<DefaultTask>("copyToTarget") {
+    dependsOn(tasks.withType<ShadowJar>())
 
-    transform(Log4j2PluginsCacheFileTransformer())
-
-    from(jar)
-
-    exclude("META-INF/versions/*/module-info.class")
-    exclude("module-info.class")
-  }
-
-  create<DefaultTask>("copyJarToTarget") {
     doLast {
       val shadowJar: ShadowJar = getByName<ShadowJar>("shadowJar")
       val targetJarDirectory: Path = projectDir.toPath().toAbsolutePath().resolve("../target")
@@ -92,8 +83,15 @@ tasks {
       )
     }
   }
-}
 
-artifacts {
-  archives(tasks.getByName<ShadowJar>("shadowJar"))
+  named<ShadowJar>("shadowJar") {
+    mergeServiceFiles()
+
+    transform(Log4j2PluginsCacheFileTransformer())
+
+    from(jar)
+
+    exclude("META-INF/versions/*/module-info.class")
+    exclude("module-info.class")
+  }
 }
