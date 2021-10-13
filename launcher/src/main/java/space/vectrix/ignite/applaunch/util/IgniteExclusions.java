@@ -34,6 +34,7 @@ public final class IgniteExclusions {
     "space.vectrix.ignite.applaunch.",
 
     // Logging
+    "org.apache.logging.log4j.",
     "org.jline.",
     "org.fusesource.",
     "net.minecrell.terminalconsole.",
