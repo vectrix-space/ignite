@@ -33,6 +33,9 @@ public final class IgniteExclusions {
     "space.vectrix.ignite.api.",
     "space.vectrix.ignite.applaunch.",
 
+    // Mixin
+    "org.spongepowered.asm.",
+
     // Logging
     "org.apache.logging.log4j.",
     "org.jline.",

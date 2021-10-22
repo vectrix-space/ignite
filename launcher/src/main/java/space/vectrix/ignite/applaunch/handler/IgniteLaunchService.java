@@ -218,6 +218,7 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
   }
 
   private boolean isTransformable(final URI uri) throws URISyntaxException, IOException {
+    final File bootstrap = new File(IgniteBootstrap.class.getProtectionDomain().getCodeSource().getLocation().toURI());
     final File file = new File(uri);
 
     // Ensure JVM internals are not transformable.
@@ -225,17 +226,19 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
       return false;
     }
 
-    if (file.isDirectory()) {
-      for (final String test : IgniteExclusions.TRANSFORMATION_EXCLUDED_PATHS) {
-        if (new File(file, test).exists()) {
-          return false;
-        }
-      }
-    } else if (file.isFile()) {
-      try (final JarFile jarFile = new JarFile(new File(uri))) {
+    if (!bootstrap.toPath().toAbsolutePath().normalize().equals(file.toPath().toAbsolutePath().normalize())) {
+      if (file.isDirectory()) {
         for (final String test : IgniteExclusions.TRANSFORMATION_EXCLUDED_PATHS) {
-          if (jarFile.getEntry(test) != null) {
+          if (new File(file, test).exists()) {
             return false;
+          }
+        }
+      } else if (file.isFile()) {
+        try (final JarFile jarFile = new JarFile(new File(uri))) {
+          for (final String test : IgniteExclusions.TRANSFORMATION_EXCLUDED_PATHS) {
+            if (jarFile.getEntry(test) != null) {
+              return false;
+            }
           }
         }
       }
