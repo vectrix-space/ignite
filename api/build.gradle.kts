@@ -8,7 +8,6 @@ dependencies {
   // Logging
 
   api("org.apache.logging.log4j:log4j-api:2.14.1")
-  api("org.apache.logging.log4j:log4j-core:2.14.1")
 
   // Configuration
 
