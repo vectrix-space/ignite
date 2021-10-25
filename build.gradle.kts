@@ -3,5 +3,5 @@ plugins {
 }
 
 group = "space.vectrix.ignite"
-version = "0.5.3"
+version = "0.6.0-SNAPSHOT"
 description = "Bootstraps the Minecraft Server with ModLauncher to apply Mixins and Access Wideners from mods."
