@@ -7,14 +7,22 @@ plugins {
 dependencies {
   implementation(project(":ignite-api"))
 
+  // Logging
+
   implementation("net.minecrell:terminalconsoleappender:1.3.0")
   implementation("org.jline:jline-terminal:3.20.0")
   implementation("org.jline:jline-reader:3.20.0")
   implementation("org.jline:jline-terminal-jansi:3.20.0")
 
-  implementation("org.spongepowered:mixin:0.8.4") {
-    exclude(group = "org.ow2.asm")
+  // Common
+
+  implementation("com.google.guava:guava:31.0.1-jre") { // 21.0 -> 22.0
+    exclude(group = "com.google.code.findbugs", module = "jsr305")
   }
+
+  implementation("com.google.errorprone:error_prone_annotations:2.9.0")
+
+  // Event
 
   implementation("net.kyori:event-api:4.0.0-SNAPSHOT") {
     exclude(group = "com.google.code.findbugs", module = "jsr305")
@@ -26,7 +34,20 @@ dependencies {
     exclude(group = "org.checkerframework", module = "checker-qual")
   }
 
+  // Transformation
+
   implementation("org.quiltmc:access-widener:1.0.2")
+  implementation("org.spongepowered:mixin:0.8.4") {
+    exclude(group = "org.ow2.asm")
+  }
+
+  implementation("org.ow2.asm:asm:9.2")
+  implementation("org.ow2.asm:asm-analysis:9.2")
+  implementation("org.ow2.asm:asm-commons:9.2")
+  implementation("org.ow2.asm:asm-tree:9.2")
+  implementation("org.ow2.asm:asm-util:9.2")
+
+  // Launcher
 
   implementation("cpw.mods:modlauncher:8.0.9") {
     exclude(group = "com.google.code.findbugs", module = "jsr305")
@@ -40,49 +61,30 @@ dependencies {
 }
 
 tasks.named<ShadowJar>("shadowJar") {
+  configureRelocations()
+  configureExcludes()
+}
+
+fun ShadowJar.configureRelocations() {
+  relocate("com.google.common", "space.vectrix.ignite.libs.google.common")
+  relocate("net.kyori", "space.vectrix.ignite.libs.kyori")
+}
+
+fun ShadowJar.configureExcludes() {
+  // Guava - Only need a few things.
+  exclude("com/google/common/escape/*")
+  exclude("com/google/common/eventbus/*")
+  exclude("com/google/common/html/*")
+  exclude("com/google/common/net/*")
+  exclude("com/google/common/xml/*")
+  exclude("com/google/thirdparty/**")
+
   dependencies {
-    include(project(":ignite-api"))
+    // Checkerframework
+    exclude(dependency("org.checkerframework:checker-qual"))
 
-    include(dependency("org.apache.logging.log4j:log4j-api"))
-    include(dependency("org.apache.logging.log4j:log4j-core"))
-    include(dependency("net.minecrell:terminalconsoleappender"))
-    include(dependency("org.jline:jline-reader"))
-    include(dependency("org.jline:jline-terminal"))
-    include(dependency("org.jline:jline-terminal-jansi"))
-    include(dependency("org.fusesource.jansi:jansi"))
-
-    include(dependency("org.spongepowered:configurate-core"))
-    include(dependency("org.spongepowered:configurate-hocon"))
-    include(dependency("org.spongepowered:configurate-yaml"))
-    include(dependency("org.spongepowered:configurate-gson"))
-    include(dependency("io.leangen.geantyref:geantyref"))
-    include(dependency("com.typesafe:config"))
-    include(dependency("com.google.code.gson:gson"))
-    include(dependency("org.yaml:snakeyaml"))
-
-    include(dependency("com.google.guava:guava"))
-    include(dependency("com.google.guava:failureaccess"))
-    include(dependency("com.google.inject:guice"))
-    include(dependency("com.google.code.gson:gson"))
-    include(dependency("javax.inject:javax.inject"))
-    include(dependency("aopalliance:aopalliance"))
-
-    include(dependency("net.kyori:event-api"))
-    include(dependency("net.kyori:event-method"))
-    include(dependency("net.kyori:event-method-asm"))
-
-    include(dependency("org.ow2.asm:asm"))
-    include(dependency("org.ow2.asm:asm-analysis"))
-    include(dependency("org.ow2.asm:asm-commons"))
-    include(dependency("org.ow2.asm:asm-tree"))
-    include(dependency("org.ow2.asm:asm-util"))
-
-    include(dependency("org.spongepowered:mixin"))
-
-    include(dependency("org.quiltmc:access-widener"))
-
-    include(dependency("cpw.mods:modlauncher"))
-    include(dependency("cpw.mods:grossjava9hacks"))
-    include(dependency("net.sf.jopt-simple:jopt-simple"))
+    // Google
+    exclude(dependency("com.google.errorprone:error_prone_annotations"))
+    exclude(dependency("com.google.j2objc:j2objc-annotations"))
   }
 }
