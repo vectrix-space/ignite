@@ -35,6 +35,3 @@ dependencies {
 }
 
 applyJarMetadata("space.vectrix.ignite")
-repositories {
-  mavenCentral()
-}
