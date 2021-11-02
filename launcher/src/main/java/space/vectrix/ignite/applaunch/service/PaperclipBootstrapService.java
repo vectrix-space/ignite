@@ -45,7 +45,7 @@ public final class PaperclipBootstrapService implements IBootstrapService {
   /**
    * The minecraft version.
    */
-  public static final @NonNull String MINECRAFT_VERSION = System.getProperty(PaperclipBootstrapService.MINECRAFT_VERSION_KEY.getName(), "1.16.5");
+  public static final @NonNull String MINECRAFT_VERSION = System.getProperty(PaperclipBootstrapService.MINECRAFT_VERSION_KEY.getName(), "1.17.1");
 
   /**
    * The paperclip jar path.
