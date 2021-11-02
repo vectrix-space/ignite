@@ -21,6 +21,14 @@ dependencies {
     exclude(group = "com.google.guava", module = "guava")
   }
 
+  // Transformation
+
+  api("org.ow2.asm:asm:9.2")
+  api("org.ow2.asm:asm-analysis:9.2")
+  api("org.ow2.asm:asm-commons:9.2")
+  api("org.ow2.asm:asm-tree:9.2")
+  api("org.ow2.asm:asm-util:9.2")
+
   // Minecraft
 
   api("com.google.code.gson:gson:2.8.8") // 2.8.0 -> 2.8.8
