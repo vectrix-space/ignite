@@ -42,7 +42,7 @@ The following target jars will require you to use one:
   - Service name: `paperclip` (e.g `-Dignite.launch.service=paperclip`)
   - The `ignite.launch.jar` property will be overridden by this service, so you do not need to set it manually.
   - Extra properties:
-    - The minecraft server version paperclip will be patching. (e.g `-Dignite.paperclip.minecraft=1.16.5`)
+    - The minecraft server version paperclip will be patching. (e.g `-Dignite.paperclip.minecraft=1.17.1`)
     - The path to the paperclip jar. (e.g `-Dignite.paperclip.jar=./paper.jar`)
     - The classpath to the paperclip entry point. (e.g `-Dignite.paperclip.target=io.papermc.paperclip.Paperclip`)
 
@@ -62,7 +62,7 @@ To depend on the Ignite API in order to create your mod, you will need to add th
   <dependency>
     <groupId>space.vectrix.ignite</groupId>
     <artifactId>ignite-api</artifactId>
-    <version>0.5.3</version>
+    <version>0.6.0</version>
   </dependency>
   <dependency>
     <groupId>org.spongepowered</groupId>
@@ -82,7 +82,7 @@ repositories {
 }
 
 dependencies {
-  compile "space.vectrix.ignite:ignite-api:0.5.3"
+  compile "space.vectrix.ignite:ignite-api:0.6.0"
   compile "org.spongepowered:mixin:0.8.4"
 }
 ```
