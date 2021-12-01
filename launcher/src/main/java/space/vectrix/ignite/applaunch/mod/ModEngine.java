@@ -89,10 +89,12 @@ public final class ModEngine {
     for (final ModContainer container : this.resourceLoader.loadResources(this)) {
       final ModResource resource = container.getResource();
 
-      try {
-        Agent.addJar(container.getResource().getPath());
-      } catch (final IOException exception) {
-        this.getLogger().error("Unable to add container '" + container.getId() + "' to the classpath!", exception);
+      if(!resource.getLocator().equals(ModResourceLocator.ENGINE_LOCATOR) && !resource.getLocator().equals(ModResourceLocator.LAUNCH_LOCATOR)) {
+        try {
+          Agent.addJar(container.getResource().getPath());
+        } catch (final IOException exception) {
+          this.getLogger().error("Unable to add container '" + container.getId() + "' to the classpath!", exception);
+        }
       }
 
       this.containers.put(container.getId(), container);

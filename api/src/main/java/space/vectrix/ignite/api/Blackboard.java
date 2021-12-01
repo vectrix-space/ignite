@@ -49,6 +49,7 @@ public final class Blackboard {
 
   public static final BlackboardMap.@NonNull Key<Path> MOD_DIRECTORY_PATH       = key("ignite.mod.directory", Path.class);
   public static final BlackboardMap.@NonNull Key<Path> CONFIG_DIRECTORY_PATH    = key("ignite.config.directory", Path.class);
+  public static final BlackboardMap.@NonNull Key<Path> LIBRARIES_DIRECTORY_PATH = key("ignite.libraries.directory", Path.class);
 
   /**
    * Returns the property for the specified {@link BlackboardMap.Key}, if it

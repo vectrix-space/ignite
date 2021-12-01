@@ -37,7 +37,7 @@ import java.nio.file.Paths;
 import java.security.Permission;
 import java.util.regex.Pattern;
 
-public final class PaperclipBootstrapService implements IBootstrapService {
+public final class LegacyPaperclipBootstrapService implements IBootstrapService {
   private static final BlackboardMap.@NonNull Key<String> MINECRAFT_VERSION_KEY = Blackboard.key("ignite.paperclip.minecraft", String.class);
   private static final BlackboardMap.@NonNull Key<Path>   PAPERCLIP_JAR_KEY     = Blackboard.key("ignite.paperclip.jar", Path.class);
   private static final BlackboardMap.@NonNull Key<String> PAPERCLIP_TARGET_KEY  = Blackboard.key("ignite.paperclip.target", String.class);
@@ -45,21 +45,21 @@ public final class PaperclipBootstrapService implements IBootstrapService {
   /**
    * The minecraft version.
    */
-  public static final @NonNull String MINECRAFT_VERSION = System.getProperty(PaperclipBootstrapService.MINECRAFT_VERSION_KEY.getName(), "1.18");
+  public static final @NonNull String MINECRAFT_VERSION = System.getProperty(LegacyPaperclipBootstrapService.MINECRAFT_VERSION_KEY.getName(), "1.17.1");
 
   /**
    * The paperclip jar path.
    */
-  public static final @NonNull Path PAPERCLIP_JAR = Paths.get(System.getProperty(PaperclipBootstrapService.PAPERCLIP_JAR_KEY.getName(), "./paper.jar"));
+  public static final @NonNull Path PAPERCLIP_JAR = Paths.get(System.getProperty(LegacyPaperclipBootstrapService.PAPERCLIP_JAR_KEY.getName(), "./paper.jar"));
 
   /**
    * The paperclip jar target class path.
    */
-  public static final @NonNull String PAPERCLIP_TARGET = System.getProperty(PaperclipBootstrapService.PAPERCLIP_TARGET_KEY.getName(), "io.papermc.paperclip.Paperclip");
+  public static final @NonNull String PAPERCLIP_TARGET = System.getProperty(LegacyPaperclipBootstrapService.PAPERCLIP_TARGET_KEY.getName(), "io.papermc.paperclip.Paperclip");
 
   @Override
   public @NonNull String name() {
-    return "paperclip";
+    return "legacy_paperclip";
   }
 
   @Override
@@ -78,14 +78,14 @@ public final class PaperclipBootstrapService implements IBootstrapService {
 
       // Load the paperclip jar on the provided ClassLoader via the Agent.
       try {
-        Agent.addJar(PaperclipBootstrapService.PAPERCLIP_JAR);
+        Agent.addJar(LegacyPaperclipBootstrapService.PAPERCLIP_JAR);
       } catch (final IOException exception) {
         throw new IllegalStateException("Unable to add paperclip jar to classpath!");
       }
 
       // Launch Paperclip
       try {
-        final Class<?> paperclipClass = Class.forName(PaperclipBootstrapService.PAPERCLIP_TARGET);
+        final Class<?> paperclipClass = Class.forName(LegacyPaperclipBootstrapService.PAPERCLIP_TARGET);
         paperclipClass
           .getMethod("main", String[].class)
           .invoke(null, (Object) new String[0]);
@@ -115,7 +115,7 @@ public final class PaperclipBootstrapService implements IBootstrapService {
   }
 
   public Path getServerJar() {
-    return Paths.get(String.format("./versions/%s/paper-%s.jar", PaperclipBootstrapService.MINECRAFT_VERSION, PaperclipBootstrapService.MINECRAFT_VERSION));
+    return Paths.get(String.format("./cache/patched_%s.jar", LegacyPaperclipBootstrapService.MINECRAFT_VERSION));
   }
 
   /* package */ static class PaperclipException extends SecurityException {

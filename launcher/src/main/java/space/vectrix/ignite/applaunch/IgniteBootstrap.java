@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 public final class IgniteBootstrap {
   /**
@@ -78,6 +79,11 @@ public final class IgniteBootstrap {
    * The configs directory.
    */
   public static final @NonNull Path CONFIG_TARGET_PATH = Paths.get(System.getProperty(Blackboard.CONFIG_DIRECTORY_PATH.getName(), "./configs"));
+
+  /**
+   * The libraries directory.
+   */
+  public static final @NonNull Path LIBRARIES_TARGET_PATH = Paths.get(System.getProperty(Blackboard.LIBRARIES_DIRECTORY_PATH.getName(), "./libraries"));
 
   static {
     AnsiConsole.systemInstall();
@@ -117,6 +123,7 @@ public final class IgniteBootstrap {
     Blackboard.computeProperty(Blackboard.LAUNCH_TARGET, IgniteBootstrap.LAUNCH_TARGET);
     Blackboard.computeProperty(Blackboard.MOD_DIRECTORY_PATH, IgniteBootstrap.MOD_TARGET_PATH);
     Blackboard.computeProperty(Blackboard.CONFIG_DIRECTORY_PATH, IgniteBootstrap.CONFIG_TARGET_PATH);
+    Blackboard.computeProperty(Blackboard.LIBRARIES_DIRECTORY_PATH, IgniteBootstrap.LIBRARIES_TARGET_PATH);
 
     // Launch Target
     launchArguments.add("--launchTarget");
@@ -142,6 +149,23 @@ public final class IgniteBootstrap {
       Agent.addJar(Blackboard.getProperty(Blackboard.LAUNCH_JAR));
     } catch (final IOException exception) {
       throw new IllegalStateException("Unable to add launch jar to classpath!");
+    }
+
+    // Load the library jars on the provided ClassLoader via the Agent.
+    if(Files.exists(Blackboard.getProperty(Blackboard.LIBRARIES_DIRECTORY_PATH))) {
+      try(final Stream<Path> stream = Files.walk(Blackboard.getProperty(Blackboard.LIBRARIES_DIRECTORY_PATH))) {
+        stream.forEach(path -> {
+          if(!path.toString().endsWith(".jar")) return;
+
+          try {
+            Agent.addJar(path);
+          } catch (final IOException exception) {
+            throw new IllegalStateException("Unable to add library jar to classpath!");
+          }
+        });
+      } catch (final IOException exception) {
+        throw new IllegalStateException("Unable to list library jars!");
+      }
     }
 
     // Update Security - Java 9+
