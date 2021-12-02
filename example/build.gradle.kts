@@ -11,7 +11,7 @@ repositories {
 dependencies {
   implementation(project(":ignite-api"))
 
-  implementation("org.spongepowered:mixin:0.8.4")
+  implementation("org.spongepowered:mixin:0.8.5")
 }
 
 applyJarMetadata("space.vectrix.example")
