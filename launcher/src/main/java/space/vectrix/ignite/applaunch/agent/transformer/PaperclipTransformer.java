@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package space.vectrix.ignite.applaunch.util.transformer;
+package space.vectrix.ignite.applaunch.agent.transformer;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -31,7 +31,6 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import java.lang.instrument.ClassFileTransformer;
-import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
 
 public final class PaperclipTransformer implements ClassFileTransformer {
@@ -44,8 +43,8 @@ public final class PaperclipTransformer implements ClassFileTransformer {
   @Override
   public byte[] transform(final ClassLoader loader, final String className,
                           final Class<?> classBeingRedefined, final ProtectionDomain protectionDomain,
-                          final byte[] classfileBuffer) throws IllegalClassFormatException {
-    if(!className.equals(this.target)) return null;
+                          final byte[] classfileBuffer) {
+    if (!className.equals(this.target)) return null;
     final ClassReader reader = new ClassReader(classfileBuffer);
     final ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
     reader.accept(new PaperclipClassVisitor(writer), ClassReader.EXPAND_FRAMES);
@@ -75,18 +74,16 @@ public final class PaperclipTransformer implements ClassFileTransformer {
 
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
-      if(name.equals("setupClasspath")) {
+      if (name.equals("setupClasspath")) {
         super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
-
         // After the method is written return.
         this.visitInsn(Opcodes.RETURN);
-
         return;
       }
 
       // Return before system exit calls.
-      if(owner.equals("java/lang/System") && name.equals("exit")) {
-        if(this.descriptor.endsWith("V")) {
+      if (owner.equals("java/lang/System") && name.equals("exit")) {
+        if (this.descriptor.endsWith("V")) {
           // Void descriptor return type, will return normally...
           this.visitInsn(Opcodes.RETURN);
         } else {

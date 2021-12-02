@@ -29,7 +29,7 @@ import space.vectrix.ignite.api.Blackboard;
 import space.vectrix.ignite.api.service.IBootstrapService;
 import space.vectrix.ignite.api.util.BlackboardMap;
 import space.vectrix.ignite.applaunch.agent.Agent;
-import space.vectrix.ignite.applaunch.util.transformer.PaperclipTransformer;
+import space.vectrix.ignite.applaunch.agent.transformer.PaperclipTransformer;
 
 import java.io.IOException;
 import java.nio.file.Path;
