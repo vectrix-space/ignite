@@ -29,9 +29,9 @@ import space.vectrix.ignite.api.Blackboard;
 import space.vectrix.ignite.api.service.IBootstrapService;
 import space.vectrix.ignite.api.util.BlackboardMap;
 import space.vectrix.ignite.applaunch.agent.Agent;
+import space.vectrix.ignite.applaunch.util.transformer.PaperclipTransformer;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Permission;
@@ -69,49 +69,34 @@ public final class PaperclipBootstrapService implements IBootstrapService {
 
   @Override
   public void execute() throws Throwable {
-    final SecurityManager original = System.getSecurityManager();
+    // Add paperclip transformer to the Agent.
+    Agent.addTransformer(new PaperclipTransformer(PAPERCLIP_TARGET.replace('.', '/')));
+
+    // Set paperclip to patch only, we launch the server ourselves.
+    System.setProperty("paperclip.patchonly", "true");
+
+    // Load the paperclip jar on the provided ClassLoader via the Agent.
     try {
-      System.setSecurityManager(new PaperclipExitHandler());
+      Agent.addJar(PaperclipBootstrapService.PAPERCLIP_JAR);
+    } catch (final IOException exception) {
+      throw new IllegalStateException("Unable to add paperclip jar to classpath!");
+    }
 
-      // Set paperclip to patch only, we launch the server ourselves.
-      System.setProperty("paperclip.patchonly", "true");
-
-      // Load the paperclip jar on the provided ClassLoader via the Agent.
-      try {
-        Agent.addJar(PaperclipBootstrapService.PAPERCLIP_JAR);
-      } catch (final IOException exception) {
-        throw new IllegalStateException("Unable to add paperclip jar to classpath!");
-      }
-
-      // Launch Paperclip
-      try {
-        final Class<?> paperclipClass = Class.forName(PaperclipBootstrapService.PAPERCLIP_TARGET);
-        paperclipClass
-          .getMethod("main", String[].class)
-          .invoke(null, (Object) new String[0]);
-      } catch (final ClassNotFoundException exception) {
-        throw new RuntimeException(exception);
-      }
-    } catch (final Throwable throwable) {
-      if(throwable instanceof InvocationTargetException) {
-        final Throwable target = ((InvocationTargetException) throwable).getTargetException();
-        if(target instanceof PaperclipException) {
-          int code = ((PaperclipException) target).getCode();
-          if(code != 0) throw new RuntimeException("Program '" + this.name() + "' stopped, with exit code: " + code);
-        } else {
-          throw new RuntimeException(throwable);
-        }
-      } else {
-        throw new RuntimeException(throwable);
-      }
+    // Launch Paperclip
+    try {
+      final Class<?> paperclipClass = Class.forName(PaperclipBootstrapService.PAPERCLIP_TARGET);
+      paperclipClass
+        .getMethod("main", String[].class)
+        .invoke(null, (Object) new String[0]);
+    } catch (final ClassNotFoundException exception) {
+      throw new RuntimeException(exception);
     }
 
     // Update the launch jar. (Forced)
     Blackboard.putProperty(Blackboard.LAUNCH_JAR, this.getServerJar());
 
-    // Remove the patchonly flag and security manager.
+    // Remove the patchonly flag.
     System.getProperties().remove("paperclip.patchonly");
-    System.setSecurityManager(original);
   }
 
   public Path getServerJar() {

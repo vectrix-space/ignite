@@ -30,6 +30,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.Instrumentation;
 import java.nio.file.Path;
 import java.util.Map;
@@ -42,6 +43,10 @@ public final class Agent {
    * The agents launch instrumentation.
    */
   private static Instrumentation LAUNCH_INSTRUMENTATION = null;
+
+  public static void addTransformer(final @NonNull ClassFileTransformer transformer) {
+    if (LAUNCH_INSTRUMENTATION != null) LAUNCH_INSTRUMENTATION.addTransformer(transformer);
+  }
 
   /**
    * Adds a the specified JAR file to the system class loader.
