@@ -30,6 +30,7 @@ Ignite has some properties that can be set on startup to change the launch targe
 - The bootstrap service to use. (e.g `-Dignite.launch.service=dummy`)
 - The path to the server jar. (e.g `-Dignite.launch.jar=./server.jar`)
 - The classpath to the server entry point. (e.g `-Dignite.launch.target=org.bukkit.craftbukkit.Main`)
+- The directory ignite libraries will be located. (e.g `-Dignite.libraries.directory=./libraries`)
 - The directory ignite mods will be located. (e.g `-Dignite.mod.directory=./mods`)
 - The directory ignite mod configs will be located. (e.g `-Dignite.config.directory=./configs`)
 
@@ -38,11 +39,19 @@ Ignite has some properties that can be set on startup to change the launch targe
 Bootstrap services provide platform specific modifications to the launch process. In most cases these platforms may not work without using their specified service.
 The following target jars will require you to use one:
 
-- Paperclip:
+- Paperclip (1.18+):
   - Service name: `paperclip` (e.g `-Dignite.launch.service=paperclip`)
   - The `ignite.launch.jar` property will be overridden by this service, so you do not need to set it manually.
   - Extra properties:
     - The minecraft server version paperclip will be patching. (e.g `-Dignite.paperclip.minecraft=1.17.1`)
+    - The path to the paperclip jar. (e.g `-Dignite.paperclip.jar=./paper.jar`)
+    - The classpath to the paperclip entry point. (e.g `-Dignite.paperclip.target=io.papermc.paperclip.Paperclip`)
+
+- Paperclip Legacy:
+  - Service name: `legacy_paperclip` (e.g `-Dignite.launch.service=legacy_paperclip`)
+  - The `ignite.launch.jar` property will be overridden by this service, so you do not need to set it manually.
+  - Extra properties:
+    - The minecraft server version paperclip will be patching. (e.g `-Dignite.paperclip.minecraft=1.18`)
     - The path to the paperclip jar. (e.g `-Dignite.paperclip.jar=./paper.jar`)
     - The classpath to the paperclip entry point. (e.g `-Dignite.paperclip.target=io.papermc.paperclip.Paperclip`)
 
@@ -62,12 +71,12 @@ To depend on the Ignite API in order to create your mod, you will need to add th
   <dependency>
     <groupId>space.vectrix.ignite</groupId>
     <artifactId>ignite-api</artifactId>
-    <version>0.6.0</version>
+    <version>0.7.0</version>
   </dependency>
   <dependency>
     <groupId>org.spongepowered</groupId>
     <artifactId>mixin</artifactId>
-    <version>0.8.4</version>
+    <version>0.8.5</version>
   </dependency>
 </dependencies>
 ```
@@ -82,8 +91,8 @@ repositories {
 }
 
 dependencies {
-  compile "space.vectrix.ignite:ignite-api:0.6.0"
-  compile "org.spongepowered:mixin:0.8.4"
+  compile "space.vectrix.ignite:ignite-api:0.7.0"
+  compile "org.spongepowered:mixin:0.8.5"
 }
 ```
 
