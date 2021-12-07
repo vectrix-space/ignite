@@ -39,9 +39,17 @@ Ignite has some properties that can be set on startup to change the launch targe
 Bootstrap services provide platform specific modifications to the launch process. In most cases these platforms may not work without using their specified service.
 The following target jars will require you to use one:
 
+- Spigot (1.18+):
+  - Service name: `spigot` (e.g `-Dignite.launch.service=spigot`)
+  - The `ignite.launch.jar` and `ignite.libraries.directory` will be overridden by this service, so you should not set them.
+  - Extra properties:
+    - The spigot version will be using. (e.g `-Dignite.spigot.version=1.18-R0.1-SNAPSHOT`)
+    - The path to the spigot bootstrap jar. (e.g `-Dignite.spigot.jar=./spigot.jar`)
+    - The classpath to the spigot bootstrap entry point. (e.g `-Dignite.spigot.target=org.bukkit.craftbukkit.bootstrap.Main`)
+
 - Paperclip (1.18+):
   - Service name: `paperclip` (e.g `-Dignite.launch.service=paperclip`)
-  - The `ignite.launch.jar` property will be overridden by this service, so you do not need to set it manually.
+  - The `ignite.launch.jar` property will be overridden by this service, so you should not set it.
   - Extra properties:
     - The minecraft server version paperclip will be patching. (e.g `-Dignite.paperclip.minecraft=1.17.1`)
     - The path to the paperclip jar. (e.g `-Dignite.paperclip.jar=./paper.jar`)
@@ -49,7 +57,7 @@ The following target jars will require you to use one:
 
 - Paperclip Legacy:
   - Service name: `legacy_paperclip` (e.g `-Dignite.launch.service=legacy_paperclip`)
-  - The `ignite.launch.jar` property will be overridden by this service, so you do not need to set it manually.
+  - The `ignite.launch.jar` property will be overridden by this service, so you should not set it.
   - Extra properties:
     - The minecraft server version paperclip will be patching. (e.g `-Dignite.paperclip.minecraft=1.18`)
     - The path to the paperclip jar. (e.g `-Dignite.paperclip.jar=./paper.jar`)
