@@ -33,10 +33,10 @@ import org.objectweb.asm.Opcodes;
 import java.lang.instrument.ClassFileTransformer;
 import java.security.ProtectionDomain;
 
-public final class PaperclipTransformer implements ClassFileTransformer {
+public final class SpigotTransformer implements ClassFileTransformer {
   private final String target;
 
-  public PaperclipTransformer(final String target) {
+  public SpigotTransformer(final String target) {
     this.target = target;
   }
 
@@ -47,26 +47,28 @@ public final class PaperclipTransformer implements ClassFileTransformer {
     if (!className.equals(this.target)) return null;
     final ClassReader reader = new ClassReader(classfileBuffer);
     final ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
-    reader.accept(new PaperclipClassVisitor(writer), ClassReader.EXPAND_FRAMES);
+    reader.accept(new SpigotClassVisitor(writer), ClassReader.EXPAND_FRAMES);
     return writer.toByteArray();
   }
 
-  public static final class PaperclipClassVisitor extends ClassVisitor {
-    public PaperclipClassVisitor(final ClassVisitor visitor) {
+  public static final class SpigotClassVisitor extends ClassVisitor {
+    public SpigotClassVisitor(final ClassVisitor visitor) {
       super(Opcodes.ASM9, visitor);
     }
 
     @Override
     public MethodVisitor visitMethod(final int access, final String name, final String descriptor, final String signature, final String[] exceptions) {
       final MethodVisitor mv = this.cv.visitMethod(access, name, descriptor, signature, exceptions);
-      return new PaperclipMethodVisitor(descriptor, mv);
+      return new SpigotMethodVisitor(descriptor, mv);
     }
   }
 
-  public static final class PaperclipMethodVisitor extends MethodVisitor {
+  public static final class SpigotMethodVisitor extends MethodVisitor {
     private final String descriptor;
 
-    public PaperclipMethodVisitor(final String descriptor, final MethodVisitor visitor) {
+    private int index;
+
+    public SpigotMethodVisitor(final String descriptor, final MethodVisitor visitor) {
       super(Opcodes.ASM9, visitor);
 
       this.descriptor = descriptor;
@@ -74,11 +76,9 @@ public final class PaperclipTransformer implements ClassFileTransformer {
 
     @Override
     public void visitMethodInsn(final int opcode, final String owner, final String name, final String descriptor, final boolean isInterface) {
-      if (name.equals("setupClasspath")) {
-        super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
-        // After the method is written return.
+      if (owner.equals("java/io/PrintStream") && name.equals("println") && this.index++ == 1) {
+        // Return before the specified position.
         this.visitInsn(Opcodes.RETURN);
-        return;
       }
 
       // Return before system exit calls.

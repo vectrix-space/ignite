@@ -34,8 +34,6 @@ import space.vectrix.ignite.applaunch.agent.transformer.PaperclipTransformer;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.Permission;
-import java.util.regex.Pattern;
 
 public final class PaperclipBootstrapService implements IBootstrapService {
   private static final BlackboardMap.@NonNull Key<String> MINECRAFT_VERSION_KEY = Blackboard.key("ignite.paperclip.minecraft", String.class);
@@ -70,7 +68,7 @@ public final class PaperclipBootstrapService implements IBootstrapService {
   @Override
   public void execute() throws Throwable {
     // Add paperclip transformer to the Agent.
-    Agent.addTransformer(new PaperclipTransformer(PAPERCLIP_TARGET.replace('.', '/')));
+    Agent.addTransformer(new PaperclipTransformer(PaperclipBootstrapService.PAPERCLIP_TARGET.replace('.', '/')));
 
     // Set paperclip to patch only, we launch the server ourselves.
     System.setProperty("paperclip.patchonly", "true");
@@ -101,26 +99,5 @@ public final class PaperclipBootstrapService implements IBootstrapService {
 
   public Path getServerJar() {
     return Paths.get(String.format("./versions/%s/paper-%s.jar", PaperclipBootstrapService.MINECRAFT_VERSION, PaperclipBootstrapService.MINECRAFT_VERSION));
-  }
-
-  /* package */ static class PaperclipException extends SecurityException {
-    private final int code;
-
-    /* package */ PaperclipException(final int code) {
-      this.code = code;
-    }
-
-    public int getCode() {
-      return this.code;
-    }
-  }
-
-  /* package */ static class PaperclipExitHandler extends SecurityManager {
-    @Override
-    public void checkPermission(final @NonNull Permission permission) {
-      if(!permission.getName().startsWith("exitVM")) return;
-      int code = Integer.parseInt(permission.getName().split(Pattern.quote("."))[1]);
-      throw new PaperclipException(code);
-    }
   }
 }
