@@ -1,11 +1,12 @@
 {
   "required": true,
-  "minVersion": "0.6.15",
+  "minVersion": "0.8.5",
   "package": "space.vectrix.example.mixin.core",
   "plugin": "space.vectrix.example.mixin.plugins.CorePlugin",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "server": [
-    "MixinCraftServer"
+    "MixinCraftServer",
+    "MixinSimpleCommandMap"
   ]
 }
