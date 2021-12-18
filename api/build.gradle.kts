@@ -3,11 +3,11 @@ plugins {
 }
 
 dependencies {
-  compileOnlyApi("org.checkerframework:checker-qual:3.19.0")
+  compileOnlyApi("org.checkerframework:checker-qual:3.20.0")
 
   // Logging
 
-  api("org.apache.logging.log4j:log4j-api:2.16.0")
+  api("org.apache.logging.log4j:log4j-api:2.17.0")
 
   // Configuration
 
@@ -35,3 +35,6 @@ dependencies {
 }
 
 applyJarMetadata("space.vectrix.ignite")
+repositories {
+  mavenCentral()
+}
