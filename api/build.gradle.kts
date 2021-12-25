@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-  compileOnlyApi("org.checkerframework:checker-qual:3.20.0")
+  compileOnlyApi("org.checkerframework:checker-qual:3.21.0")
 
   // Logging
 
