@@ -38,5 +38,6 @@
     }
   ],
   "prHourlyLimit": 3,
-  "pruneStaleBranches": false
+  "pruneStaleBranches": false,
+  "semanticCommits": "disabled"
 }
