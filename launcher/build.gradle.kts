@@ -52,7 +52,7 @@ dependencies {
     exclude(group = "com.google.code.findbugs", module = "jsr305")
   }
 
-  implementation("cpw.mods:grossjava9hacks:1.3.3")
+  implementation("cpw.mods:grossjava9hacks:2.0.7")
 }
 
 tasks.named<ShadowJar>("shadowJar") {
