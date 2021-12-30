@@ -44,7 +44,7 @@ dependencies {
 
   // Launcher
 
-  implementation("cpw.mods:modlauncher:8.0.9") {
+  implementation("cpw.mods:modlauncher:9.0.8") {
     exclude(group = "com.google.code.findbugs", module = "jsr305")
   }
 
