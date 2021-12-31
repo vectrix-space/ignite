@@ -8,6 +8,6 @@ repositories {
 
 dependencies {
   implementation("net.kyori", "indra-common", "2.0.6")
-  implementation("gradle.plugin.com.github.johnrengelman", "shadow", "7.1.1")
+  implementation("gradle.plugin.com.github.johnrengelman", "shadow", "7.1.2")
   implementation("de.marcphilipp.gradle", "nexus-publish-plugin", "0.4.0")
 }
