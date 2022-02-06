@@ -84,29 +84,28 @@ public final class ModLoader {
   }
 
   private Object instantiateContainer(final ModContainer container) throws IllegalStateException {
-    try {
-      // Add the resource to the class loader.
-      final URL resourceJar = container.getResource().getPath().toUri().toURL();
-      final ModClassLoader classLoader = new ModClassLoader(new URL[] { resourceJar });
-      classLoader.addLoaders();
+    final String target = container.getConfig().getEntry();
+    if(target != null) {
+      try {
+        // Add the resource to the class loader.
+        final URL resourceJar = container.getResource().getPath().toUri().toURL();
+        final ModClassLoader classLoader = new ModClassLoader(new URL[]{resourceJar});
+        classLoader.addLoaders();
 
-      final String target = container.getConfig().getEntry();
-      if (target != null) {
         // Load the class.
         final Class<?> clazz = classLoader.loadClass(target);
 
         final Injector parentInjector = IgniteLaunch.getInstance().getInjector();
-        if (parentInjector != null) {
+        if(parentInjector != null) {
           final Injector childInjector = parentInjector.createChildInjector(new ModModule(container, clazz));
           return childInjector.getInstance(clazz);
         }
 
         return clazz.newInstance();
+      } catch(final Throwable throwable) {
+        throw new IllegalStateException("An error occurred attempting to create an instance of mod '" + container + "'!", throwable);
       }
-
-      return null;
-    } catch (final Throwable throwable) {
-      throw new IllegalStateException("An error occurred attempting to create an instance of mod '" + container.toString() + "'!", throwable);
     }
+    return null;
   }
 }
