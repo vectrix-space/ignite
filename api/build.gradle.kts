@@ -16,7 +16,7 @@ dependencies {
   api("org.spongepowered:configurate-yaml:4.1.2")
   api("org.spongepowered:configurate-gson:4.1.2")
 
-  api("com.google.inject:guice:5.0.1") {
+  api("com.google.inject:guice:5.1.0") {
     exclude(group = "com.google.code.findbugs", module = "jsr305")
     exclude(group = "com.google.guava", module = "guava")
   }
