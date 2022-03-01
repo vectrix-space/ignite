@@ -3,11 +3,11 @@ plugins {
 }
 
 dependencies {
-  compileOnlyApi("org.checkerframework:checker-qual:3.21.2")
+  compileOnlyApi("org.checkerframework:checker-qual:3.21.3")
 
   // Logging
 
-  api("org.apache.logging.log4j:log4j-api:2.17.1")
+  api("org.apache.logging.log4j:log4j-api:2.17.2")
 
   // Configuration
 
