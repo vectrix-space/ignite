@@ -69,6 +69,11 @@ tasks.named<ShadowJar>("shadowJar") {
 fun ShadowJar.configureRelocations() {
   relocate("com.google.common", "space.vectrix.ignite.libs.google.common")
   relocate("net.kyori", "space.vectrix.ignite.libs.kyori")
+  relocate("org.spongepowered.configurate.gson", "space.vectrix.ignite.libs.configurate.gson")
+  relocate("org.spongepowered.configurate.hocon", "space.vectrix.ignite.libs.configurate.hocon")
+  relocate("org.spongepowered.configurate.yaml", "space.vectrix.ignite.libs.configurate.yaml")
+  relocate("org.yaml.snakeyaml", "space.vectrix.ignite.libs.snakeyaml")
+  relocate("com.typesafe.config", "space.vectrix.ignite.libs.typesafe")
 }
 
 fun ShadowJar.configureExcludes() {

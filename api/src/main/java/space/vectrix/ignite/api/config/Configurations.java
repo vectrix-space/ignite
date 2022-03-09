@@ -30,10 +30,7 @@ import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.ScopedConfigurationNode;
-import org.spongepowered.configurate.gson.GsonConfigurationLoader;
-import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 import org.spongepowered.configurate.loader.ConfigurationLoader;
-import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import space.vectrix.ignite.api.Blackboard;
 
 import java.io.IOException;
@@ -52,7 +49,7 @@ import java.util.function.Function;
 @SuppressWarnings("unchecked")
 public final class Configurations {
   /**
-   * Provides a function to make a general purpose {@link GsonConfigurationLoader}
+   * Provides a function to make a general purpose gson {@link ConfigurationLoader}
    * using the input {@link Configuration.Key}.
    *
    * @since 0.5.0
@@ -63,7 +60,7 @@ public final class Configurations {
   );
 
   /**
-   * Provides a function to make a general purpose {@link HoconConfigurationLoader}
+   * Provides a function to make a general purpose hocon {@link ConfigurationLoader}
    * using the input {@link Configuration.Key}.
    *
    * @since 0.5.0
@@ -74,7 +71,7 @@ public final class Configurations {
   );
 
   /**
-   * Provides a function to make a general purpose {@link YamlConfigurationLoader}
+   * Provides a function to make a general purpose yaml {@link ConfigurationLoader}
    * using the input {@link Configuration.Key}.
    *
    * @since 0.5.0
