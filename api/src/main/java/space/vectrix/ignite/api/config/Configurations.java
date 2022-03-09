@@ -32,16 +32,13 @@ import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.ScopedConfigurationNode;
 import org.spongepowered.configurate.gson.GsonConfigurationLoader;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
-import org.spongepowered.configurate.loader.AbstractConfigurationLoader;
 import org.spongepowered.configurate.loader.ConfigurationLoader;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
+import space.vectrix.ignite.api.Blackboard;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
@@ -60,11 +57,9 @@ public final class Configurations {
    *
    * @since 0.5.0
    */
-  public static final @NonNull Function<Configuration.Key<?>, ConfigurationLoader<BasicConfigurationNode>> GSON_LOADER = key -> Configurations.createLoader(key, path -> GsonConfigurationLoader.builder()
-    .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
-    .sink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8, Configurations.SINK_OPTIONS))
-    .defaultOptions(options -> options.shouldCopyDefaults(true))
-    .build()
+  public static final @NonNull Function<Configuration.Key<?>, ConfigurationLoader<BasicConfigurationNode>> GSON_LOADER = key -> Configurations.createLoader(
+    key,
+    Blackboard.getProperty(Blackboard.GSON_LOADER)
   );
 
   /**
@@ -73,11 +68,9 @@ public final class Configurations {
    *
    * @since 0.5.0
    */
-  public static final @NonNull Function<Configuration.Key<?>, ConfigurationLoader<CommentedConfigurationNode>> HOCON_LOADER = key -> Configurations.createLoader(key, path -> HoconConfigurationLoader.builder()
-    .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
-    .sink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8, Configurations.SINK_OPTIONS))
-    .defaultOptions(options -> options.shouldCopyDefaults(true))
-    .build()
+  public static final @NonNull Function<Configuration.Key<?>, ConfigurationLoader<CommentedConfigurationNode>> HOCON_LOADER = key -> Configurations.createLoader(
+    key,
+    Blackboard.getProperty(Blackboard.HOCON_LOADER)
   );
 
   /**
@@ -86,20 +79,12 @@ public final class Configurations {
    *
    * @since 0.5.0
    */
-  public static final @NonNull Function<Configuration.Key<?>, ConfigurationLoader<CommentedConfigurationNode>> YAML_LOADER = key -> Configurations.createLoader(key, path -> YamlConfigurationLoader.builder()
-    .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
-    .sink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8, Configurations.SINK_OPTIONS))
-    .defaultOptions(options -> options.shouldCopyDefaults(true))
-    .build()
+  public static final @NonNull Function<Configuration.Key<?>, ConfigurationLoader<CommentedConfigurationNode>> YAML_LOADER = key -> Configurations.createLoader(
+    key,
+    Blackboard.getProperty(Blackboard.YAML_LOADER)
   );
 
   private static final ConcurrentMap<Configuration.Key<?>, Configuration<?, ?>> CONFIGURATIONS = new ConcurrentHashMap<>();
-  private static final OpenOption[] SINK_OPTIONS = new OpenOption[] {
-    StandardOpenOption.CREATE,
-    StandardOpenOption.TRUNCATE_EXISTING,
-    StandardOpenOption.WRITE,
-    StandardOpenOption.DSYNC
-  };
 
   /**
    * Gets or creates a new {@link Configuration} with the specified {@link ConfigurationLoader},
@@ -146,7 +131,7 @@ public final class Configurations {
     });
   }
 
-  private static <T, N extends ScopedConfigurationNode<N>, L extends AbstractConfigurationLoader<N>> L createLoader(final Configuration.@NonNull Key<T> key, final @NonNull Function<Path, L> loader) {
+  private static <T, N extends ScopedConfigurationNode<N>> ConfigurationLoader<N> createLoader(final Configuration.@NonNull Key<T> key, final @NonNull Function<Path, ConfigurationLoader<N>> loader) {
     final Path path = key.path();
     try {
       Files.createDirectories(path.getParent());

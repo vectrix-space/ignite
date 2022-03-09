@@ -129,6 +129,9 @@ public final class IgniteBootstrap {
     launchArguments.add("--launchTarget");
     launchArguments.add(IgniteConstants.IGNITE_LAUNCH_SERVICE);
 
+    // Configurations
+    IgniteConfigurations.configure();
+
     // Bootstrap Launch Service
     final BootstrapServiceHandler bootstrapServiceHandler = new BootstrapServiceHandler();
     final IBootstrapService bootstrapService = bootstrapServiceHandler.findService(Blackboard.getProperty(Blackboard.LAUNCH_SERVICE)).orElseGet(DummyBootstrapService::new);

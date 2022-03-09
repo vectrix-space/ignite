@@ -12,9 +12,6 @@ dependencies {
   // Configuration
 
   api("org.spongepowered:configurate-core:4.1.2")
-  api("org.spongepowered:configurate-hocon:4.1.2")
-  api("org.spongepowered:configurate-yaml:4.1.2")
-  api("org.spongepowered:configurate-gson:4.1.2")
 
   api("com.google.inject:guice:5.1.0") {
     exclude(group = "com.google.code.findbugs", module = "jsr305")

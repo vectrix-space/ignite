@@ -27,10 +27,14 @@ package space.vectrix.ignite.api;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.spongepowered.configurate.BasicConfigurationNode;
+import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.loader.ConfigurationLoader;
 import space.vectrix.ignite.api.util.BlackboardMap;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Provides static access to properties Ignite makes use of.
@@ -50,6 +54,10 @@ public final class Blackboard {
   public static final BlackboardMap.@NonNull Key<Path> MOD_DIRECTORY_PATH       = key("ignite.mod.directory", Path.class);
   public static final BlackboardMap.@NonNull Key<Path> CONFIG_DIRECTORY_PATH    = key("ignite.config.directory", Path.class);
   public static final BlackboardMap.@NonNull Key<Path> LIBRARIES_DIRECTORY_PATH = key("ignite.libraries.directory", Path.class);
+
+  public static final BlackboardMap.@NonNull Key<Function<Path, ConfigurationLoader<BasicConfigurationNode>>> GSON_LOADER      = key("ignite.internal.gson", Function.class);
+  public static final BlackboardMap.@NonNull Key<Function<Path, ConfigurationLoader<CommentedConfigurationNode>>> HOCON_LOADER = key("ignite.internal.hocon", Function.class);
+  public static final BlackboardMap.@NonNull Key<Function<Path, ConfigurationLoader<CommentedConfigurationNode>>> YAML_LOADER  = key("ignite.internal.yaml", Function.class);
 
   /**
    * Returns the property for the specified {@link BlackboardMap.Key}, if it

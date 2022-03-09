@@ -15,6 +15,12 @@ dependencies {
   implementation("org.jline:jline-reader:3.21.0")
   implementation("org.jline:jline-terminal-jansi:3.21.0")
 
+  // Configuration
+
+  implementation("org.spongepowered:configurate-hocon:4.1.2")
+  implementation("org.spongepowered:configurate-yaml:4.1.2")
+  implementation("org.spongepowered:configurate-gson:4.1.2")
+
   // Common
 
   implementation("com.google.guava:guava:31.0.1-jre") { // 21.0 -> 22.0
