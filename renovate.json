@@ -1,43 +1,20 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "local>vectrix-space/.github:renovate-config"
   ],
-  "schedule": [
-    "on monday"
+  "ignoreDeps": [
+    "com.google.code.gson:gson"
   ],
   "packageRules": [
     {
-      "matchSourceUrlPrefixes": ["https://github.com/google/error-prone"],
-      "groupName": "error-prone monorepo"
+      "matchUpdateTypes": ["major"],
+      "matchPackagePrefixes": ["cpw.mods:modlauncher"],
+      "enabled": false
     },
     {
-      "matchPackagePrefixes": ["com.google.auto.value:"],
-      "groupName": "auto-value monorepo"
-    },
-    {
-      "matchPackagePrefixes": ["com.google.guava:"],
-      "versioning": "regex:^(?<major>\\d+)(\\.(?<minor>\\d+))?(\\.(?<patch>\\d+))?(-(?<compatibility>.*))?$"
-    },
-    {
-      "matchUpdateTypes": ["patch"],
-      "excludePackageNames": ["gradle"],
-      "groupName": "patch-release dependency changes"
-    },
-    {
-      "matchManagers": ["github-actions", "gradle-wrapper"],
-      "groupName": "gradle and github actions"
-    },
-    {
-      "matchDepTypes": ["plugin"],
-      "groupName": "gradle and github actions"
-    },
-    {
-      "matchPaths": ["build-logic/*"],
-      "groupName": "gradle and github actions"
+      "matchUpdateTypes": ["major"],
+      "matchPackagePrefixes": ["cpw.mods:grossjava9hacks"],
+      "enabled": false
     }
-  ],
-  "prHourlyLimit": 3,
-  "pruneStaleBranches": false,
-  "semanticCommits": "disabled"
+  ]
 }
