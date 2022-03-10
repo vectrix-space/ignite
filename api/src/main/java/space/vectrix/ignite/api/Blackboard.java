@@ -46,14 +46,14 @@ public final class Blackboard {
 
   public static final BlackboardMap.@NonNull Key<Boolean>      DEBUG            = key("ignite.debug", Boolean.class);
 
-  public static final BlackboardMap.@NonNull Key<List<String>> LAUNCH_ARGUMENTS = key("ignite.launch.arguments", List.class);
-  public static final BlackboardMap.@NonNull Key<String>       LAUNCH_SERVICE   = key("ignite.launch.service", String.class);
-  public static final BlackboardMap.@NonNull Key<Path>         LAUNCH_JAR       = key("ignite.launch.jar", Path.class);
-  public static final BlackboardMap.@NonNull Key<String>       LAUNCH_TARGET    = key("ignite.launch.target", String.class);
+  public static final BlackboardMap.@NonNull Key<List<String>> LAUNCH_ARGUMENTS = key("ignite.arguments", List.class);
+  public static final BlackboardMap.@NonNull Key<String>       LAUNCH_SERVICE   = key("ignite.service", String.class);
+  public static final BlackboardMap.@NonNull Key<Path>         LAUNCH_JAR       = key("ignite.jar", Path.class);
+  public static final BlackboardMap.@NonNull Key<String>       LAUNCH_TARGET    = key("ignite.target", String.class);
 
-  public static final BlackboardMap.@NonNull Key<Path> MOD_DIRECTORY_PATH       = key("ignite.mod.directory", Path.class);
-  public static final BlackboardMap.@NonNull Key<Path> CONFIG_DIRECTORY_PATH    = key("ignite.config.directory", Path.class);
-  public static final BlackboardMap.@NonNull Key<Path> LIBRARIES_DIRECTORY_PATH = key("ignite.libraries.directory", Path.class);
+  public static final BlackboardMap.@NonNull Key<Path> MOD_DIRECTORY_PATH       = key("ignite.mods", Path.class);
+  public static final BlackboardMap.@NonNull Key<Path> CONFIG_DIRECTORY_PATH    = key("ignite.configs", Path.class);
+  public static final BlackboardMap.@NonNull Key<Path> LIBRARIES_DIRECTORY_PATH = key("ignite.libraries", Path.class);
 
   public static final BlackboardMap.@NonNull Key<Function<Path, ConfigurationLoader<BasicConfigurationNode>>> GSON_LOADER      = key("ignite.internal.gson", Function.class);
   public static final BlackboardMap.@NonNull Key<Function<Path, ConfigurationLoader<CommentedConfigurationNode>>> HOCON_LOADER = key("ignite.internal.hocon", Function.class);

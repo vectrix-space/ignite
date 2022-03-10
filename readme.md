@@ -27,12 +27,12 @@ This would be run like `java -jar ignite-launcher.jar`. Any other parameters wil
 
 Ignite has some properties that can be set on startup to change the launch target, mod directory and more. The following could be added to your startup script:
 
-- The bootstrap service to use. (e.g `-Dignite.launch.service=dummy`)
-- The path to the server jar. (e.g `-Dignite.launch.jar=./server.jar`)
-- The classpath to the server entry point. (e.g `-Dignite.launch.target=org.bukkit.craftbukkit.Main`)
-- The directory ignite libraries will be located. (e.g `-Dignite.libraries.directory=./libraries`)
-- The directory ignite mods will be located. (e.g `-Dignite.mod.directory=./mods`)
-- The directory ignite mod configs will be located. (e.g `-Dignite.config.directory=./configs`)
+- The bootstrap service to use. (e.g `-Dignite.service=dummy`)
+- The path to the server jar. (e.g `-Dignite.jar=./server.jar`)
+- The classpath to the server entry point. (e.g `-Dignite.target=org.bukkit.craftbukkit.Main`)
+- The directory ignite libraries will be located. (e.g `-Dignite.libraries=./libraries`)
+- The directory ignite mods will be located. (e.g `-Dignite.mods=./mods`)
+- The directory ignite mod configs will be located. (e.g `-Dignite.configs=./configs`)
 
 ### Setting the Bootstrap Service
 
@@ -40,24 +40,24 @@ Bootstrap services provide platform specific modifications to the launch process
 The following target jars will require you to use one:
 
 - Spigot (1.18+):
-  - Service name: `spigot` (e.g `-Dignite.launch.service=spigot`)
-  - The `ignite.launch.jar` and `ignite.libraries.directory` will be overridden by this service, so you should not set them.
+  - Service name: `spigot` (e.g `-Dignite.service=spigot`)
+  - The `ignite.jar` and `ignite.libraries` will be overridden by this service, so you should not set them.
   - Extra properties:
     - The spigot version will be using. (e.g `-Dignite.spigot.version=1.18-R0.1-SNAPSHOT`)
     - The path to the spigot bootstrap jar. (e.g `-Dignite.spigot.jar=./spigot.jar`)
     - The classpath to the spigot bootstrap entry point. (e.g `-Dignite.spigot.target=org.bukkit.craftbukkit.bootstrap.Main`)
 
 - Paperclip (1.18+):
-  - Service name: `paperclip` (e.g `-Dignite.launch.service=paperclip`)
-  - The `ignite.launch.jar` property will be overridden by this service, so you should not set it.
+  - Service name: `paperclip` (e.g `-Dignite.service=paperclip`)
+  - The `ignite.jar` property will be overridden by this service, so you should not set it.
   - Extra properties:
     - The minecraft server version paperclip will be patching. (e.g `-Dignite.paperclip.minecraft=1.17.1`)
     - The path to the paperclip jar. (e.g `-Dignite.paperclip.jar=./paper.jar`)
     - The classpath to the paperclip entry point. (e.g `-Dignite.paperclip.target=io.papermc.paperclip.Paperclip`)
 
 - Paperclip Legacy:
-  - Service name: `legacy_paperclip` (e.g `-Dignite.launch.service=legacy_paperclip`)
-  - The `ignite.launch.jar` property will be overridden by this service, so you should not set it.
+  - Service name: `legacy_paperclip` (e.g `-Dignite.service=legacy_paperclip`)
+  - The `ignite.jar` property will be overridden by this service, so you should not set it.
   - Extra properties:
     - The minecraft server version paperclip will be patching. (e.g `-Dignite.paperclip.minecraft=1.18`)
     - The path to the paperclip jar. (e.g `-Dignite.paperclip.jar=./paper.jar`)
