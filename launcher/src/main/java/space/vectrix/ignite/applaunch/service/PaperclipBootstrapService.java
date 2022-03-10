@@ -39,6 +39,7 @@ public final class PaperclipBootstrapService implements IBootstrapService {
   private static final BlackboardMap.@NonNull Key<String> MINECRAFT_VERSION_KEY = Blackboard.key("ignite.paperclip.minecraft", String.class);
   private static final BlackboardMap.@NonNull Key<Path>   PAPERCLIP_JAR_KEY     = Blackboard.key("ignite.paperclip.jar", Path.class);
   private static final BlackboardMap.@NonNull Key<String> PAPERCLIP_TARGET_KEY  = Blackboard.key("ignite.paperclip.target", String.class);
+  private static final BlackboardMap.@NonNull Key<Boolean> LAUNCH_OVERRIDE_KEY  = Blackboard.key("ignite.paperclip.override", Boolean.class);
 
   /**
    * The minecraft version.
@@ -54,6 +55,11 @@ public final class PaperclipBootstrapService implements IBootstrapService {
    * The paperclip jar target class path.
    */
   public static final @NonNull String PAPERCLIP_TARGET = System.getProperty(PaperclipBootstrapService.PAPERCLIP_TARGET_KEY.getName(), "io.papermc.paperclip.Paperclip");
+
+  /**
+   * Whether to override the launch jar with one set by this service.
+   */
+  public static final boolean FORCE_LAUNCH_JAR = Boolean.parseBoolean(System.getProperty(PaperclipBootstrapService.LAUNCH_OVERRIDE_KEY.getName(), "true"));
 
   @Override
   public @NonNull String name() {
@@ -90,8 +96,10 @@ public final class PaperclipBootstrapService implements IBootstrapService {
       throw new RuntimeException(exception);
     }
 
-    // Update the launch jar. (Forced)
-    Blackboard.putProperty(Blackboard.LAUNCH_JAR, this.getServerJar());
+    if(PaperclipBootstrapService.FORCE_LAUNCH_JAR) {
+      // Update the launch jar. (Forced)
+      Blackboard.putProperty(Blackboard.LAUNCH_JAR, this.getServerJar());
+    }
 
     // Remove the patchonly flag.
     System.getProperties().remove("paperclip.patchonly");
