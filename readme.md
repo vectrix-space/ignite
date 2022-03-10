@@ -49,7 +49,7 @@ The following target jars will require you to use one:
 
 - Paperclip (1.18+):
   - Service name: `paperclip` (e.g `-Dignite.service=paperclip`)
-  - The `ignite.jar` property will be overridden by this service, so you should not set it.
+  - The `ignite.jar` property will be overridden by this service, unless you set `ignite.paperclip.override=false`.
   - Extra properties:
     - The minecraft server version paperclip will be patching. (e.g `-Dignite.paperclip.minecraft=1.17.1`)
     - The path to the paperclip jar. (e.g `-Dignite.paperclip.jar=./paper.jar`)
@@ -57,7 +57,7 @@ The following target jars will require you to use one:
 
 - Paperclip Legacy:
   - Service name: `legacy_paperclip` (e.g `-Dignite.service=legacy_paperclip`)
-  - The `ignite.jar` property will be overridden by this service, so you should not set it.
+  - The `ignite.jar` property will be overridden by this service, unless you set `ignite.paperclip.override=false`.
   - Extra properties:
     - The minecraft server version paperclip will be patching. (e.g `-Dignite.paperclip.minecraft=1.18`)
     - The path to the paperclip jar. (e.g `-Dignite.paperclip.jar=./paper.jar`)
