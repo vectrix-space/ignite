@@ -5,63 +5,23 @@ Ignite [![Discord](https://img.shields.io/discord/819522977586348052?style=for-t
 [![Maven Central](https://img.shields.io/maven-central/v/space.vectrix.ignite/ignite-api?label=stable)](https://search.maven.org/search?q=g:space.vectrix.ignite%20AND%20a:ignite*)
 ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/space.vectrix.ignite/ignite-api?label=dev&server=https%3A%2F%2Fs01.oss.sonatype.org)
 
-Bootstraps the Minecraft Server with [ModLauncher] to apply [Mixins] and [Access Wideners] from Ignite mods.
+A [Mixin] and [Access Widener] mod loader for Spigot/Paper.
 
-## Building
-__Note:__ If you do not have [Gradle] installed then use `./gradlew` for Unix systems or Git Bash and gradlew.bat for Windows systems in place of any 'gradle' command.
+## Running a Server
 
-In order to build Ignite you simply need to run the `gradle` command. You can find the compiled JAR file in `./target` labeled 'ignite-launcher.jar'.
+Download the `ignite-launcher.jar` from [here](https://github.com/vectrix-space/ignite/releases/latest).
 
-## Using the Launcher
+Place the `ignite-launcher.jar` into the same directory with your Minecraft Server jar (i.e `paper.jar`, `spigot.jar` or `server.jar`).
 
-The Ignite launcher must be executed instead of the Minecraft Server. Ignite will launch the Minecraft Server itself, additionally passing in any extra arguments you provide it.
-Usually you would want to put the launcher jar, and the server jar in the same directory. 
+Start your server with the following command depending on the server software you are running:
+- Paper (1.18+): `java -Dignite.service=paper -jar ignite-launcher.jar` (with Minecraft Server jar named `paper.jar`)
+- Spigot (1.18+): `java -Dignite.service=spigot -jar ignite-launcher.jar` (with Minecraft Server jar named `spigot.jar`)
+- Legacy Paper: `java -javaagent:./ignite-launcher.jar -Dignite.service=legacy_paper -jar ignite-launcher.jar` (with Minecraft Server jar named `paper.jar`)
+- Other: `java -javaagent:./ignite-launcher.jar -jar ignite-launcher.jar` (with Minecraft Server jar named `server.jar`)
 
-This would be run like `java -jar ignite-launcher.jar`. Any other parameters will be passed onto and effect the target server.
+The mods can then be placed into the `mods` directory that will be created, along with any mod configuration in `configs`.
 
-**Note:** You must add the flag `-javaagent:./ignite-launcher.jar` if you're running Java 8 or below.
-
-**Note:** If the target jar is a Paper jar, then you may want to read about the bootstrap services below to make launching easier.
-
-### Setting the Custom Properties
-
-Ignite has some properties that can be set on startup to change the launch target, mod directory and more. The following could be added to your startup script:
-
-- The bootstrap service to use. (e.g `-Dignite.service=dummy`)
-- The path to the server jar. (e.g `-Dignite.jar=./server.jar`)
-- The classpath to the server entry point. (e.g `-Dignite.target=org.bukkit.craftbukkit.Main`)
-- The directory ignite libraries will be located. (e.g `-Dignite.libraries=./libraries`)
-- The directory ignite mods will be located. (e.g `-Dignite.mods=./mods`)
-- The directory ignite mod configs will be located. (e.g `-Dignite.configs=./configs`)
-
-### Setting the Bootstrap Service
-
-Bootstrap services provide platform specific modifications to the launch process. In most cases these platforms may not work without using their specified service.
-The following target jars will require you to use one:
-
-- Spigot (1.18+):
-  - Service name: `spigot` (e.g `-Dignite.service=spigot`)
-  - The `ignite.jar` and `ignite.libraries` will be overridden by this service, so you should not set them.
-  - Extra properties:
-    - The spigot version will be using. (e.g `-Dignite.spigot.version=1.18-R0.1-SNAPSHOT`)
-    - The path to the spigot bootstrap jar. (e.g `-Dignite.spigot.jar=./spigot.jar`)
-    - The classpath to the spigot bootstrap entry point. (e.g `-Dignite.spigot.target=org.bukkit.craftbukkit.bootstrap.Main`)
-
-- Paperclip (1.18+):
-  - Service name: `paperclip` (e.g `-Dignite.service=paperclip`)
-  - The `ignite.jar` property will be overridden by this service, unless you set `ignite.paperclip.override=false`.
-  - Extra properties:
-    - The minecraft server version paperclip will be patching. (e.g `-Dignite.paperclip.minecraft=1.17.1`)
-    - The path to the paperclip jar. (e.g `-Dignite.paperclip.jar=./paper.jar`)
-    - The classpath to the paperclip entry point. (e.g `-Dignite.paperclip.target=io.papermc.paperclip.Paperclip`)
-
-- Paperclip Legacy:
-  - Service name: `legacy_paperclip` (e.g `-Dignite.service=legacy_paperclip`)
-  - The `ignite.jar` property will be overridden by this service, unless you set `ignite.paperclip.override=false`.
-  - Extra properties:
-    - The minecraft server version paperclip will be patching. (e.g `-Dignite.paperclip.minecraft=1.18`)
-    - The path to the paperclip jar. (e.g `-Dignite.paperclip.jar=./paper.jar`)
-    - The classpath to the paperclip entry point. (e.g `-Dignite.paperclip.target=io.papermc.paperclip.Paperclip`)
+**Note:** Various properties can be applied to the launch command to support a custom server fork, or environment. Check the advanced usage below.
 
 ## Creating a Mod
 
@@ -106,7 +66,7 @@ dependencies {
 
 You will also need to depend on the server binary in order to compile your mod for your specified target(s).
 
-**Warning:** Server dependencies that are remapped are not currently supported. Proper tooling to support this is being worked on.
+**Note:** To support custom mappings you should check out the [Pacifist Remapper](https://github.com/PacifistMC/pacifist-remapper) gradle plugin.
 
 ### Configuring your Mod
 
@@ -131,7 +91,7 @@ The mods will need to be placed in the directory the launcher will be targeting 
 
 #### Using Mixins
 
-The Mixin configuration files will need to be available in your mods binary in order to be loaded. The name of each configuration file should be added to the `mixins` section in 
+The Mixin configuration files will need to be available in your mods binary in order to be loaded. The name of each configuration file should be added to the `mixins` section in
 your `ignite.mod.json`, or alternatively could be added to your jar manifest.
 
 [Mixin Specification]
@@ -145,6 +105,51 @@ section in your `ignite.mod.json`, or alternatively could be added to your jar m
 
 [Access Widener Specification]
 
+## Advanced Usage
+
+Ignite has some properties that can be set on startup to change the launch target, mod directory and more. The following could be added to your startup script:
+
+- The bootstrap service to use. (e.g `-Dignite.service=dummy`)
+- The path to the server jar. (e.g `-Dignite.jar=./server.jar`)
+- The classpath to the server entry point. (e.g `-Dignite.target=org.bukkit.craftbukkit.Main`)
+- The directory ignite libraries will be located. (e.g `-Dignite.libraries=./libraries`)
+- The directory ignite mods will be located. (e.g `-Dignite.mods=./mods`)
+- The directory ignite mod configs will be located. (e.g `-Dignite.configs=./configs`)
+
+### Bootstrap Services
+
+Bootstrap services provide platform specific modifications to the launch process. In most cases these platforms may not work without using their specified service.
+The following target jars will require you to use one:
+
+- Paper (1.18+):
+  - Service name: `paper` (e.g `-Dignite.service=paper`)
+  - The `ignite.jar` property will be overridden by this service, unless you set `ignite.paper.override=false`.
+  - Extra properties:
+    - The minecraft server version paperclip will be patching. (e.g `-Dignite.paper.minecraft=1.18.2`)
+    - The path to the paperclip jar. (e.g `-Dignite.paper.jar=./paper.jar`)
+    - The classpath to the paperclip entry point. (e.g `-Dignite.paper.target=io.papermc.paperclip.Paperclip`)
+
+- Spigot (1.18+):
+  - Service name: `spigot` (e.g `-Dignite.service=spigot`)
+  - The `ignite.jar` and `ignite.libraries` will be overridden by this service, so you should not set them.
+  - Extra properties:
+    - The spigot version will be using. (e.g `-Dignite.spigot.version=1.18-R0.1-SNAPSHOT`)
+    - The path to the spigot bootstrap jar. (e.g `-Dignite.spigot.jar=./spigot.jar`)
+    - The classpath to the spigot bootstrap entry point. (e.g `-Dignite.spigot.target=org.bukkit.craftbukkit.bootstrap.Main`)
+
+- Paper Legacy:
+  - Service name: `legacy_paper` (e.g `-Dignite.service=legacy_paper`)
+  - The `ignite.jar` property will be overridden by this service, unless you set `ignite.paper.override=false`.
+  - Extra properties:
+    - The minecraft server version paperclip will be patching. (e.g `-Dignite.paper.minecraft=1.18`)
+    - The path to the paperclip jar. (e.g `-Dignite.paper.jar=./paper.jar`)
+    - The classpath to the paperclip entry point. (e.g `-Dignite.paper.target=io.papermc.paperclip.Paperclip`)
+
+## Building
+__Note:__ If you do not have [Gradle] installed then use `./gradlew` for Unix systems or Git Bash and gradlew.bat for Windows systems in place of any 'gradle' command.
+
+In order to build Ignite you simply need to run the `gradle` command. You can find the compiled JAR file in `./target` labeled 'ignite-launcher.jar'.
+
 ## Inspiration
 
 This project has many parts inspired by the following projects:
@@ -156,9 +161,8 @@ This project has many parts inspired by the following projects:
 
 Initially designed for [Mineteria](https://mineteria.com/).
 
-[ModLauncher]: https://github.com/cpw/modlauncher
-[Mixins]: https://github.com/SpongePowered/Mixin
-[Access Wideners]: https://github.com/QuiltMC/access-widener
+[Mixin]: https://github.com/SpongePowered/Mixin
+[Access Widener]: https://github.com/QuiltMC/access-widener
 [Mixin Specification]: https://github.com/SpongePowered/Mixin/wiki/Introduction-to-Mixins---The-Mixin-Environment#mixin-configuration-files
 [Access Widener Specification]: https://fabricmc.net/wiki/tutorial:accesswideners
 

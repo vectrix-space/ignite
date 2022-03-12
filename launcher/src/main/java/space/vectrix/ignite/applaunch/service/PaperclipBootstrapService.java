@@ -36,10 +36,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public final class PaperclipBootstrapService implements IBootstrapService {
-  private static final BlackboardMap.@NonNull Key<String> MINECRAFT_VERSION_KEY = Blackboard.key("ignite.paperclip.minecraft", String.class);
-  private static final BlackboardMap.@NonNull Key<Path>   PAPERCLIP_JAR_KEY     = Blackboard.key("ignite.paperclip.jar", Path.class);
-  private static final BlackboardMap.@NonNull Key<String> PAPERCLIP_TARGET_KEY  = Blackboard.key("ignite.paperclip.target", String.class);
-  private static final BlackboardMap.@NonNull Key<Boolean> LAUNCH_OVERRIDE_KEY  = Blackboard.key("ignite.paperclip.override", Boolean.class);
+  private static final BlackboardMap.@NonNull Key<String> MINECRAFT_VERSION_KEY = Blackboard.key("ignite.paper.minecraft", String.class);
+  private static final BlackboardMap.@NonNull Key<Path>   PAPERCLIP_JAR_KEY     = Blackboard.key("ignite.paper.jar", Path.class);
+  private static final BlackboardMap.@NonNull Key<String> PAPERCLIP_TARGET_KEY  = Blackboard.key("ignite.paper.target", String.class);
+  private static final BlackboardMap.@NonNull Key<Boolean> LAUNCH_OVERRIDE_KEY  = Blackboard.key("ignite.paper.override", Boolean.class);
 
   /**
    * The minecraft version.
@@ -63,7 +63,7 @@ public final class PaperclipBootstrapService implements IBootstrapService {
 
   @Override
   public @NonNull String name() {
-    return "paperclip";
+    return "paper";
   }
 
   @Override
