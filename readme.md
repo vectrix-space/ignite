@@ -162,7 +162,7 @@ This project has many parts inspired by the following projects:
 Initially designed for [Mineteria](https://mineteria.com/).
 
 [Mixin]: https://github.com/SpongePowered/Mixin
-[Access Widener]: https://github.com/QuiltMC/access-widener
+[Access Widener]: https://github.com/FabricMC/access-widener
 [Mixin Specification]: https://github.com/SpongePowered/Mixin/wiki/Introduction-to-Mixins---The-Mixin-Environment#mixin-configuration-files
 [Access Widener Specification]: https://fabricmc.net/wiki/tutorial:accesswideners
 

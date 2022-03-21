@@ -43,7 +43,7 @@ dependencies {
 
   // Transformation
 
-  implementation("org.quiltmc:access-widener:1.0.2")
+  implementation("net.fabricmc:access-widener:2.1.0")
   implementation("org.spongepowered:mixin:0.8.5") {
     exclude(group = "org.ow2.asm")
   }

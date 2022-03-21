@@ -27,8 +27,8 @@ package space.vectrix.ignite.applaunch.handler;
 import cpw.mods.modlauncher.api.ITransformerActivity;
 import cpw.mods.modlauncher.serviceapi.ILaunchPluginService;
 import net.fabricmc.accesswidener.AccessWidener;
+import net.fabricmc.accesswidener.AccessWidenerClassVisitor;
 import net.fabricmc.accesswidener.AccessWidenerReader;
-import net.fabricmc.accesswidener.AccessWidenerVisitor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -68,7 +68,7 @@ public final class IgniteAccessWidenerService implements ILaunchPluginService {
     final ClassNode node = new ClassNode(IgniteConstants.ASM_VERSION);
     classNode.accept(node);
 
-    final ClassVisitor visitor = AccessWidenerVisitor.createClassVisitor(IgniteConstants.ASM_VERSION, classNode, this.widener);
+    final ClassVisitor visitor = AccessWidenerClassVisitor.createClassVisitor(IgniteConstants.ASM_VERSION, classNode, this.widener);
 
     classNode.visibleAnnotations = null;
     classNode.invisibleAnnotations = null;
