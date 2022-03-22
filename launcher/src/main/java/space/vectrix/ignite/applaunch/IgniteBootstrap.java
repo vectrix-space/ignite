@@ -151,7 +151,7 @@ public final class IgniteBootstrap {
     try {
       Agent.addJar(Blackboard.getProperty(Blackboard.LAUNCH_JAR));
     } catch (final IOException exception) {
-      throw new IllegalStateException("Unable to add launch jar to classpath!");
+      throw new IllegalStateException("Unable to add launch jar to classpath!", exception);
     }
 
     // Load the library jars on the provided ClassLoader via the Agent.
@@ -163,11 +163,11 @@ public final class IgniteBootstrap {
           try {
             Agent.addJar(path);
           } catch (final IOException exception) {
-            throw new IllegalStateException("Unable to add library jar to classpath!");
+            throw new IllegalStateException("Unable to add library jar at '" + path + "' to classpath!", exception);
           }
         });
       } catch (final IOException exception) {
-        throw new IllegalStateException("Unable to list library jars!");
+        throw new IllegalStateException("Unable to list library jars at '" + Blackboard.getProperty(Blackboard.LIBRARIES_DIRECTORY_PATH) + "'!", exception);
       }
     }
 
