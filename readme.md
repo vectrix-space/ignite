@@ -31,7 +31,7 @@ To depend on the Ignite API in order to create your mod, you will need to add th
 ```xml
 <repositories>
   <repository>
-    <url>https://repo.spongepowered.org/maven/</url>
+    <url>https://maven.fabricmc.net/</url>
   </repository>
 </repositories>
 
@@ -42,9 +42,9 @@ To depend on the Ignite API in order to create your mod, you will need to add th
     <version>0.7.4</version>
   </dependency>
   <dependency>
-    <groupId>org.spongepowered</groupId>
-    <artifactId>mixin</artifactId>
-    <version>0.8.5</version>
+    <groupId>net.fabricmc</groupId>
+    <artifactId>sponge-mixin</artifactId>
+    <version>0.11.2+mixin.0.8.5</version>
   </dependency>
 </dependencies>
 ```
@@ -54,13 +54,13 @@ To depend on the Ignite API in order to create your mod, you will need to add th
 repositories {
   mavenCentral()
   maven {
-    url = "https://repo.spongepowered.org/maven/"
+    url = "https://maven.fabricmc.net/"
   }
 }
 
 dependencies {
   compile "space.vectrix.ignite:ignite-api:0.7.4"
-  compile "org.spongepowered:mixin:0.8.5"
+  compile "net.fabricmc:sponge-mixin:0.11.2+mixin.0.8.5"
 }
 ```
 

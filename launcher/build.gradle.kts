@@ -44,7 +44,7 @@ dependencies {
   // Transformation
 
   implementation("net.fabricmc:access-widener:2.1.0")
-  implementation("org.spongepowered:mixin:0.8.5") {
+  implementation("net.fabricmc:sponge-mixin:0.11.2+mixin.0.8.5") {
     exclude(group = "org.ow2.asm")
   }
 
