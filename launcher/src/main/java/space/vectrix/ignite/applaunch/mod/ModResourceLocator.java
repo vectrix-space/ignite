@@ -44,19 +44,28 @@ public final class ModResourceLocator {
   public static final @NonNull String ENGINE_LOCATOR = "engine_locator";
   public static final @NonNull String JAVA_LOCATOR = "java_locator";
 
-  public final @NonNull List<ModResource> locateResources(final @NonNull ModEngine engine) {
+  public @NonNull List<ModResource> locateResources(final @NonNull ModEngine engine) {
     final List<ModResource> modResources = new ArrayList<>();
 
     modResources.add(EngineResource.createEngineResource(engine));
     modResources.add(EngineResource.createLaunchResource(engine));
 
     final Path modDirectory = Blackboard.getProperty(Blackboard.MOD_DIRECTORY_PATH);
-    if (modDirectory == null || Files.notExists(modDirectory)) {
-      engine.getLogger().warn("Mod directory '" + modDirectory + "' does not exist for mod resource locator. Skipping...");
-      return modResources;
-    }
-
+    final Path configDirectory = Blackboard.getProperty(Blackboard.CONFIG_DIRECTORY_PATH);
     try {
+      if (modDirectory == null) {
+        engine.getLogger().error("Mod directory is unable to be created as the path was null!");
+        return modResources;
+      } else if (Files.notExists(modDirectory) && modDirectory.toFile().mkdirs()) {
+        engine.getLogger().info("Cannot locate mod directory '" + modDirectory + "'. Creating a new one...");
+      }
+
+      if (configDirectory == null) {
+        engine.getLogger().warn("Config directory is unable to be created as the path was null!");
+      } else if (Files.notExists(configDirectory) && configDirectory.toFile().mkdirs()) {
+        engine.getLogger().info("Cannot locate config directory '" + configDirectory + "'. Creating a new one...");
+      }
+
       for (final Path childDirectory : Files.walk(modDirectory).collect(Collectors.toList())) {
         if (!Files.isRegularFile(childDirectory) || !childDirectory.getFileName().toString().endsWith(".jar")) {
           continue;
@@ -72,14 +81,14 @@ public final class ModResourceLocator {
           modResources.add(new ModResource(ModResourceLocator.JAVA_LOCATOR, childDirectory, jarFile.getManifest()));
         }
       }
-    } catch (final IOException exception) {
+    } catch (final Exception exception) {
       engine.getLogger().error("Failed to walk the mods directory '" + modDirectory + "'!", exception);
     }
 
     return modResources;
   }
 
-  public final @NonNull String getConfigPath() {
+  public @NonNull String getConfigPath() {
     return IgniteConstants.MOD_CONFIG;
   }
 }
