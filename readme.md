@@ -17,11 +17,10 @@ Start your server with the following command depending on the server software yo
 - Paper (1.18+): `java -Dignite.service=paper -jar ignite-launcher.jar` (with Minecraft Server jar named `paper.jar`)
 - Spigot (1.18+): `java -Dignite.service=spigot -jar ignite-launcher.jar` (with Minecraft Server jar named `spigot.jar`)
 - Legacy Paper: `java -javaagent:./ignite-launcher.jar -Dignite.service=legacy_paper -jar ignite-launcher.jar` (with Minecraft Server jar named `paper.jar`)
-- Other: `java -javaagent:./ignite-launcher.jar -jar ignite-launcher.jar` (with Minecraft Server jar named `server.jar`)
+
+**Note:** Most other server jars are supported, however you may be required to add additional startup flags in order for it to work, which you can find in the Advanced Section below. It is recommended if you're not sure to [ask for help](https://discord.gg/rYpaxPFQrj).
 
 The mods can then be placed into the `mods` directory that will be created, along with any mod configuration in `configs`.
-
-**Note:** Various properties can be applied to the launch command to support a custom server fork, or environment. Check the advanced usage below.
 
 ## Creating a Mod
 
@@ -39,7 +38,7 @@ To depend on the Ignite API in order to create your mod, you will need to add th
   <dependency>
     <groupId>space.vectrix.ignite</groupId>
     <artifactId>ignite-api</artifactId>
-    <version>0.7.4</version>
+    <version>0.8.0</version>
   </dependency>
   <dependency>
     <groupId>org.spongepowered</groupId>
@@ -59,7 +58,7 @@ repositories {
 }
 
 dependencies {
-  compile "space.vectrix.ignite:ignite-api:0.7.4"
+  compile "space.vectrix.ignite:ignite-api:0.8.0"
   compile "org.spongepowered:mixin:0.8.5"
 }
 ```
