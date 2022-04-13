@@ -127,6 +127,7 @@ public final class LegacyPaperclipBootstrapService implements IBootstrapService 
   }
 
   /* package */ static class PaperclipException extends SecurityException {
+    private static final long serialVersionUID = 1;
     private final int code;
 
     /* package */ PaperclipException(final int code) {

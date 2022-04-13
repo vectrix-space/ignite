@@ -11,7 +11,17 @@ repositories {
   }
 }
 
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(8))
+  }
+}
+
 indra {
+  javaVersions {
+    target(8)
+  }
+
   github("vectrix-space", "ignite") {
     ci(true)
   }
