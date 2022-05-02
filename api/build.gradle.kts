@@ -20,7 +20,7 @@ dependencies {
 
   // Transformation
 
-  api("org.ow2.asm:asm:9.2")
+  api("org.ow2.asm:asm:9.3")
   api("org.ow2.asm:asm-analysis:9.2")
   api("org.ow2.asm:asm-commons:9.2")
   api("org.ow2.asm:asm-tree:9.2")
