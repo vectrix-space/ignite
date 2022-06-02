@@ -54,7 +54,7 @@ dependencies {
     exclude(group = "com.google.code.findbugs", module = "jsr305")
   }
 
-  implementation("cpw.mods:modlauncher:8.0.9:api") {
+  implementation("cpw.mods:modlauncher:8.1.3:api") {
     exclude(group = "com.google.code.findbugs", module = "jsr305")
   }
 
