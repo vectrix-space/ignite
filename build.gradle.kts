@@ -3,5 +3,5 @@ plugins {
 }
 
 group = "space.vectrix.ignite"
-version = "0.8.1-SNAPSHOT"
+version = "2.0.0-SNAPSHOT"
 description = "A Mixin and Access Widener mod loader for Spigot/Paper."
