@@ -1,4 +1,4 @@
-This file is part of Ignite, licensed under the MIT License (MIT).
+This file is part of ignite, licensed under the MIT License (MIT).
 
 Copyright (c) vectrix.space <https://vectrix.space/>
 Copyright (c) contributors

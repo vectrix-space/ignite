@@ -1,5 +1,5 @@
 plugins {
-  id("ignite.parent-build-logic")
+  id("ignite.parent")
 }
 
 group = "space.vectrix.ignite"

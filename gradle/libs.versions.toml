@@ -1,0 +1,31 @@
+metadata.format.version = "1.1"
+
+[versions]
+
+# build
+indra = "2.1.1"
+shadow = "7.1.2"
+nexus = "0.4.0"
+
+# applaunch
+log4j = "2.18.0"
+modlauncher = "9.1.6"
+
+[libraries]
+
+# logging/terminal
+joptsimple = "net.sf.jopt-simple:jopt-simple:5.0.3"
+
+# applauncher
+modlauncher = { module = "cpw.mods:modlauncher", version.ref = "modlauncher" }
+log4jApi = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
+log4jCore = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
+
+# annotations
+jetbrainsAnnotations = "org.jetbrains:annotations:23.0.0"
+
+# build
+indra = { module = "net.kyori:indra-common", version.ref = "indra" }
+shadow = { module = "gradle.plugin.com.github.johnrengelman:shadow", version.ref = "shadow" }
+nexus = { module = "de.marcphilipp.gradle:nexus-publish-plugin", version.ref = "nexus" }
+
