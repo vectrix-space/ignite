@@ -22,56 +22,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package space.vectrix.ignite.blackboard;
+package space.vectrix.ignite.installer.service;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import space.vectrix.ignite.service.InstallProcessorService;
 
-import java.util.Objects;
+import java.util.Map;
+import java.util.Optional;
+import java.util.ServiceLoader;
+import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
-public final class Key<T> implements Comparable<Key<T>> {
-  @SuppressWarnings("unchecked")
-  public static <T> @NotNull Key<T> of(final @NotNull String name, final @NotNull Class<? super T> type) {
-    return new Key<>(name, (Class<T>) type);
+public final class ProcessorServiceHandler {
+  private final ServiceLoader<InstallProcessorService> serviceLoader;
+  private final Map<String, InstallProcessorService> serviceMap;
+
+  public ProcessorServiceHandler() {
+    this.serviceLoader = ServiceLoader.load(InstallProcessorService.class);
+    this.serviceMap = this.serviceLoader.stream()
+      .map(ServiceLoader.Provider::get)
+      .collect(Collectors.<InstallProcessorService, String, InstallProcessorService>toUnmodifiableMap(InstallProcessorService::name, x -> x));
   }
 
-  private final String name;
-  private final Class<T> type;
-
-  /* package */ Key(final @NotNull String name, final @NotNull Class<T> type) {
-    this.name = name;
-    this.type = type;
+  public @NotNull Optional<InstallProcessorService> findService(final @NotNull String name) {
+    return Optional.ofNullable(this.serviceMap.get(name));
   }
 
-  public @NotNull String name() {
-    return this.name;
-  }
-
-  public @NotNull Class<T> type() {
-    return this.type;
-  }
-
-  @Override
-  public int compareTo(final @NotNull Key<T> other) {
-    if(this == other) return 0;
-    return this.name.compareTo(other.name);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(this.name);
-  }
-
-  @Override
-  public boolean equals(final @Nullable Object other) {
-    if(this == other) return true;
-    if(!(other instanceof Key<?>)) return false;
-    final Key<?> that = (Key<?>) other;
-    return Objects.equals(this.name, that.name);
-  }
-
-  @Override
-  public String toString() {
-    return "Key{name=" + this.name + ", type=" + this.type + "}";
+  public @NotNull Optional<InstallProcessorService> findService(final @NotNull JarFile file) {
+    return this.serviceLoader.stream()
+      .map(ServiceLoader.Provider::get)
+      .filter(installProcessorService -> installProcessorService.scan(file))
+      .findFirst();
   }
 }

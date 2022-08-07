@@ -25,8 +25,8 @@
 package space.vectrix.ignite.applaunch.blackboard;
 
 import org.jetbrains.annotations.NotNull;
-import space.vectrix.ignite.blackboard.Blackboard;
-import space.vectrix.ignite.blackboard.Key;
+import space.vectrix.ignite.api.blackboard.Blackboard;
+import space.vectrix.ignite.api.blackboard.Key;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;

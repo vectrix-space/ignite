@@ -6,4 +6,4 @@ dependencies {
   compileOnlyApi(libs.jetbrainsAnnotations)
 }
 
-applyJarMetadata("space.vectrix.ignite")
+applyJarMetadata("space/vectrix/ignite/api/", "space.vectrix.ignite.api")

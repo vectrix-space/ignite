@@ -12,7 +12,10 @@ rootProject.name = "ignite-parent"
 
 sequenceOf(
   "api",
-  "bootstrap"
+  "bootstrap",
+  "installer",
+  "launcher",
+  "service"
 ).forEach {
   include("ignite-$it")
   project(":ignite-$it").projectDir = file(it)

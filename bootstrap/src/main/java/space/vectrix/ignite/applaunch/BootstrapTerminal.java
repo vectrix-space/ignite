@@ -36,31 +36,32 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-public final class IgniteTerminal {
+public final class BootstrapTerminal {
   private static final OptionParser PARSER = new OptionParser();
 
-  private static final ArgumentAcceptingOptionSpec<String> LAUNCH_TARGET_ARGUMENT = IgniteTerminal.PARSER
+  private static final ArgumentAcceptingOptionSpec<String> LAUNCH_TARGET_ARGUMENT = BootstrapTerminal.PARSER
     .accepts("launchTarget", "Launch Target")
     .withRequiredArg();
 
-  private static final ArgumentAcceptingOptionSpec<Path> PLATFORM_DIRECTORY_ARGUMENT = IgniteTerminal.PARSER
+  private static final ArgumentAcceptingOptionSpec<Path> PLATFORM_DIRECTORY_ARGUMENT = BootstrapTerminal.PARSER
     .accepts("platformDirectory", "Platform Directory")
     .withRequiredArg()
     .withValuesConvertedBy(new PathConverter(PathProperties.DIRECTORY_EXISTING))
     .defaultsTo(Paths.get("."));
 
-  private static final ArgumentAcceptingOptionSpec<String> PLATFORM_JAR_ARGUMENT = IgniteTerminal.PARSER
+  private static final ArgumentAcceptingOptionSpec<Path> PLATFORM_JAR_ARGUMENT = BootstrapTerminal.PARSER
     .accepts("platformJar", "Platform Jar")
     .withRequiredArg()
-    .defaultsTo("./server.jar");
+    .withValuesConvertedBy(new PathConverter(PathProperties.FILE_EXISTING))
+    .defaultsTo(Paths.get("server.jar"));
 
-  private static final ArgumentAcceptingOptionSpec<String> PLATFORM_CLASSPATH_ARGUMENT = IgniteTerminal.PARSER
+  private static final ArgumentAcceptingOptionSpec<String> PLATFORM_CLASSPATH_ARGUMENT = BootstrapTerminal.PARSER
     .accepts("platformClasspath", "Platform Classpath")
     .withRequiredArg()
     .defaultsTo("org.bukkit.craftbukkit.Main");
 
   static {
-    IgniteTerminal.PARSER.allowsUnrecognizedOptions();
+    BootstrapTerminal.PARSER.allowsUnrecognizedOptions();
   }
 
   public static String[] RAW_ARGS;
@@ -69,9 +70,9 @@ public final class IgniteTerminal {
   public static String PLATFORM_CLASSPATH;
 
   public static void configure(@NotNull String[] args) throws Exception {
-    final OptionSet options = IgniteTerminal.PARSER.parse(args);
+    final OptionSet options = BootstrapTerminal.PARSER.parse(args);
 
-    String launchTarget = options.valueOf(IgniteTerminal.LAUNCH_TARGET_ARGUMENT);
+    String launchTarget = options.valueOf(BootstrapTerminal.LAUNCH_TARGET_ARGUMENT);
     boolean serviceDefault = false;
     if(launchTarget == null) {
       launchTarget = Constants.IGNITE_LAUNCH_SERVICE;
@@ -85,14 +86,14 @@ public final class IgniteTerminal {
       args[size + 1] = launchTarget;
     }
 
-    IgniteTerminal.PLATFORM_DIRECTORY = options.valueOf(IgniteTerminal.PLATFORM_DIRECTORY_ARGUMENT);
-    IgniteTerminal.PLATFORM_JAR = IgniteTerminal.PLATFORM_DIRECTORY.resolve(options.valueOf(IgniteTerminal.PLATFORM_JAR_ARGUMENT));
-    IgniteTerminal.PLATFORM_CLASSPATH = options.valueOf(IgniteTerminal.PLATFORM_CLASSPATH_ARGUMENT);
+    BootstrapTerminal.PLATFORM_DIRECTORY = options.valueOf(BootstrapTerminal.PLATFORM_DIRECTORY_ARGUMENT);
+    BootstrapTerminal.PLATFORM_JAR = BootstrapTerminal.PLATFORM_DIRECTORY.resolve(options.valueOf(BootstrapTerminal.PLATFORM_JAR_ARGUMENT));
+    BootstrapTerminal.PLATFORM_CLASSPATH = options.valueOf(BootstrapTerminal.PLATFORM_CLASSPATH_ARGUMENT);
 
-    IgniteTerminal.RAW_ARGS = args;
+    BootstrapTerminal.RAW_ARGS = args;
   }
 
-  private IgniteTerminal() {
+  private BootstrapTerminal() {
     throw new AssertionError("Attempted to instantiate a class that is non-instantiable");
   }
 }

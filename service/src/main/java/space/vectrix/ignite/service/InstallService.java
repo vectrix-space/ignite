@@ -22,20 +22,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package space.vectrix.ignite;
+package space.vectrix.ignite.service;
 
 import org.jetbrains.annotations.NotNull;
-import space.vectrix.ignite.blackboard.Blackboard;
 
-public final class Ignite {
-  private static Blackboard BLACKBOARD;
+import java.nio.file.Path;
 
-  public static @NotNull Blackboard blackboard() {
-    return Ignite.BLACKBOARD;
-  }
-
-  public static void blackboard(final @NotNull Blackboard blackboard) {
-    if(Ignite.BLACKBOARD != null) throw new RuntimeException("The blackboard cannot be set more than once!");
-    Ignite.BLACKBOARD = blackboard;
-  }
+public interface InstallService {
+  void run(final @NotNull String[] args,
+           final @NotNull Path[] transformablePaths) throws Exception;
 }

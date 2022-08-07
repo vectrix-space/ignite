@@ -22,24 +22,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package space.vectrix.ignite.blackboard;
+package space.vectrix.ignite.installer.service;
 
-import java.nio.file.Path;
+import org.jetbrains.annotations.NotNull;
+import space.vectrix.ignite.service.InstallProcessorService;
 
-public final class Keys {
-  public static final Key<Boolean> DEVELOPMENT = Key.of("development", Boolean.class);
+import java.util.jar.JarFile;
 
-  public static final Key<String> VERSION = Key.of("version", String.class);
+public final class PaperclipProcessorService implements InstallProcessorService {
+  @Override
+  public @NotNull String name() {
+    return "paperclip";
+  }
 
-  public static final Key<Path> PLATFORM_DIRECTORY = Key.of("platform_directory", Path.class);
+  @Override
+  public boolean scan(final @NotNull JarFile file) {
+    return file.getEntry("io/papermc/paperclip/Main.class") != null;
+  }
 
-  public static final Key<Path> PLATFORM_JAR = Key.of("platform_jar", Path.class);
+  @Override
+  public void execute() throws Exception {
 
-  public static final Key<String> PLATFORM_CLASSPATH = Key.of("platform_classpath", String.class);
-
-  public static final Key<Path> MOD_DIRECTORY = Key.of("mod_directory", Path.class);
-
-  private Keys() {
-    throw new AssertionError("Attempted to instantiate a class that is non-instantiable");
   }
 }

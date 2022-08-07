@@ -10,16 +10,31 @@ nexus = "0.4.0"
 # applaunch
 log4j = "2.18.0"
 modlauncher = "9.1.6"
+asm = "9.3"
+
+# installer
+tinylog = "2.5.0-M2.1"
+securejar = "1.0.5"
 
 [libraries]
 
 # logging/terminal
-joptsimple = "net.sf.jopt-simple:jopt-simple:5.0.3"
+joptsimple = "net.sf.jopt-simple:jopt-simple:6.0-alpha-3"
 
 # applauncher
 modlauncher = { module = "cpw.mods:modlauncher", version.ref = "modlauncher" }
 log4jApi = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
 log4jCore = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
+
+# install
+tinylogApi = { module = "org.tinylog:tinylog-api", version.ref = "tinylog" }
+tinylogCore = { module = "org.tinylog:tinylog-impl", version.ref = "tinylog" }
+securejar = { module = "cpw.mods:securejarhandler", version.ref = "securejar" }
+asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
+asmCommon = { module = "org.ow2.asm:asm-commons", version.ref = "asm" }
+asmAnalysis = { module = "org.ow2.asm:asm-analysis", version.ref = "asm" }
+asmTree = { module = "org.ow2.asm:asm-tree", version.ref = "asm" }
+asmUtil = { module = "org.ow2.asm:asm-util", version.ref = "asm" }
 
 # annotations
 jetbrainsAnnotations = "org.jetbrains:annotations:23.0.0"

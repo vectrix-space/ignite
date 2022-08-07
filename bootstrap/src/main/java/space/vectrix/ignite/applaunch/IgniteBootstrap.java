@@ -24,14 +24,15 @@
  */
 package space.vectrix.ignite.applaunch;
 
+import cpw.mods.modlauncher.InvalidLauncherSetupException;
 import cpw.mods.modlauncher.Launcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
-import space.vectrix.ignite.Ignite;
+import space.vectrix.ignite.api.Ignite;
+import space.vectrix.ignite.api.blackboard.Keys;
 import space.vectrix.ignite.applaunch.blackboard.BlackboardImpl;
 import space.vectrix.ignite.applaunch.util.ArgumentList;
-import space.vectrix.ignite.blackboard.Keys;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -45,7 +46,7 @@ public final class IgniteBootstrap {
   }
 
   public static void main(final @NotNull String[] args, final @NotNull Path[] extraPaths) throws Exception {
-    IgniteTerminal.configure(args);
+    BootstrapTerminal.configure(args);
     new IgniteBootstrap(extraPaths).run();
   }
 
@@ -61,11 +62,11 @@ public final class IgniteBootstrap {
     final String specificationVersion = Ignite.class.getPackage().getSpecificationVersion();
 
     Ignite.blackboard().compute(Keys.VERSION, () -> specificationVersion == null ? "0.0" : specificationVersion);
-    Ignite.blackboard().compute(Keys.PLATFORM_DIRECTORY, () -> IgniteTerminal.PLATFORM_DIRECTORY);
-    Ignite.blackboard().compute(Keys.PLATFORM_JAR, () -> IgniteTerminal.PLATFORM_JAR);
-    Ignite.blackboard().compute(Keys.PLATFORM_CLASSPATH, () -> IgniteTerminal.PLATFORM_CLASSPATH);
+    Ignite.blackboard().compute(Keys.PLATFORM_DIRECTORY, () -> BootstrapTerminal.PLATFORM_DIRECTORY);
+    Ignite.blackboard().compute(Keys.PLATFORM_JAR, () -> BootstrapTerminal.PLATFORM_JAR);
+    Ignite.blackboard().compute(Keys.PLATFORM_CLASSPATH, () -> BootstrapTerminal.PLATFORM_CLASSPATH);
 
-    final Path modsDirectory = IgniteTerminal.PLATFORM_DIRECTORY.resolve("mods");
+    final Path modsDirectory = BootstrapTerminal.PLATFORM_DIRECTORY.resolve("mods");
     if(Files.notExists(modsDirectory)) {
       Files.createDirectories(modsDirectory);
     }
@@ -73,7 +74,15 @@ public final class IgniteBootstrap {
     Ignite.blackboard().compute(Keys.MOD_DIRECTORY, () -> modsDirectory);
 
     IgniteBootstrap.LOGGER.info("Transitioning to ModLauncher. Please wait...");
-    final ArgumentList argumentList = ArgumentList.from(IgniteTerminal.RAW_ARGS);
-    Launcher.main(argumentList.arguments());
+    final ArgumentList argumentList = ArgumentList.from(BootstrapTerminal.RAW_ARGS);
+
+    System.out.println("Launcher Layer: " + Launcher.class.getModule().getLayer());
+
+    try {
+      Launcher.main(argumentList.arguments());
+    } catch(final InvalidLauncherSetupException exception) {
+      IgniteBootstrap.LOGGER.error("The bootstrapper is unable to be setup correctly.", exception);
+      System.exit(1);
+    }
   }
 }
