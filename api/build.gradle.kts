@@ -1,9 +1,9 @@
 plugins {
-  id("ignite.base")
+  id("ignite.module")
 }
 
 dependencies {
   compileOnlyApi(libs.jetbrainsAnnotations)
 }
 
-applyJarMetadata("space/vectrix/ignite/api/", "space.vectrix.ignite.api")
+applyJarMetadata("space.vectrix.ignite.api")

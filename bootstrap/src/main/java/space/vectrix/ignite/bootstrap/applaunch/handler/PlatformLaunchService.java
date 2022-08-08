@@ -22,13 +22,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package space.vectrix.ignite.applaunch.util;
+package space.vectrix.ignite.bootstrap.applaunch.handler;
 
-public final class Constants {
-  public static final String IGNITE_LAUNCH_SERVICE = "ignite_launch";
-  public static final String IGNITE_TRANSFORMATION_SERVICE = "ignite_transformation";
+import cpw.mods.modlauncher.api.ILaunchHandlerService;
+import cpw.mods.modlauncher.api.ITransformingClassLoaderBuilder;
+import cpw.mods.modlauncher.api.NamedPath;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import space.vectrix.ignite.bootstrap.applaunch.util.Constants;
 
-  private Constants() {
-    throw new AssertionError("Attempted to instantiate a class that is non-instantiable");
+import java.util.concurrent.Callable;
+
+public final class PlatformLaunchService implements ILaunchHandlerService {
+  private static final Logger LOGGER = LogManager.getLogger("IgniteBootstrap | LaunchService");
+
+  public PlatformLaunchService() {}
+
+  @Override
+  public @NotNull String name() {
+    return Constants.IGNITE_LAUNCH_SERVICE;
+  }
+
+  @Override
+  public void configureTransformationClassLoader(final @NotNull ITransformingClassLoaderBuilder builder) {
+
+  }
+
+  @Override
+  public @NotNull Callable<Void> launchService(final @NotNull String[] arguments, final @NotNull ModuleLayer gameLayer) {
+    return () -> null;
+  }
+
+  @Override
+  public @NotNull NamedPath[] getPaths() {
+    return ILaunchHandlerService.super.getPaths();
   }
 }

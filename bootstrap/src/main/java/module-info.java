@@ -22,13 +22,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package space.vectrix.ignite.service;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.nio.file.Path;
-
-public interface InstallService {
-  void run(final @NotNull String[] args,
-           final @NotNull Path[] transformablePaths) throws Exception;
+module space.vectrix.ignite.bootstrap {
+  requires java.base;
+  requires jopt.simple;
+  requires org.apache.logging.log4j;
+  requires org.apache.logging.log4j.core;
+  requires org.objectweb.asm.tree;
+  requires cpw.mods.securejarhandler;
+  requires transitive cpw.mods.modlauncher;
+  requires transitive space.vectrix.ignite.api;
+  requires static transitive org.jetbrains.annotations;
+  exports space.vectrix.ignite.bootstrap.applaunch.blackboard;
+  exports space.vectrix.ignite.bootstrap.applaunch.handler;
+  exports space.vectrix.ignite.bootstrap.applaunch.service;
+  exports space.vectrix.ignite.bootstrap.applaunch.util;
+  exports space.vectrix.ignite.bootstrap.applaunch;
+  provides cpw.mods.modlauncher.api.ILaunchHandlerService with space.vectrix.ignite.bootstrap.applaunch.handler.PlatformLaunchService;
+  provides cpw.mods.modlauncher.api.ITransformationService with space.vectrix.ignite.bootstrap.applaunch.handler.PlatformTransformationService;
+  // For the installer to launch into, as we cannot directly invoke the main class.
+  provides java.util.function.BiConsumer with space.vectrix.ignite.bootstrap.applaunch.service.InstallLaunchConsumer;
 }

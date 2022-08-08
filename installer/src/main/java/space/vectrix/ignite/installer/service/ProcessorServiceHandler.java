@@ -25,7 +25,6 @@
 package space.vectrix.ignite.installer.service;
 
 import org.jetbrains.annotations.NotNull;
-import space.vectrix.ignite.service.InstallProcessorService;
 
 import java.util.Map;
 import java.util.Optional;

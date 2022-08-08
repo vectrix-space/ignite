@@ -14,8 +14,7 @@ sequenceOf(
   "api",
   "bootstrap",
   "installer",
-  "launcher",
-  "service"
+  "launcher"
 ).forEach {
   include("ignite-$it")
   project(":ignite-$it").projectDir = file(it)

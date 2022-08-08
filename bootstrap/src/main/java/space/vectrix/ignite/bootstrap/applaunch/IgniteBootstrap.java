@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package space.vectrix.ignite.applaunch;
+package space.vectrix.ignite.bootstrap.applaunch;
 
 import cpw.mods.modlauncher.InvalidLauncherSetupException;
 import cpw.mods.modlauncher.Launcher;
@@ -31,8 +31,8 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import space.vectrix.ignite.api.Ignite;
 import space.vectrix.ignite.api.blackboard.Keys;
-import space.vectrix.ignite.applaunch.blackboard.BlackboardImpl;
-import space.vectrix.ignite.applaunch.util.ArgumentList;
+import space.vectrix.ignite.bootstrap.applaunch.blackboard.BlackboardImpl;
+import space.vectrix.ignite.bootstrap.applaunch.util.ArgumentList;
 
 import java.io.IOException;
 import java.nio.file.Files;

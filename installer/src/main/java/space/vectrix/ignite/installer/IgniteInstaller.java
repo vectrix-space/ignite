@@ -26,10 +26,9 @@ package space.vectrix.ignite.installer;
 
 import org.jetbrains.annotations.NotNull;
 import org.tinylog.Logger;
+import space.vectrix.ignite.installer.service.InstallProcessorService;
 import space.vectrix.ignite.installer.service.ProcessorServiceHandler;
 import space.vectrix.ignite.installer.util.JavaVersionChecker;
-import space.vectrix.ignite.service.InstallProcessorService;
-import space.vectrix.ignite.service.InstallService;
 
 import java.io.File;
 import java.lang.module.Configuration;
@@ -39,8 +38,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.ServiceLoader;
-import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class IgniteInstaller {
@@ -52,6 +52,7 @@ public final class IgniteInstaller {
 
   public IgniteInstaller() {}
 
+  @SuppressWarnings("unchecked")
   public void run() {
     // install libraries
     final Path librariesDirectory = InstallerTerminal.PLATFORM_LIBRARIES;
@@ -104,18 +105,19 @@ public final class IgniteInstaller {
     // load libraries
     try(final Stream<Path> libraryStream = Files.walk(librariesDirectory)) {
       final List<Path> libraryPaths = libraryStream
-        .filter(path -> path.endsWith(".jar"))
+        .filter(path -> path.toString().endsWith(".jar"))
         .toList();
 
+      Logger.info("Adding libraries: " + libraryPaths.stream().map(Path::toString).collect(Collectors.joining(";")));
+
       final ModuleFinder finder = ModuleFinder.of(libraryPaths.toArray(new Path[0]));
-      final Configuration bootConfiguration = ModuleLayer.boot().configuration();
+      final Configuration configuration = Configuration.resolve(finder, List.of(ModuleLayer.boot().configuration()), finder, finder.findAll().stream().map(ref -> ref.descriptor().name()).collect(Collectors.toSet()));
+      final ModuleLayer layer = ModuleLayer.defineModulesWithOneLoader(configuration, List.of(ModuleLayer.boot()), ClassLoader.getSystemClassLoader()).layer();
 
-      final Configuration installerConfiguration = bootConfiguration.resolveAndBind(finder, ModuleFinder.ofSystem(), Set.of());
+      Logger.info("Adding modules: " + layer.modules().stream().map(Module::getName).collect(Collectors.joining(", ")));
 
-      final ModuleLayer layer = ModuleLayer.defineModulesWithOneLoader(installerConfiguration, List.of(ModuleLayer.boot()), ClassLoader.getSystemClassLoader()).layer();
-
-      final ServiceLoader<InstallService> serviceLoader = ServiceLoader.load(layer, InstallService.class);
-      serviceLoader.findFirst().orElseThrow().run(
+      var serviceLoader = ServiceLoader.load(layer, BiConsumer.class);
+      ((BiConsumer<String[], Path[]>) serviceLoader.findFirst().orElseThrow()).accept(
         InstallerTerminal.REMAINING_ARGS.toArray(new String[0]),
         transformablePaths
       );

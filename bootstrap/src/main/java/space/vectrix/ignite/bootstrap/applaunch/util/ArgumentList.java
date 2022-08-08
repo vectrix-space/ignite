@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package space.vectrix.ignite.applaunch.util;
+package space.vectrix.ignite.bootstrap.applaunch.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -73,6 +73,8 @@ public final class ArgumentList {
 
   private final List<Supplier<String[]>> entries = new ArrayList<>();
   private final Map<String, EntryValue> values = new HashMap<>();
+
+  public ArgumentList() {}
 
   public void add(final @NotNull String argument) {
     this.entries.add(() -> new String[] { argument });

@@ -22,22 +22,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package space.vectrix.ignite.api;
+package space.vectrix.ignite.bootstrap.applaunch.service;
 
 import org.jetbrains.annotations.NotNull;
-import space.vectrix.ignite.api.blackboard.Blackboard;
+import space.vectrix.ignite.bootstrap.applaunch.IgniteBootstrap;
 
-public final class Ignite {
-  private static Blackboard BLACKBOARD;
+import java.nio.file.Path;
+import java.util.function.BiConsumer;
 
-  public static @NotNull Blackboard blackboard() {
-    return Ignite.BLACKBOARD;
+public final class InstallLaunchConsumer implements BiConsumer<String[], Path[]> {
+  public InstallLaunchConsumer() {}
+
+  @Override
+  public void accept(final @NotNull String[] args, final @NotNull Path[] transformablePaths) {
+    System.out.println("Installing on module: " + InstallLaunchConsumer.class.getModule().getName());
+    try {
+      IgniteBootstrap.main(args, transformablePaths);
+    } catch(final Exception exception) {
+      throw new RuntimeException(exception);
+    }
   }
-
-  public static void blackboard(final @NotNull Blackboard blackboard) {
-    if(Ignite.BLACKBOARD != null) throw new RuntimeException("The blackboard cannot be set more than once!");
-    Ignite.BLACKBOARD = blackboard;
-  }
-
-  /* package */ Ignite() {}
 }

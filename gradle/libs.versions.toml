@@ -6,35 +6,36 @@ metadata.format.version = "1.1"
 indra = "2.1.1"
 shadow = "7.1.2"
 nexus = "0.4.0"
+extraModuleInfo = "0.12"
 
-# applaunch
+# bootstrap
 log4j = "2.18.0"
 modlauncher = "9.1.6"
 asm = "9.3"
+securejar = "1.0.5"
 
 # installer
 tinylog = "2.5.0-M2.1"
-securejar = "1.0.5"
 
 [libraries]
 
 # logging/terminal
-joptsimple = "net.sf.jopt-simple:jopt-simple:6.0-alpha-3"
+joptsimple = "net.sf.jopt-simple:jopt-simple:5.0.4"
 
-# applauncher
+# bootstrap
 modlauncher = { module = "cpw.mods:modlauncher", version.ref = "modlauncher" }
 log4jApi = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
 log4jCore = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
-
-# install
-tinylogApi = { module = "org.tinylog:tinylog-api", version.ref = "tinylog" }
-tinylogCore = { module = "org.tinylog:tinylog-impl", version.ref = "tinylog" }
 securejar = { module = "cpw.mods:securejarhandler", version.ref = "securejar" }
 asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
 asmCommon = { module = "org.ow2.asm:asm-commons", version.ref = "asm" }
 asmAnalysis = { module = "org.ow2.asm:asm-analysis", version.ref = "asm" }
 asmTree = { module = "org.ow2.asm:asm-tree", version.ref = "asm" }
 asmUtil = { module = "org.ow2.asm:asm-util", version.ref = "asm" }
+
+# install
+tinylogApi = { module = "org.tinylog:tinylog-api", version.ref = "tinylog" }
+tinylogCore = { module = "org.tinylog:tinylog-impl", version.ref = "tinylog" }
 
 # annotations
 jetbrainsAnnotations = "org.jetbrains:annotations:23.0.0"
@@ -43,4 +44,5 @@ jetbrainsAnnotations = "org.jetbrains:annotations:23.0.0"
 indra = { module = "net.kyori:indra-common", version.ref = "indra" }
 shadow = { module = "gradle.plugin.com.github.johnrengelman:shadow", version.ref = "shadow" }
 nexus = { module = "de.marcphilipp.gradle:nexus-publish-plugin", version.ref = "nexus" }
+extraModuleInfo = { module = "de.jjohannes.gradle:extra-java-module-info", version.ref = "extraModuleInfo" }
 

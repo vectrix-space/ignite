@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package space.vectrix.ignite.applaunch.blackboard;
+package space.vectrix.ignite.bootstrap.applaunch.blackboard;
 
 import org.jetbrains.annotations.NotNull;
 import space.vectrix.ignite.api.blackboard.Blackboard;

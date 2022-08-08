@@ -22,16 +22,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package space.vectrix.ignite.service;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.jar.JarFile;
-
-public interface InstallProcessorService {
-  @NotNull String name();
-
-  boolean scan(final @NotNull JarFile file);
-
-  void execute() throws Exception;
+module space.vectrix.ignite.api {
+  requires java.base;
+  requires static transitive org.jetbrains.annotations;
+  exports space.vectrix.ignite.api.blackboard;
+  exports space.vectrix.ignite.api;
 }

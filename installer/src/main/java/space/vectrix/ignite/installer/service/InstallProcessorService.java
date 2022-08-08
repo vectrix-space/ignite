@@ -22,19 +22,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package space.vectrix.ignite.applaunch.service;
+package space.vectrix.ignite.installer.service;
 
 import org.jetbrains.annotations.NotNull;
-import space.vectrix.ignite.applaunch.IgniteBootstrap;
-import space.vectrix.ignite.service.InstallService;
 
-import java.nio.file.Path;
+import java.util.jar.JarFile;
 
-public final class InstallServiceImpl implements InstallService {
-  @Override
-  public void run(final @NotNull String[] args,
-                  final @NotNull Path[] transformablePaths) throws Exception {
-    System.out.println("Installing on module: " + InstallServiceImpl.class.getModule().getName());
-    IgniteBootstrap.main(args, transformablePaths);
-  }
+public interface InstallProcessorService {
+  @NotNull String name();
+
+  boolean scan(final @NotNull JarFile file);
+
+  void execute() throws Exception;
 }

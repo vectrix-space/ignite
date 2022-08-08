@@ -5,61 +5,60 @@ plugins {
   id("com.github.johnrengelman.shadow")
 }
 
-val apiProjects = setOf(
+val modularProjects = setOf(
   rootProject.projects.igniteApi,
-  rootProject.projects.igniteService
+  rootProject.projects.igniteBootstrap
 ).map { it.dependencyProject }
 
-val implementationProjects = setOf(
-  rootProject.projects.igniteBootstrap,
+val shadedProjects = setOf(
   rootProject.projects.igniteInstaller
 ).map { it.dependencyProject }
 
 tasks {
-  val shadowJar = named<ShadowJar>("shadowJar") {
-    mergeServiceFiles()
+  val jar = named<Jar>("jar") {
+    archiveClassifier.set("base")
 
+    modularProjects.forEach { project ->
+      val runtimeLibrary = project.configurations.named("runtimeLibrary")
+
+      // Package the extra libraries into the jar here.
+      val runtimeLibraries = runtimeLibrary.get();
+      runtimeLibraries.dependencies.map { dependency ->
+        val path = "META-INF/libraries/" + dependency.group!!.replace('.', '/') + "/" + dependency.name + "/" + dependency.version
+        val name = dependency.name + "-" + dependency.version + ".jar"
+
+        into(path) {
+          from(runtimeLibraries.files(dependency).filter { file -> file.name.equals(name) })
+        }
+      }
+
+      // Package the project into the jar here too.
+      val path = "META-INF/libraries/" + rootProject.group.toString().replace('.', '/') + "/" + project.name + "/" + rootProject.version.toString()
+
+      into(path) {
+        from(project.tasks.named<Jar>("jar").map { projectJar -> projectJar.archiveFile })
+      }
+    }
+
+    from(project.rootProject.file("license.txt"))
+  }
+
+  val shadowJar = named<ShadowJar>("shadowJar") {
     archiveClassifier.set("")
     archiveFileName.set("ignite-${rootProject.version}.jar")
     destinationDirectory.set(rootProject.projectDir.resolve("build/libs"))
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
+    from(jar.get().archiveFile)
+
     manifest {
       attributes(
-        "Premain-Class" to "space.vectrix.ignite.installer.agent.Agent",
-        "Agent-Class" to "space.vectrix.ignite.installer.agent.Agent",
-        "Launcher-Agent-Class" to "space.vectrix.ignite.installer.agent.Agent",
         "Main-Class" to "space.vectrix.ignite.installer.IgniteInstaller",
         "Multi-Release" to true
       )
-
-      apiProjects.forEach { project ->
-        val jarTask = project.tasks.named<Jar>("jar").get()
-        dependsOn(jarTask)
-
-        from({
-          zipTree { jarTask.archiveFile }.matching { include("**/MANIFEST.MF") }.singleFile
-        })
-      }
-
-      implementationProjects.forEach { project ->
-        val shadowJarTask = project.tasks.named<ShadowJar>("shadowJar").get()
-        dependsOn(shadowJarTask)
-        dependsOn(project.tasks.withType<Jar>())
-
-        from({
-          zipTree { shadowJarTask.archiveFile }.matching { include("**/MANIFEST.MF") }.singleFile
-        })
-      }
     }
 
-    apiProjects.forEach { project ->
-      val jarTask = project.tasks.named<Jar>("jar").get()
-      dependsOn(jarTask)
-      from(jarTask.archiveFile)
-    }
-
-    implementationProjects.forEach { project ->
+    shadedProjects.forEach { project ->
       val shadowJarTask = project.tasks.named<ShadowJar>("shadowJar").get()
       dependsOn(project.tasks.withType<Jar>())
       dependsOn(shadowJarTask)

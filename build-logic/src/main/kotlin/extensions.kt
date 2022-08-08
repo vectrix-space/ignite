@@ -31,27 +31,3 @@ fun Project.applyJarMetadata(moduleName: String) {
     }
   }
 }
-
-fun Project.applyJarMetadata(modulePath: String, moduleName: String) {
-  if("jar" in tasks.names) {
-    tasks.named<Jar>("jar") {
-      val fullVersion = rootProject.version.toString().replace("-SNAPSHOT", "").split('.')
-      var specificationVersion = fullVersion[0];
-      if(fullVersion.size > 1) {
-        specificationVersion += ("." + fullVersion[1]);
-      } else {
-        specificationVersion += ".0"
-      }
-
-      manifest.attributes(modulePath,
-        "Automatic-Module-Name" to moduleName,
-        "Specification-Title" to moduleName,
-        "Specification-Version" to specificationVersion,
-        "Specification-Vendor" to "vectrix-space",
-        "Implementation-Title" to moduleName,
-        "Implementation-Version" to rootProject.version,
-        "Implementation-Vendor" to "vectrix-space"
-      )
-    }
-  }
-}

@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package space.vectrix.ignite.applaunch;
+package space.vectrix.ignite.bootstrap.applaunch;
 
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
@@ -30,7 +30,7 @@ import joptsimple.OptionSet;
 import joptsimple.util.PathConverter;
 import joptsimple.util.PathProperties;
 import org.jetbrains.annotations.NotNull;
-import space.vectrix.ignite.applaunch.util.Constants;
+import space.vectrix.ignite.bootstrap.applaunch.util.Constants;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

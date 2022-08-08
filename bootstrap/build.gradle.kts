@@ -1,11 +1,16 @@
 plugins {
-  id("ignite.implementation")
+  id("ignite.module")
+}
+
+
+extraJavaModuleInfo {
+  automaticModule("jopt-simple-5.0.4.jar", "jopt.simple")
 }
 
 dependencies {
   compileOnlyApi(libs.jetbrainsAnnotations)
-  compileOnly(project(":ignite-api"))
-  compileOnly(project(":ignite-service"))
+  compileOnlyApi(project(":ignite-api"))
+  compileOnlyApi(project(":ignite-installer"))
 
   runtimeLibrary(libs.joptsimple)
   runtimeLibrary(libs.log4jApi)
@@ -19,4 +24,4 @@ dependencies {
   runtimeLibrary(libs.asmUtil)
 }
 
-applyJarMetadata("space/vectrix/ignite/applaunch/", "space.vectrix.ignite.applaunch")
+applyJarMetadata("space.vectrix.ignite.bootstrap")

@@ -22,22 +22,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package space.vectrix.ignite.api;
+package space.vectrix.ignite.bootstrap.applaunch.util;
 
-import org.jetbrains.annotations.NotNull;
-import space.vectrix.ignite.api.blackboard.Blackboard;
+public final class Constants {
+  public static final String IGNITE_LAUNCH_SERVICE = "ignite_launch";
+  public static final String IGNITE_TRANSFORMATION_SERVICE = "ignite_transformation";
 
-public final class Ignite {
-  private static Blackboard BLACKBOARD;
-
-  public static @NotNull Blackboard blackboard() {
-    return Ignite.BLACKBOARD;
+  private Constants() {
+    throw new AssertionError("Attempted to instantiate a class that is non-instantiable");
   }
-
-  public static void blackboard(final @NotNull Blackboard blackboard) {
-    if(Ignite.BLACKBOARD != null) throw new RuntimeException("The blackboard cannot be set more than once!");
-    Ignite.BLACKBOARD = blackboard;
-  }
-
-  /* package */ Ignite() {}
 }

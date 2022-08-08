@@ -1,12 +1,11 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
-  id("ignite.implementation")
+  id("ignite.installer")
 }
 
 dependencies {
   compileOnlyApi(libs.jetbrainsAnnotations)
-  compileOnly(project(":ignite-service"))
 
   shadow(libs.joptsimple)
   shadow(libs.tinylogApi)
@@ -27,4 +26,4 @@ tasks {
   }
 }
 
-applyJarMetadata("space/vectrix/ignite/installer/","space.vectrix.ignite.installer")
+applyJarMetadata("space.vectrix.ignite.installer")
