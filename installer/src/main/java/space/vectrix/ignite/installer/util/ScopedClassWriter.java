@@ -22,36 +22,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package space.vectrix.ignite.installer.service;
+package space.vectrix.ignite.installer.util;
 
 import org.jetbrains.annotations.NotNull;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.ServiceLoader;
-import java.util.jar.JarFile;
-import java.util.stream.Collectors;
+public final class ScopedClassWriter extends ClassWriter {
+  private final ClassLoader loader;
 
-public final class ProcessorServiceHandler {
-  private final ServiceLoader<InstallProcessorService> serviceLoader;
-  private final Map<String, InstallProcessorService> serviceMap;
+  public ScopedClassWriter(final @NotNull ClassReader classReader, final @NotNull ClassLoader loader, final int flags) {
+    super(classReader, flags);
 
-  public ProcessorServiceHandler() {
-    this.serviceLoader = ServiceLoader.load(InstallProcessorService.class);
-    this.serviceMap = this.serviceLoader.stream()
-      .map(ServiceLoader.Provider::get)
-      .peek(InstallProcessorService::initialize)
-      .collect(Collectors.<InstallProcessorService, String, InstallProcessorService>toUnmodifiableMap(InstallProcessorService::name, x -> x));
+    this.loader = loader;
   }
 
-  public @NotNull Optional<InstallProcessorService> findService(final @NotNull String name) {
-    return Optional.ofNullable(this.serviceMap.get(name));
-  }
-
-  public @NotNull Optional<InstallProcessorService> findService(final @NotNull JarFile file) {
-    return this.serviceLoader.stream()
-      .map(ServiceLoader.Provider::get)
-      .filter(installProcessorService -> installProcessorService.scan(file))
-      .findFirst();
+  @Override
+  protected ClassLoader getClassLoader() {
+    return this.loader;
   }
 }

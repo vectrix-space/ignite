@@ -91,7 +91,7 @@ public final class IgniteInstaller {
       if(service != null) {
         Logger.info("Running '{}' installer service.", service.name());
 
-        service.execute();
+        service.execute(launchJar);
       } else {
         Logger.info("Running no installer service.");
       }

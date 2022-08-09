@@ -7,6 +7,7 @@ plugins {
 dependencies {
   compileOnlyApi(libs.jetbrainsAnnotations)
 
+  shadow(libs.asm)
   shadow(libs.joptsimple)
   shadow(libs.tinylogApi)
   shadow(libs.tinylogCore)
@@ -15,7 +16,8 @@ dependencies {
 tasks {
   named<ShadowJar>("shadowJar") {
     val relocations = setOf(
-      "joptsimple"
+      "joptsimple",
+      "org.objectweb.asm"
     )
 
     dependencies {

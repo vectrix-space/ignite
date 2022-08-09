@@ -29,9 +29,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.jar.JarFile;
 
 public interface InstallProcessorService {
+  void initialize();
+
   @NotNull String name();
 
   boolean scan(final @NotNull JarFile file);
 
-  void execute() throws Exception;
+  void execute(final @NotNull JarFile file) throws Exception;
 }
