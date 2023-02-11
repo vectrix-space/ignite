@@ -46,8 +46,8 @@ public final class IgnitePlatform implements Platform {
   private final Path mods;
 
   @Inject
-  public IgnitePlatform(final @NonNull @ConfigPath(shared = true) Path configs,
-                        final @NonNull @ModsPath Path mods) {
+  public IgnitePlatform(final @ConfigPath(shared = true) Path configs,
+                        final @ModsPath Path mods) {
     this.mods = mods;
     this.configs = configs;
 

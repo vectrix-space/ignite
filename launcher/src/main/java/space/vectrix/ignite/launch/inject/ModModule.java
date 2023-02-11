@@ -61,7 +61,7 @@ public final class ModModule extends AbstractModule {
     private final ModContainer container;
 
     @Inject
-    public NonSharedConfigPathProvider(final @NonNull ModContainer container) {
+    public NonSharedConfigPathProvider(final ModContainer container) {
       this.container = container;
     }
 

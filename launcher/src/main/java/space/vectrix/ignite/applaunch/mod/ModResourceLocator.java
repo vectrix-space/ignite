@@ -30,7 +30,6 @@ import space.vectrix.ignite.api.mod.ModResource;
 import space.vectrix.ignite.applaunch.util.EngineResource;
 import space.vectrix.ignite.applaunch.util.IgniteConstants;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
