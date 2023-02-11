@@ -35,12 +35,11 @@ import space.vectrix.example.command.HelloCommand;
 
 @Mixin(value = SimpleCommandMap.class)
 public abstract class MixinSimpleCommandMap {
-
   @Shadow
   public abstract boolean register(String fallbackPrefix, Command command);
 
   @Inject(method = "setDefaultCommands()V", at = @At("TAIL"), remap = false)
-  public void registerOwnCommands(CallbackInfo ci) {
+  public void registerOwnCommands(CallbackInfo callback) {
     this.register("example", new HelloCommand("hello"));
   }
 }

@@ -44,12 +44,12 @@ public final class CorePlugin implements IMixinConfigPlugin {
   }
 
   @Override
-  public final @Nullable String getRefMapperConfig() {
+  public @Nullable String getRefMapperConfig() {
     return null;
   }
 
   @Override
-  public final boolean shouldApplyMixin(final @NonNull String targetClassName, final @NonNull String mixinClassName) {
+  public boolean shouldApplyMixin(final @NonNull String targetClassName, final @NonNull String mixinClassName) {
     final Configuration<ExampleConfig, CommentedConfigurationNode> configWrapper = Configurations.getOrCreate(Configurations.HOCON_LOADER, ExampleInfo.getExampleConfig());
     final ExampleConfig config = configWrapper.instance();
     if (config != null) {
@@ -64,7 +64,7 @@ public final class CorePlugin implements IMixinConfigPlugin {
   }
 
   @Override
-  public final @Nullable List<String> getMixins() {
+  public @Nullable List<String> getMixins() {
     return null;
   }
 
