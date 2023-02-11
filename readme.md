@@ -24,6 +24,8 @@ The mods can then be placed into the `mods` directory that will be created, alon
 
 ## Creating a Mod
 
+The [ignite-mod-template](https://github.com/vectrix-space/ignite-mod-template) is a template you can use to start a project for Paper without needing to do all the setup yourself.
+
 To depend on the Ignite API in order to create your mod, you will need to add the following to your buildscript:
 
 * Maven
@@ -65,7 +67,7 @@ dependencies {
 
 You will also need to depend on the server binary in order to compile your mod for your specified target(s).
 
-**Note:** To support custom mappings you should check out the [Pacifist Remapper](https://github.com/PacifistMC/pacifist-remapper) gradle plugin.
+**Note:** To support custom mappings you should check out [ignite-mod-template](https://github.com/vectrix-space/ignite-mod-template) if you're running Paper. For Spigot check out [Pacifist Remapper](https://github.com/PacifistMC/pacifist-remapper).
 
 ### Configuring your Mod
 

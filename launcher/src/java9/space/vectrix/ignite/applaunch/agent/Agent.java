@@ -49,7 +49,7 @@ public final class Agent {
   }
 
   /**
-   * Adds a the specified JAR file to the system class loader.
+   * Adds the specified JAR file to the system class loader.
    *
    * @param path The path to the JAR file
    * @throws IOException If the target cannot be added
