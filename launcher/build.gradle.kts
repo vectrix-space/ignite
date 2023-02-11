@@ -10,10 +10,10 @@ dependencies {
   // Logging
 
   implementation("net.minecrell:terminalconsoleappender:1.3.0")
-  implementation("org.apache.logging.log4j:log4j-core:2.18.0")
-  implementation("org.jline:jline-terminal:3.21.0")
-  implementation("org.jline:jline-reader:3.21.0")
-  implementation("org.jline:jline-terminal-jansi:3.21.0")
+  implementation("org.apache.logging.log4j:log4j-core:2.19.0")
+  implementation("org.jline:jline-terminal:3.22.0")
+  implementation("org.jline:jline-reader:3.22.0")
+  implementation("org.jline:jline-terminal-jansi:3.22.0")
 
   // Configuration
 
@@ -27,7 +27,7 @@ dependencies {
     exclude(group = "com.google.code.findbugs", module = "jsr305")
   }
 
-  implementation("com.google.errorprone:error_prone_annotations:2.11.0")
+  implementation("com.google.errorprone:error_prone_annotations:2.16")
 
   // Event
 

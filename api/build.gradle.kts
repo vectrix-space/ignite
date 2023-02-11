@@ -3,11 +3,11 @@ plugins {
 }
 
 dependencies {
-  compileOnlyApi("org.checkerframework:checker-qual:3.23.0")
+  compileOnlyApi("org.checkerframework:checker-qual:3.27.0")
 
   // Logging
 
-  api("org.apache.logging.log4j:log4j-api:2.18.0")
+  api("org.apache.logging.log4j:log4j-api:2.19.0")
 
   // Configuration
 
@@ -28,7 +28,7 @@ dependencies {
 
   // Minecraft
 
-  api("com.google.code.gson:gson:2.8.9") // 2.8.0 -> 2.8.9
+  api("com.google.code.gson:gson:2.10.1")
 }
 
 applyJarMetadata("space.vectrix.ignite")
