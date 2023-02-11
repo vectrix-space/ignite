@@ -124,7 +124,7 @@ The following target jars will require you to use one:
   - Service name: `paper` (e.g `-Dignite.service=paper`)
   - The `ignite.jar` property will be overridden by this service, unless you set `ignite.paper.override=false`.
   - Extra properties:
-    - The minecraft server version paperclip will be patching. (e.g `-Dignite.paper.minecraft=1.18.2`)
+    - The minecraft server version paperclip will be patching. (e.g `-Dignite.paper.minecraft=1.19.3`)
     - The path to the paperclip jar. (e.g `-Dignite.paper.jar=./paper.jar`)
     - The classpath to the paperclip entry point. (e.g `-Dignite.paper.target=io.papermc.paperclip.Paperclip`)
 
@@ -132,7 +132,7 @@ The following target jars will require you to use one:
   - Service name: `spigot` (e.g `-Dignite.service=spigot`)
   - The `ignite.jar` and `ignite.libraries` will be overridden by this service, so you should not set them.
   - Extra properties:
-    - The spigot version will be using. (e.g `-Dignite.spigot.version=1.18-R0.1-SNAPSHOT`)
+    - The spigot version will be using. (e.g `-Dignite.spigot.version=1.19.3-R0.1-SNAPSHOT`)
     - The path to the spigot bootstrap jar. (e.g `-Dignite.spigot.jar=./spigot.jar`)
     - The classpath to the spigot bootstrap entry point. (e.g `-Dignite.spigot.target=org.bukkit.craftbukkit.bootstrap.Main`)
 
@@ -140,7 +140,7 @@ The following target jars will require you to use one:
   - Service name: `legacy_paper` (e.g `-Dignite.service=legacy_paper`)
   - The `ignite.jar` property will be overridden by this service, unless you set `ignite.paper.override=false`.
   - Extra properties:
-    - The minecraft server version paperclip will be patching. (e.g `-Dignite.paper.minecraft=1.18`)
+    - The minecraft server version paperclip will be patching. (e.g `-Dignite.paper.minecraft=1.19.3`)
     - The path to the paperclip jar. (e.g `-Dignite.paper.jar=./paper.jar`)
     - The classpath to the paperclip entry point. (e.g `-Dignite.paper.target=io.papermc.paperclip.Paperclip`)
 

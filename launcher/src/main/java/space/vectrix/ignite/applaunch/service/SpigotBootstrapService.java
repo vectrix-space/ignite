@@ -54,7 +54,7 @@ public final class SpigotBootstrapService implements IBootstrapService {
   /**
    * The spigot bootstrap target version.
    */
-  public static final @NonNull String SPIGOT_VERSION = System.getProperty(SpigotBootstrapService.SPIGOT_VERSION_KEY.getName(), "1.18-R0.1-SNAPSHOT");
+  public static final @NonNull String SPIGOT_VERSION = System.getProperty(SpigotBootstrapService.SPIGOT_VERSION_KEY.getName(), "1.19.3-R0.1-SNAPSHOT");
 
   /**
    * The spigot bootstrap target class path.
