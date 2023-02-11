@@ -1,6 +1,6 @@
 Ignite [![Discord](https://img.shields.io/discord/819522977586348052?style=for-the-badge)](https://discord.gg/rYpaxPFQrj)
 ======
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/vectrix-space/ignite/build/main)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/vectrix-space/ignite/.github/workflows/build.yml)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue)](license.txt)
 [![Maven Central](https://img.shields.io/maven-central/v/space.vectrix.ignite/ignite-api?label=stable)](https://search.maven.org/search?q=g:space.vectrix.ignite%20AND%20a:ignite*)
 ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/space.vectrix.ignite/ignite-api?label=dev&server=https%3A%2F%2Fs01.oss.sonatype.org)
