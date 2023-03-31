@@ -24,6 +24,7 @@
  */
 package cpw.mods.modlauncher;
 
+import java.net.MalformedURLException;
 import javax.annotation.Nullable;
 
 import java.net.URL;
@@ -33,11 +34,19 @@ import java.util.Map;
 import java.util.jar.Manifest;
 
 public class SecureJarHandler {
+  // Ignite begin
   @SuppressWarnings("ConstantConditions")
-  // Manifest is required to originate from an ensureInitialized JarFile. Otherwise it will not work
   public static CodeSource createCodeSource(final String name, @Nullable final URL url, final byte[] bytes, @Nullable final Manifest manifest) {
-    return new CodeSource(url, (CodeSigner[]) null); // Ignite
+    if(url == null) return new CodeSource(null, (CodeSigner[]) null);
+    String path = url.getPath();
+    if(path.contains("!")) path = path.substring(0, path.indexOf('!'));
+    try {
+      return new CodeSource(new URL(path), (CodeSigner[]) null);
+    } catch(final MalformedURLException exception) {
+      return new CodeSource(url, (CodeSigner[]) null);
+    }
   }
+  // Ignite end
 
   private static final Map<CodeSource, ProtectionDomain> pdCache = new HashMap<>();
   public static ProtectionDomain createProtectionDomain(CodeSource codeSource, ClassLoader cl) {
@@ -51,6 +60,6 @@ public class SecureJarHandler {
   }
 
   public static boolean canHandleSecuredJars() {
-    return false;
+    return false; // Ignite
   }
 }
