@@ -206,6 +206,8 @@ public final class IgniteLaunchService implements ILaunchHandlerService {
    * @param launchClassLoader The transforming class loader to load classes with
    */
   private void launchService0(final @NonNull String[] arguments, final @NonNull ITransformingClassLoader launchClassLoader) throws Exception {
+    Thread.currentThread().setContextClassLoader((ClassLoader) launchClassLoader);
+
     final Path launchJar = Blackboard.getProperty(Blackboard.LAUNCH_JAR);
     if (launchJar != null && Files.exists(launchJar)) {
       // Invoke the main method on the provided ClassLoader.
