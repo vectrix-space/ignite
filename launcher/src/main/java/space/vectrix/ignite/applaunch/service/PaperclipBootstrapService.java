@@ -37,6 +37,7 @@ import java.nio.file.Paths;
 
 public final class PaperclipBootstrapService implements IBootstrapService {
   private static final BlackboardMap.@NonNull Key<String> MINECRAFT_VERSION_KEY = Blackboard.key("ignite.paper.minecraft", String.class);
+  private static final BlackboardMap.@NonNull Key<String> PAPERCLIP_BRANCH_KEY  = Blackboard.key("ignite.paper.branch", String.class);
   private static final BlackboardMap.@NonNull Key<Path>   PAPERCLIP_JAR_KEY     = Blackboard.key("ignite.paper.jar", Path.class);
   private static final BlackboardMap.@NonNull Key<String> PAPERCLIP_TARGET_KEY  = Blackboard.key("ignite.paper.target", String.class);
   private static final BlackboardMap.@NonNull Key<Boolean> LAUNCH_OVERRIDE_KEY  = Blackboard.key("ignite.paper.override", Boolean.class);
@@ -47,9 +48,14 @@ public final class PaperclipBootstrapService implements IBootstrapService {
   public static final @NonNull String MINECRAFT_VERSION = System.getProperty(PaperclipBootstrapService.MINECRAFT_VERSION_KEY.getName(), "1.19.3");
 
   /**
+   * The paperclip branch name.
+   */
+  public static final @NonNull String PAPERCLIP_BRANCH = System.getProperty(PaperclipBootstrapService.PAPERCLIP_BRANCH_KEY.getName(), "paper");
+
+  /**
    * The paperclip jar path.
    */
-  public static final @NonNull Path PAPERCLIP_JAR = Paths.get(System.getProperty(PaperclipBootstrapService.PAPERCLIP_JAR_KEY.getName(), "./paper.jar"));
+  public static final @NonNull Path PAPERCLIP_JAR = Paths.get(System.getProperty(PaperclipBootstrapService.PAPERCLIP_JAR_KEY.getName(), String.format("./%s.jar", PaperclipBootstrapService.PAPERCLIP_BRANCH)));
 
   /**
    * The paperclip jar target class path.
@@ -106,6 +112,6 @@ public final class PaperclipBootstrapService implements IBootstrapService {
   }
 
   public Path getServerJar() {
-    return Paths.get(String.format("./versions/%s/paper-%s.jar", PaperclipBootstrapService.MINECRAFT_VERSION, PaperclipBootstrapService.MINECRAFT_VERSION));
+    return Paths.get(String.format("./versions/%s/%s-%s.jar", PaperclipBootstrapService.MINECRAFT_VERSION, PaperclipBootstrapService.PAPERCLIP_BRANCH, PaperclipBootstrapService.MINECRAFT_VERSION));
   }
 }

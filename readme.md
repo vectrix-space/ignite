@@ -15,6 +15,7 @@ Place the `ignite-launcher.jar` into the same directory with your Minecraft Serv
 
 Start your server with the following command depending on the server software you are running:
 - Paper (1.18+): `java -Dignite.service=paper -jar ignite-launcher.jar` (with Minecraft Server jar named `paper.jar`)
+- Folia (1.18+): `java -Dignite.service=paper -Dignite.paper.branch=folia -jar ignite-launcher.jar` (with Minecraft Server jar named `folia.jar`)
 - Spigot (1.18+): `java -Dignite.service=spigot -jar ignite-launcher.jar` (with Minecraft Server jar named `spigot.jar`)
 - Legacy Paper: `java -javaagent:./ignite-launcher.jar -Dignite.service=legacy_paper -jar ignite-launcher.jar` (with Minecraft Server jar named `paper.jar`)
 
@@ -126,6 +127,7 @@ The following target jars will require you to use one:
   - Service name: `paper` (e.g `-Dignite.service=paper`)
   - The `ignite.jar` property will be overridden by this service, unless you set `ignite.paper.override=false`.
   - Extra properties:
+    - The branch name of paperclip. (e.g `-Dignite.paper.branch=paper`)
     - The minecraft server version paperclip will be patching. (e.g `-Dignite.paper.minecraft=1.19.3`)
     - The path to the paperclip jar. (e.g `-Dignite.paper.jar=./paper.jar`)
     - The classpath to the paperclip entry point. (e.g `-Dignite.paper.target=io.papermc.paperclip.Paperclip`)
