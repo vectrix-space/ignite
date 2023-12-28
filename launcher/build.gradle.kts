@@ -17,9 +17,9 @@ dependencies {
 
   // Configuration
 
-  implementation("org.spongepowered:configurate-hocon:4.1.2")
-  implementation("org.spongepowered:configurate-yaml:4.1.2")
-  implementation("org.spongepowered:configurate-gson:4.1.2")
+  implementation("org.spongepowered:configurate-hocon:4.2.0-SNAPSHOT")
+  implementation("org.spongepowered:configurate-yaml:4.2.0-SNAPSHOT")
+  implementation("org.spongepowered:configurate-gson:4.2.0-SNAPSHOT")
 
   // Common
 
