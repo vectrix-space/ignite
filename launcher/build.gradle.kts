@@ -27,7 +27,7 @@ dependencies {
     exclude(group = "com.google.code.findbugs", module = "jsr305")
   }
 
-  implementation("com.google.errorprone:error_prone_annotations:2.18.0")
+  implementation("com.google.errorprone:error_prone_annotations:2.24.0")
 
   // Event
 
