@@ -23,7 +23,7 @@ dependencies {
 
   // Common
 
-  implementation("com.google.guava:guava:31.1-jre") { // 21.0 -> 22.0
+  implementation("com.google.guava:guava:33.0.0-jre") { // 21.0 -> 22.0
     exclude(group = "com.google.code.findbugs", module = "jsr305")
   }
 
