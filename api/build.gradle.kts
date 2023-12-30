@@ -23,7 +23,7 @@ dependencies {
   api("org.ow2.asm:asm:9.2")
   api("org.ow2.asm:asm-analysis:9.2")
   api("org.ow2.asm:asm-commons:9.2")
-  api("org.ow2.asm:asm-tree:9.2")
+  api("org.ow2.asm:asm-tree:9.6")
   api("org.ow2.asm:asm-util:9.2")
 
   // Minecraft
