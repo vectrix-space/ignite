@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suppressions PUBLIC "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN" "http://checkstyle.org/dtds/suppressions_1_2.dtd">
+<suppressions>
+  <!-- Ignore the class loading hacks -->
+  <suppress files="launcher[\\/]src[\\/]main[\\/]java[\\/]space[\\/]vectrix[\\/]ignite[\\/]util[\\/]ClassLoaders" checks="IllegalImport"/>
+
+  <!-- Ignore the array formatting of exclusions -->
+  <suppress files="launcher[\\/]src[\\/]main[\\/]java[\\/]space[\\/]vectrix[\\/]ignite[\\/]util[\\/]IgniteExclusions" checks="NoWhitespaceAfter"/>
+</suppressions>

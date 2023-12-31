@@ -1,7 +1,5 @@
 plugins {
-  id("ignite.parent-build-logic")
+  id("ignite.parent-conventions")
 }
 
-group = "space.vectrix.ignite"
-version = "0.8.2-SNAPSHOT"
-description = "A Mixin and Access Widener mod loader for Spigot/Paper."
+// Project metadata is configured in gradle.properties

@@ -1,37 +1,17 @@
 plugins {
-  id("ignite.api-conventions")
+  id("ignite.publish-conventions")
 }
 
 dependencies {
-  compileOnlyApi("org.checkerframework:checker-qual:3.42.0")
+  api(libs.tinylog.api)
 
-  // Logging
-
-  api("org.apache.logging.log4j:log4j-api:2.22.1")
-
-  // Configuration
-
-  api("org.spongepowered:configurate-core:4.1.2")
-
-  api("com.google.inject:guice:5.1.0") {
-    exclude(group = "com.google.code.findbugs", module = "jsr305")
-    exclude(group = "com.google.guava", module = "guava")
+  api(libs.mixin) {
+    exclude(group = "com.google.guava")
+    exclude(group = "com.google.code.gson")
+    exclude(group = "org.ow2.asm")
   }
 
-  // Transformation
-
-  api("org.ow2.asm:asm:9.6")
-  api("org.ow2.asm:asm-analysis:9.6")
-  api("org.ow2.asm:asm-commons:9.6")
-  api("org.ow2.asm:asm-tree:9.6")
-  api("org.ow2.asm:asm-util:9.6")
-
-  // Minecraft
-
-  api("com.google.code.gson:gson:2.10.1")
-}
-
-applyJarMetadata("space.vectrix.ignite")
-repositories {
-  mavenCentral()
+  api(libs.mixinExtras) {
+    exclude(group = "org.apache.commons")
+  }
 }
