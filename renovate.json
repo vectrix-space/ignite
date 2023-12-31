@@ -2,18 +2,10 @@
   "extends": [
     "local>vectrix-space/.github:renovate-config"
   ],
-  "ignoreDeps": [
-    "com.google.code.gson:gson"
-  ],
   "packageRules": [
     {
-      "matchUpdateTypes": ["major"],
-      "matchPackagePrefixes": ["cpw.mods:modlauncher"],
-      "enabled": false
-    },
-    {
-      "matchUpdateTypes": ["major"],
-      "matchPackagePrefixes": ["cpw.mods:grossjava9hacks"],
+      "matchUpdateTypes": ["minor"],
+      "matchPackagePrefixes": ["ca.stellardrift:stylecheck"],
       "enabled": false
     }
   ]

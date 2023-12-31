@@ -39,6 +39,10 @@ tasks.getByName<Jar>("jar") {
 
 tasks.getByName<ShadowJar>("shadowJar") {
   mergeServiceFiles()
+
+  relocate("com.google.gson", "space.vectrix.ignite.libs.gson")
+  relocate("net.fabricmc.accesswidener", "space.vectrix.ignite.libs.accesswidener")
+  relocate("org.tinylog", "space.vectrix.ignite.libs.tinylog")
 }
 
 tasks.getByName("build") {
