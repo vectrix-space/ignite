@@ -44,10 +44,12 @@ publishing {
 signing {
   sign(publishing.publications["mavenJava"])
 
-  useInMemoryPgpKeys(
-    project.property("signingKey").toString(),
-    project.property("signingPassword").toString()
-  )
+  if(project.hasProperty("signingKey") && project.hasProperty("signingPassword")) {
+    useInMemoryPgpKeys(
+      project.property("signingKey").toString(),
+      project.property("signingPassword").toString()
+    )
+  }
 }
 
 tasks.withType(Sign::class) {
