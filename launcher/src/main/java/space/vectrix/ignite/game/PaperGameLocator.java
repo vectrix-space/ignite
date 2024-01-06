@@ -71,6 +71,11 @@ public final class PaperGameLocator implements GameLocatorService {
   }
 
   @Override
+  public int priority() {
+    return 50;
+  }
+
+  @Override
   public boolean shouldApply() {
     final Path path = Blackboard.raw(PaperGameLocator.PAPER_JAR);
     try(final JarFile jarFile = new JarFile(path.toFile())) {
@@ -111,7 +116,9 @@ public final class PaperGameLocator implements GameLocatorService {
     }
 
     // Create the game provider.
-    this.provider = this.createProvider();
+    if(this.provider == null) {
+      this.provider = this.createProvider();
+    }
 
     // Locate the game jar.
     if(!Blackboard.get(Blackboard.GAME_JAR).isPresent()) {

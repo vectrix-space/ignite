@@ -51,6 +51,14 @@ public interface GameLocatorService {
   @NotNull String name();
 
   /**
+   * The order to try select this locator.
+   *
+   * @return the priority
+   * @since 1.0.0
+   */
+  int priority();
+
+  /**
    * Returns {@code true} if this locator should be used, otherwise returns
    * {@code false}.
    *

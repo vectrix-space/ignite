@@ -29,6 +29,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.ServiceLoader;
@@ -112,6 +113,7 @@ public final class IgniteBootstrap {
       final Optional<GameLocatorService> gameLocatorProvider = requiredGameLocator.map(locatorIdentifier -> IgniteCollections.stream(gameLocatorLoader)
         .filter(locator -> locator.id().equalsIgnoreCase(locatorIdentifier))
         .findFirst()).orElseGet(() -> IgniteCollections.stream(gameLocatorLoader)
+        .sorted(Comparator.comparingInt(GameLocatorService::priority))
         .filter(GameLocatorService::shouldApply)
         .findFirst()
       );
