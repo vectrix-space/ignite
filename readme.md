@@ -1,33 +1,44 @@
-Ignite [![Discord](https://img.shields.io/discord/819522977586348052?style=for-the-badge)](https://discord.gg/rYpaxPFQrj)
-======
-![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/vectrix-space/ignite/.github/workflows/build.yml)
+<div align="center">
+  <br/>
+  <img src="./.github/ignite.png" width="250" height="250" alt="Ignite Logo">
+  <br/><br/>
+  <p><strong><a href="https://github.com/vectrix-space/ignite">Ignite</a></strong> is a <a href="https://github.com/SpongePowered/Mixin">Mixin</a> loader for Spigot/Paper.</p>
+  <br/>
+</div>
+
+<div align="center">
+
+![Build Status](https://github.com/vectrix-space/ignite/actions/workflows/build.yml/badge.svg)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue)](license.txt)
+[![Discord](https://img.shields.io/discord/819522977586348052)](https://discord.gg/rYpaxPFQrj)
 [![Maven Central](https://img.shields.io/maven-central/v/space.vectrix.ignite/ignite-api?label=stable)](https://search.maven.org/search?q=g:space.vectrix.ignite%20AND%20a:ignite*)
 ![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/space.vectrix.ignite/ignite-api?label=dev&server=https%3A%2F%2Fs01.oss.sonatype.org)
 
-A [Mixin] loader for Spigot/Paper.
+</div>
 
-## Running a Server
+## Install
 
-Download the `ignite.jar` from [here](https://github.com/vectrix-space/ignite/releases/latest).
+Download the `ignite.jar` from the [releases page](https://github.com/vectrix-space/ignite/releases/latest).
 
 Place the `ignite.jar` into the same directory with your Minecraft Server jar (i.e `paper.jar`, `spigot.jar` or `server.jar`).
 
-Run your original start command, but replace the normal server jar with `ignite.jar`. If you are using Java 8 you will need to 
-add `-javaagent:./ignite-launcher.jar` to your start command as well.
+Run your original start command, but replace the normal server jar with `ignite.jar`. If you are using _Java 8_ you will need to 
+add `-javaagent:./ignite.jar` to your start command.
 
 If Ignite cannot start your server, you may need to add additional startup flags. See the Advanced Section below for more information.
 If you're still confused, be sure to [ask for help](https://discord.gg/rYpaxPFQrj).
 
 The mods can then be placed into the mods directory that will be created.
 
-## Creating a Mod
+## Making a Mod
 
 The [ignite-mod-template](https://github.com/vectrix-space/ignite-mod-template) is a template you can use to start a project for Paper without needing to do all the setup yourself.
 
 To depend on the Ignite API in order to create your mod, you will need to add the following to your buildscript:
 
-* Maven
+<br/>
+
+#### Maven
 ```xml
 <repositories>
   <repository>
@@ -46,10 +57,17 @@ To depend on the Ignite API in order to create your mod, you will need to add th
     <artifactId>mixin</artifactId>
     <version>0.8.5</version>
   </dependency>
+  <dependency>
+    <groupId>io.github.llamalad7</groupId>
+    <artifactId>mixinextras-common</artifactId>
+    <version>0.3.5</version>
+  </dependency>
 </dependencies>
 ```
 
-* Gradle
+<br/>
+
+#### Gradle
 ```groovy
 repositories {
   mavenCentral()
@@ -59,8 +77,9 @@ repositories {
 }
 
 dependencies {
-  compile "space.vectrix.ignite:ignite-api:1.0.0-SNAPSHOT"
-  compile "org.spongepowered:mixin:0.8.5"
+  compileOnly "space.vectrix.ignite:ignite-api:1.0.0-SNAPSHOT"
+  compileOnly "org.spongepowered:mixin:0.8.5"
+  compileOnly "io.github.llamalad7:mixinextras-common:0.3.5"
 }
 ```
 
