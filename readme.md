@@ -1,5 +1,4 @@
 <div align="center">
-  <br/>
   <img src="./.github/ignite.png" width="250" height="250" alt="Ignite Logo">
   <br/><br/>
   <p><strong><a href="https://github.com/vectrix-space/ignite">Ignite</a></strong> is a <a href="https://github.com/SpongePowered/Mixin">Mixin</a> loader for Spigot/Paper.</p>
@@ -36,6 +35,22 @@ The [ignite-mod-template](https://github.com/vectrix-space/ignite-mod-template) 
 
 To depend on the Ignite API in order to create your mod, you will need to add the following to your buildscript:
 
+#### Gradle
+```groovy
+repositories {
+  mavenCentral()
+  maven {
+    url = "https://repo.spongepowered.org/maven/"
+  }
+}
+
+dependencies {
+  compileOnly "space.vectrix.ignite:ignite-api:1.0.0-SNAPSHOT"
+  compileOnly "org.spongepowered:mixin:0.8.5"
+  compileOnly "io.github.llamalad7:mixinextras-common:0.3.5"
+}
+```
+
 <br/>
 
 #### Maven
@@ -64,26 +79,6 @@ To depend on the Ignite API in order to create your mod, you will need to add th
   </dependency>
 </dependencies>
 ```
-
-<br/>
-
-#### Gradle
-```groovy
-repositories {
-  mavenCentral()
-  maven {
-    url = "https://repo.spongepowered.org/maven/"
-  }
-}
-
-dependencies {
-  compileOnly "space.vectrix.ignite:ignite-api:1.0.0-SNAPSHOT"
-  compileOnly "org.spongepowered:mixin:0.8.5"
-  compileOnly "io.github.llamalad7:mixinextras-common:0.3.5"
-}
-```
-
-You will also need to depend on the server binary in order to compile your mod for your specified target(s).
 
 **Note:** To support custom mappings you should check out [ignite-mod-template](https://github.com/vectrix-space/ignite-mod-template) 
 if you're running Paper. For Spigot check out [Pacifist Remapper](https://github.com/PacifistMC/pacifist-remapper).
@@ -178,6 +173,7 @@ In order to build Ignite you simply need to run the `gradle build` command. You 
 This project has many parts inspired by the following projects:
 
 - [Orion]
+- [Fabric]
 - [Sponge]
 - [Velocity]
 - [plugin-spi]
@@ -189,6 +185,7 @@ This project has many parts inspired by the following projects:
 
 [Gradle]: https://www.gradle.org/
 [Orion]: https://github.com/OrionMinecraft/Orion
+[Fabric]: https://github.com/FabricMC/fabric-loader
 [Sponge]: https://github.com/SpongePowered/Sponge
 [Velocity]: https://github.com/VelocityPowered/Velocity
 [plugin-spi]: https://github.com/SpongePowered/plugin-spi
