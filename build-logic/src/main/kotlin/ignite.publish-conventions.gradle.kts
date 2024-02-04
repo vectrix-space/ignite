@@ -7,6 +7,10 @@ plugins {
 // Expose version catalog
 val libs = extensions.getByType(org.gradle.accessors.dm.LibrariesForLibs::class)
 
+java {
+  withJavadocJar()
+}
+
 publishing {
   publications {
     create<MavenPublication>("mavenJava") {
