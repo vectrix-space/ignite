@@ -68,16 +68,6 @@ public final class EmberClassLoader extends ClassLoader {
     public void addURL(final @NotNull URL url) {
       super.addURL(url);
     }
-
-    @Override
-    public @Nullable Package getPackage(final @NotNull String name) {
-      return super.getPackage(name);
-    }
-
-    @Override
-    public Package@NotNull [] getPackages() {
-      return super.getPackages();
-    }
   }
 
   private static final List<String> EXCLUDE_PACKAGES = Arrays.asList(
@@ -167,8 +157,8 @@ public final class EmberClassLoader extends ClassLoader {
           target = this.findClass(canonicalName, TransformPhase.INITIALIZE);
           if(target == null) {
             Logger.trace("Unable to locate class: {}", canonicalName);
-            final String internalName = canonicalName.replace('.', '/').concat(".class");
-            final URL url = this.parent.getResource(internalName);
+            final String resourceName = canonicalName.replace('.', '/').concat(".class");
+            final URL url = this.parent.getResource(resourceName);
 
             if(url != null) {
               Logger.trace("Attempting to load parent class: {}", canonicalName);
@@ -191,70 +181,70 @@ public final class EmberClassLoader extends ClassLoader {
 
   @Override
   protected @NotNull Class<?> findClass(final @NotNull String name) throws ClassNotFoundException {
-    Logger.trace("Finding class: {}", name);
-    final Class<?> target = this.findClass(name, TransformPhase.INITIALIZE);
+    final String canonicalName = name.replace('/', '.');
+
+    Logger.trace("Finding class: {}", canonicalName);
+    final Class<?> target = this.findClass(canonicalName, TransformPhase.INITIALIZE);
     if(target == null) {
-      Logger.trace("Unable to find class: {}", name);
-      throw new ClassNotFoundException(name);
+      Logger.trace("Unable to find class: {}", canonicalName);
+      throw new ClassNotFoundException(canonicalName);
     }
 
-    Logger.trace("Found class: {}", name);
+    Logger.trace("Found class: {}", canonicalName);
     return target;
   }
 
+  @SuppressWarnings("SameParameterValue")
   /* package */ @Nullable Class<?> findClass(final @NotNull String name, final @NotNull TransformPhase phase) {
-    final String canonicalName = name.replace('/', '.');
-    if(canonicalName.startsWith("java.")) {
-      Logger.trace("Skipping platform class: {}", canonicalName);
+    if(name.startsWith("java.")) {
+      Logger.trace("Skipping platform class: {}", name);
       return null;
     }
 
     // Grab the class bytes.
-    final Map.Entry<byte[], Manifest> transformed = this.transformData(canonicalName, phase);
+    final Map.Entry<byte[], Manifest> transformed = this.transformData(name, phase);
     if(transformed == null) return null;
 
     // Check if the class has already been loaded by the transform.
-    final Class<?> existingClass = this.findLoadedClass(canonicalName);
+    final Class<?> existingClass = this.findLoadedClass(name);
     if(existingClass != null) {
-      Logger.trace("Skipping already defined transformed class: {}", canonicalName);
+      Logger.trace("Skipping already defined transformed class: {}", name);
       return existingClass;
     }
 
     // Find the package for this class.
-    final int classIndex = canonicalName.lastIndexOf('.');
+    final int classIndex = name.lastIndexOf('.');
     if(classIndex > 0) {
-      final String packageName = canonicalName.substring(0, classIndex);
+      final String packageName = name.substring(0, classIndex);
       this.findPackage(packageName, transformed.getValue());
     }
 
     final byte[] bytes = transformed.getKey();
-    return this.defineClass(canonicalName, bytes, 0, bytes.length);
+    return this.defineClass(name, bytes, 0, bytes.length);
   }
 
-  /* package */ Map.@Nullable Entry<byte@NotNull [], @NotNull Manifest> transformData(final @NotNull String name, final @NotNull TransformPhase phase) {
-    final String canonicalName = name.replace('/', '.');
-
-    final Map.Entry<byte[], Manifest> transformed = this.classData(canonicalName, phase);
-    if(transformed == null) return null;
+  /* package */ Map.@Nullable Entry<byte@NotNull [], @Nullable Manifest> transformData(final @NotNull String name, final @NotNull TransformPhase phase) {
+    final Map.Entry<byte[], Manifest> data = this.classData(name, phase);
+    if(data == null) return null;
 
     // Prevent transforming classes that are excluded from transformation.
-    if(!this.transformationFilter.test(canonicalName)) {
-      Logger.trace("Skipping transformer excluded class: {}", canonicalName);
+    if(!this.transformationFilter.test(name)) {
+      Logger.trace("Skipping transformer excluded class: {}", name);
       return null;
     }
 
     // Run the transformation.
-    final byte[] bytes = this.transformer.transform(canonicalName, transformed.getKey(), phase);
-    return new AbstractMap.SimpleEntry<>(bytes, transformed.getValue());
+    final byte[] bytes = this.transformer.transform(name, data.getKey(), phase);
+    return new AbstractMap.SimpleEntry<>(bytes, data.getValue());
   }
 
-  /* package */ Map.@Nullable Entry<byte@NotNull [], @NotNull Manifest> classData(final @NotNull String name, final @NotNull TransformPhase phase) {
-    final String internalName = name.replace('.', '/').concat(".class");
+  /* package */ Map.@Nullable Entry<byte@NotNull [], @Nullable Manifest> classData(final @NotNull String name, final @NotNull TransformPhase phase) {
+    final String resourceName = name.replace('.', '/').concat(".class");
 
-    URL url = this.findResource(internalName);
+    URL url = this.findResource(resourceName);
     if(url == null) {
       if(phase == TransformPhase.INITIALIZE) return null;
-      url = this.parent.getResource(internalName);
+      url = this.parent.getResource(resourceName);
       if(url == null) return null;
     }
 
@@ -274,7 +264,7 @@ public final class EmberClassLoader extends ClassLoader {
       final Manifest manifest = connection.manifest();
       return new AbstractMap.SimpleEntry<>(bytes, manifest);
     } catch(final Exception exception) {
-      Logger.trace(exception, "Failed to resolve class data: {}", internalName);
+      Logger.trace(exception, "Failed to resolve class data: {}", resourceName);
       return null;
     }
   }
@@ -348,11 +338,13 @@ public final class EmberClassLoader extends ClassLoader {
 
   @Override
   protected @Nullable URL findResource(final @NotNull String name) {
+    requireNonNull(name, "name");
     return this.dynamic.findResource(name);
   }
 
   @Override
   protected @NotNull Enumeration<URL> findResources(final @NotNull String name) throws IOException {
+    requireNonNull(name, "name");
     return this.dynamic.findResources(name);
   }
 

@@ -49,13 +49,13 @@ import space.vectrix.ignite.util.IgniteConstants;
  * @since 1.0.0
  */
 public final class EmberTransformer {
-  private final ServiceLoader<TransformerService> serviceLoader = ServiceLoader.load(TransformerService.class, Ember.class.getClassLoader());
   private final Map<Class<? extends TransformerService>, TransformerService> transformers = new IdentityHashMap<>();
 
-  private Predicate<String> exclusionFilter = path -> false;
+  private Predicate<String> resourceExclusionFilter = path -> true;
 
   /* package */ EmberTransformer() {
-    for(final TransformerService service : this.serviceLoader) {
+    final ServiceLoader<TransformerService> serviceLoader = ServiceLoader.load(TransformerService.class, Ember.class.getClassLoader());
+    for(final TransformerService service : serviceLoader) {
       this.transformers.put(service.getClass(), service);
     }
   }
@@ -69,8 +69,8 @@ public final class EmberTransformer {
    * @param predicate the filter
    * @since 1.0.0
    */
-  public void exclude(final @NotNull Predicate<String> predicate) {
-    this.exclusionFilter = this.exclusionFilter.or(predicate);
+  public void addResourceExclusion(final @NotNull Predicate<String> predicate) {
+    this.resourceExclusionFilter = predicate;
   }
 
   /**
@@ -99,7 +99,8 @@ public final class EmberTransformer {
     final String internalName = className.replace('.', '/');
 
     // Check if the path is excluded from transformation.
-    if(this.exclusionFilter.test(internalName)) {
+    if(!this.resourceExclusionFilter.test(internalName)) {
+      Logger.debug("Skipping resource excluded class: {}", internalName);
       return input;
     }
 

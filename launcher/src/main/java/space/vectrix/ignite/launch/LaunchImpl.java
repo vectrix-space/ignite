@@ -100,8 +100,9 @@ public final class LaunchImpl implements LaunchService {
       }
     }
 
-    classLoader.addTransformationFilter(this.transformationFilter());
+    classLoader.addTransformationFilter(this.packageFilter());
     classLoader.addManifestLocator(this.manifestLocator());
+    transformer.addResourceExclusion(this.resourceFilter());
   }
 
   @Override
@@ -133,10 +134,22 @@ public final class LaunchImpl implements LaunchService {
     };
   }
 
-  private @NotNull Predicate<String> transformationFilter() {
+  private @NotNull Predicate<String> packageFilter() {
     return name -> {
       for(final String test : IgniteExclusions.TRANSFORMATION_EXCLUDED_PACKAGES) {
         if(name.startsWith(test)) {
+          return false;
+        }
+      }
+
+      return true;
+    };
+  }
+
+  private @NotNull Predicate<String> resourceFilter() {
+    return path -> {
+      for(final String test : IgniteExclusions.TRANSFORMATION_EXCLUDED_RESOURCES) {
+        if(path.startsWith(test)) {
           return false;
         }
       }
@@ -193,14 +206,14 @@ public final class LaunchImpl implements LaunchService {
     }
 
     if(target.isDirectory()) {
-      for(final String test : IgniteExclusions.TRANSFORMATION_EXCLUDED_PATHS) {
+      for(final String test : IgniteExclusions.TRANSFORMATION_EXCLUDED_RESOURCES) {
         if(new File(target, test).exists()) {
           return false;
         }
       }
     } else if(target.isFile()) {
       try(final JarFile jarFile = new JarFile(new File(uri))) {
-        for(final String test : IgniteExclusions.TRANSFORMATION_EXCLUDED_PATHS) {
+        for(final String test : IgniteExclusions.TRANSFORMATION_EXCLUDED_RESOURCES) {
           if(jarFile.getEntry(test) != null) {
             return false;
           }

@@ -36,7 +36,7 @@ public final class IgniteExclusions {
    *
    * @since 1.0.0
    */
-  public static final String[] TRANSFORMATION_EXCLUDED_PATHS = {
+  public static final String[] TRANSFORMATION_EXCLUDED_RESOURCES = {
     "org/spongepowered/asm/"
   };
 
