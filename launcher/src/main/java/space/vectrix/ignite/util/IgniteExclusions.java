@@ -48,9 +48,14 @@ public final class IgniteExclusions {
   public static final String[] TRANSFORMATION_EXCLUDED_PACKAGES = {
     // Launcher
     "com.astrafell.ignite.",
+    "org.tinylog.",
 
     // Mixin
-    "org.spongepowered.asm."
+    "org.spongepowered.asm.",
+    "com.llamalad7.mixinextras.",
+
+    // Access Widener
+    "net.fabricmc.accesswidener.",
   };
 
   private IgniteExclusions() {

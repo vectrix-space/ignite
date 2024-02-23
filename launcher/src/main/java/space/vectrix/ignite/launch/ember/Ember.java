@@ -57,7 +57,6 @@ public final class Ember {
 
   private static Ember INSTANCE;
 
-  private final ServiceLoader<LaunchService> serviceLoader = ServiceLoader.load(LaunchService.class, Ember.class.getClassLoader());
   private final LaunchService service;
 
   private EmberTransformer transformer;
@@ -65,7 +64,9 @@ public final class Ember {
 
   private Ember() {
     Ember.INSTANCE = this;
-    this.service = IgniteCollections.firstOrNull(this.serviceLoader.iterator());
+
+    final ServiceLoader<LaunchService> serviceLoader = ServiceLoader.load(LaunchService.class, Ember.class.getClassLoader());
+    this.service = IgniteCollections.firstOrNull(serviceLoader.iterator());
   }
 
   /* package */ @NotNull EmberTransformer transformer() {

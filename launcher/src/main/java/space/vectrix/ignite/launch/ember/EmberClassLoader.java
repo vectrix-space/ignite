@@ -157,16 +157,14 @@ public final class EmberClassLoader extends ClassLoader {
           target = this.findClass(canonicalName, TransformPhase.INITIALIZE);
           if(target == null) {
             Logger.trace("Unable to locate class: {}", canonicalName);
-            final String resourceName = canonicalName.replace('.', '/').concat(".class");
-            final URL url = this.parent.getResource(resourceName);
 
-            if(url != null) {
-              Logger.trace("Attempting to load parent class: {}", canonicalName);
+            Logger.trace("Attempting to load parent class: {}", canonicalName);
+            try {
               target = this.parent.loadClass(canonicalName);
               Logger.trace("Loaded parent class: {}", canonicalName);
-            } else {
-              Logger.trace("Unable to locate parent resource: {}", canonicalName);
-              throw new ClassNotFoundException("Unable to locate parent resource: " + canonicalName);
+            } catch(final ClassNotFoundException exception) {
+              Logger.trace("Unable to locate parent class: {}", canonicalName);
+              throw exception;
             }
           } else {
             Logger.trace("Loaded transformed class: {}", canonicalName);
