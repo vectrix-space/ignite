@@ -154,7 +154,7 @@ public final class EmberMixinService implements IMixinService, IClassProvider, I
 
   @Override
   public Collection<String> getPlatformAgents() {
-    return Collections.singletonList("org.spongepowered.asm.launch.platform.MixinPlatformAgentDefault");
+    return Collections.emptyList();
   }
 
   @Override
