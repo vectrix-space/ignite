@@ -35,7 +35,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.FabricUtil;
 import org.spongepowered.asm.mixin.Mixins;
+import org.spongepowered.asm.mixin.extensibility.IMixinConfig;
+import org.spongepowered.asm.mixin.transformer.Config;
 import org.spongepowered.asm.service.MixinService;
 import org.tinylog.Logger;
 import space.vectrix.ignite.agent.IgniteAgent;
@@ -53,6 +56,7 @@ import space.vectrix.ignite.launch.transformer.AccessTransformerImpl;
 public final class ModsImpl implements Mods {
   private final ModResourceLocator resourceLocator = new ModResourceLocator();
   private final ModResourceLoader resourceLoader = new ModResourceLoader();
+  private final Map<String, ModContainer> containersByConfig = new HashMap<>();
   private final Map<String, ModContainer> containers = new HashMap<>();
   private final List<ModResource> resources = new ArrayList<>();
 
@@ -164,6 +168,7 @@ public final class ModsImpl implements Mods {
     final EmberMixinService service = (EmberMixinService) MixinService.getService();
     final EmberMixinContainer handle = (EmberMixinContainer) service.getPrimaryContainer();
 
+    // Add the mixin configurations.
     for(final ModContainer container : this.containers()) {
       final ModResource resource = container.resource();
 
@@ -171,9 +176,28 @@ public final class ModsImpl implements Mods {
 
       final List<String> mixins = ((ModContainerImpl) container).config().mixins();
       if(mixins != null && !mixins.isEmpty()) {
-        Mixins.addConfigurations(mixins.toArray(new String[0]));
+        for(final String config : mixins) {
+          final ModContainer previous = this.containersByConfig.putIfAbsent(config, container);
+          if(previous != null) {
+            Logger.warn("Skipping duplicate mixin configuration: {} (in {} and {})", config, previous.id(), container.id());
+            continue;
+          }
+
+          Mixins.addConfiguration(config);
+        }
+
         Logger.trace("Added the mixin configurations: {}", String.join(", ", mixins));
       }
+    }
+
+    // Add the decorators.
+    for(final Config config : Mixins.getConfigs()) {
+      final ModContainer container = this.containersByConfig.get(config.getName());
+      if(container == null) continue;
+
+      final IMixinConfig mixinConfig = config.getConfig();
+      mixinConfig.decorate(FabricUtil.KEY_MOD_ID, container.id());
+      mixinConfig.decorate(FabricUtil.KEY_COMPATIBILITY, FabricUtil.COMPATIBILITY_LATEST);
     }
   }
 }
