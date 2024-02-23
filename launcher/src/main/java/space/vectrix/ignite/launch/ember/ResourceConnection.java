@@ -31,13 +31,14 @@ import java.net.URLConnection;
 import java.util.function.Function;
 import java.util.jar.Manifest;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /* package */ final class ResourceConnection implements AutoCloseable {
   private final URLConnection connection;
   private final InputStream stream;
   private final Function<URLConnection, Manifest> manifestFunction;
 
-  /* package */ ResourceConnection(final @NotNull URL url, final @NotNull Function<URLConnection, Manifest> manifestLocator) throws IOException {
+  /* package */ ResourceConnection(final @NotNull URL url, final @NotNull Function<@NotNull URLConnection, @Nullable Manifest> manifestLocator) throws IOException {
     this.connection = url.openConnection();
     this.stream = this.connection.getInputStream();
     this.manifestFunction = manifestLocator;
@@ -51,7 +52,7 @@ import org.jetbrains.annotations.NotNull;
     return this.stream;
   }
 
-  /* package */ @NotNull Manifest manifest() {
+  /* package */ @Nullable Manifest manifest() {
     return this.manifestFunction.apply(this.connection);
   }
 

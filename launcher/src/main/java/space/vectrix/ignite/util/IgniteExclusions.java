@@ -36,7 +36,7 @@ public final class IgniteExclusions {
    *
    * @since 1.0.0
    */
-  public static final String[] TRANSFORMATION_EXCLUDED_PATHS = {
+  public static final String[] TRANSFORMATION_EXCLUDED_RESOURCES = {
     "org/spongepowered/asm/"
   };
 
@@ -48,9 +48,14 @@ public final class IgniteExclusions {
   public static final String[] TRANSFORMATION_EXCLUDED_PACKAGES = {
     // Launcher
     "com.astrafell.ignite.",
+    "org.tinylog.",
 
     // Mixin
-    "org.spongepowered.asm."
+    "org.spongepowered.asm.",
+    "com.llamalad7.mixinextras.",
+
+    // Access Widener
+    "net.fabricmc.accesswidener.",
   };
 
   private IgniteExclusions() {
