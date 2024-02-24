@@ -45,7 +45,7 @@ repositories {
 }
 
 dependencies {
-  compileOnly "space.vectrix.ignite:ignite-api:1.0.0"
+  compileOnly "space.vectrix.ignite:ignite-api:1.0.1"
   compileOnly "org.spongepowered:mixin:0.8.5"
   compileOnly "io.github.llamalad7:mixinextras-common:0.3.5"
 }
@@ -65,7 +65,7 @@ dependencies {
   <dependency>
     <groupId>space.vectrix.ignite</groupId>
     <artifactId>ignite-api</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
   </dependency>
   <dependency>
     <groupId>org.spongepowered</groupId>
