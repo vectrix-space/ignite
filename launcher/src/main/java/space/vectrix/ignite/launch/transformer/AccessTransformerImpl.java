@@ -83,7 +83,7 @@ public final class AccessTransformerImpl implements TransformerService {
   }
 
   @Override
-  public boolean transform(final @NotNull Type type, final @NotNull ClassNode node, final @NotNull TransformPhase phase) throws Throwable {
+  public @NotNull ClassNode transform(final @NotNull Type type, final @NotNull ClassNode node, final @NotNull TransformPhase phase) throws Throwable {
     final ClassNode widened = new ClassNode(IgniteConstants.ASM_VERSION);
     widened.accept(node);
 
@@ -103,6 +103,6 @@ public final class AccessTransformerImpl implements TransformerService {
     node.interfaces.clear();
 
     widened.accept(visitor);
-    return true;
+    return widened;
   }
 }
