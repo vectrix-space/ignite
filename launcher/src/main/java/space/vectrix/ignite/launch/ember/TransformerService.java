@@ -25,6 +25,7 @@
 package space.vectrix.ignite.launch.ember;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 
@@ -71,14 +72,14 @@ public interface TransformerService {
 
   /**
    * Attempts to transform a class, with the given {@link Type}, {@link ClassNode}
-   * and {@link TransformPhase} and returns {@code true} if modifications were
-   * made, otherwise returns {@code false}.
+   * and {@link TransformPhase} and returns the {@link ClassNode} if modifications were
+   * made, otherwise returns {@code null}.
    *
    * @param type the type
    * @param node the class node
    * @param phase the transform phase
-   * @return whether the class was transformed
-   * @since 1.0.0
+   * @return whether the class node if the class was transformed
+   * @since 1.0.2
    */
-  boolean transform(final @NotNull Type type, final @NotNull ClassNode node, final @NotNull TransformPhase phase) throws Throwable;
+  @Nullable ClassNode transform(final @NotNull Type type, final @NotNull ClassNode node, final @NotNull TransformPhase phase) throws Throwable;
 }
