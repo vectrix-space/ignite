@@ -25,10 +25,11 @@
 package space.vectrix.ignite.mod;
 
 import java.io.IOException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Objects;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -44,8 +45,6 @@ public final class ModResourceImpl implements ModResource {
   private final String locator;
   private final Path path;
   private final Manifest manifest;
-
-  private FileSystem fileSystem;
 
   /* package */ ModResourceImpl(final @NotNull String locator,
                                 final @NotNull Path path,
@@ -71,16 +70,13 @@ public final class ModResourceImpl implements ModResource {
   }
 
   @Override
-  public @NotNull FileSystem fileSystem() {
-    if(this.fileSystem == null) {
-      try {
-        this.fileSystem = FileSystems.newFileSystem(this.path(), this.getClass().getClassLoader());
-      } catch(final IOException exception) {
-        throw new RuntimeException(exception);
-      }
-    }
+  public @Nullable InputStream loadResource(final String name) throws IOException {
+    final JarFile jarFile = new JarFile(this.path.toFile());
+    final JarEntry entry = jarFile.getJarEntry(name);
+    if (entry == null)
+      return null;
 
-    return this.fileSystem;
+    return jarFile.getInputStream(entry);
   }
 
   @Override

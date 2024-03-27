@@ -121,7 +121,7 @@ public final class LaunchImpl implements LaunchService {
     return () -> {
       final Path gameJar = Blackboard.raw(Blackboard.GAME_JAR);
       final String gameTarget = Blackboard.raw(Blackboard.GAME_TARGET);
-      if(gameJar != null && Files.exists(gameJar)) {
+      if(Blackboard.raw(Blackboard.IS_CLASS_PATH) || (gameJar != null && Files.exists(gameJar))) {
         // Invoke the main method.
         Class.forName(gameTarget, true, loader)
           .getMethod("main", String[].class)
@@ -171,7 +171,12 @@ public final class LaunchImpl implements LaunchService {
             }
 
             try {
-              if(resource.path().toAbsolutePath().normalize().equals(Paths.get(url.toURI()).toAbsolutePath().normalize())) {
+              final Path path = resource.path();
+              if(path == null) {
+                return Optional.empty();
+              }
+
+              if(path.toAbsolutePath().normalize().equals(Paths.get(url.toURI()).toAbsolutePath().normalize())) {
                 return Optional.ofNullable(resource.manifest());
               }
             } catch(final URISyntaxException exception) {
