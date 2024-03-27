@@ -49,8 +49,8 @@ public final class ModResourceLocator {
   public static final String LAUNCHER_LOCATOR = "launcher_locator";
   public static final String GAME_LOCATOR = "game_locator";
 
-  /* package */ @NotNull List<ModResourceImpl> locateResources() {
-    final List<ModResourceImpl> resources = new ArrayList<>();
+  /* package */ @NotNull List<ModResource> locateResources() {
+    final List<ModResource> resources = new ArrayList<>();
 
     // Add the launcher and game resources.
     resources.add(this.createLauncherResource());
@@ -59,29 +59,33 @@ public final class ModResourceLocator {
     // Retrieve the mods from the mods directory.
     final Path modDirectory = Blackboard.raw(Blackboard.MODS_DIRECTORY);
     try {
-      if(modDirectory == null) {
+      if (modDirectory == null) {
         throw new RuntimeException("Failed to get mods directory!");
       }
 
-      if(Files.notExists(modDirectory)) {
+      if (Files.notExists(modDirectory)) {
         //noinspection ResultOfMethodCallIgnored
         modDirectory.toFile().mkdirs();
       }
 
       //noinspection resource
-      for(final Path childDirectory : Files.walk(modDirectory).collect(Collectors.toList())) {
-        if(!Files.isRegularFile(childDirectory) || !childDirectory.getFileName().toString().endsWith(".jar")) {
+      for (final Path childDirectory : Files.walk(modDirectory).collect(Collectors.toList())) {
+        if (!Files.isRegularFile(childDirectory) || !childDirectory.getFileName().toString().endsWith(".jar")) {
           continue;
         }
 
-        try(final JarFile jarFile = new JarFile(childDirectory.toFile())) {
+        try (final JarFile jarFile = new JarFile(childDirectory.toFile())) {
           final JarEntry jarEntry = jarFile.getJarEntry(IgniteConstants.MOD_CONFIG);
-          if(jarEntry == null) continue;
+          if (jarEntry == null) continue;
 
           resources.add(new ModResourceImpl(ModResourceLocator.JAVA_LOCATOR, childDirectory, jarFile.getManifest()));
         }
       }
-    } catch(final Throwable throwable) {
+
+      if(Blackboard.raw(Blackboard.IS_CLASS_PATH)) {
+        resources.add(new ModClassPathResourceImpl(JAVA_LOCATOR));
+      }
+    } catch (final Throwable throwable) {
       throw new RuntimeException("Failed to walk the mods directory!", throwable);
     }
 
@@ -103,7 +107,11 @@ public final class ModResourceLocator {
     }
   }
 
-  private @NotNull ModResourceImpl createGameResource() {
+  private @NotNull ModResource createGameResource() {
+    if(Blackboard.raw(Blackboard.IS_CLASS_PATH)) {
+      return new ModClassPathResourceImpl(ModResourceLocator.GAME_LOCATOR);
+    }
+
     final File gameFile = Blackboard.raw(Blackboard.GAME_JAR).toFile();
     try(final JarFile jarFile = new JarFile(gameFile)) {
       return new ModResourceImpl(ModResourceLocator.GAME_LOCATOR, gameFile.toPath(), jarFile.getManifest());

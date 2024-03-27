@@ -26,9 +26,9 @@ package space.vectrix.ignite.launch.transformer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import net.fabricmc.accesswidener.AccessWidener;
 import net.fabricmc.accesswidener.AccessWidenerClassVisitor;
 import net.fabricmc.accesswidener.AccessWidenerReader;
@@ -53,12 +53,12 @@ public final class AccessTransformerImpl implements TransformerService {
   /**
    * Adds a widener to this transformer.
    *
-   * @param path the configuration path
+   * @param input a stream that can be used to read the widener
    * @throws IOException if an error occurs while reading the widener
    * @since 1.0.0
    */
-  public void addWidener(final @NotNull Path path) throws IOException {
-    try(final BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+  public void addWidener(final @NotNull InputStream input) throws IOException {
+    try(final BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8))) {
       this.widenerReader.read(reader);
     }
   }

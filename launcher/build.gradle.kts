@@ -1,5 +1,6 @@
 plugins {
   id("ignite.launcher-conventions")
+  id("ignite.publish-conventions")
 }
 
 dependencies {

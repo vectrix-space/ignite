@@ -49,6 +49,10 @@ public final class Blackboard {
   public static final BlackboardMap.@NotNull Key<String> GAME_TARGET = key("ignite.target", String.class, "org.bukkit.craftbukkit.Main");
   public static final BlackboardMap.@NotNull Key<Path> GAME_LIBRARIES = key("ignite.libraries", Path.class, Paths.get("./libraries"));
   public static final BlackboardMap.@NotNull Key<Path> MODS_DIRECTORY = key("ignite.mods", Path.class, Paths.get("./mods"));
+
+  // not strictly a startup flag
+  public static final BlackboardMap.@NotNull Key<Boolean> IS_CLASS_PATH = key("isGameClasspath", Boolean.class, false);
+
   // formatting:on
 
   /**

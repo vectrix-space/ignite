@@ -80,7 +80,8 @@ public final class IgniteAgent {
       return;
     }
 
-    throw new IllegalStateException("Unable to addJar for '" + jar.getName() + "'.");
+    // assume it's run with no agent, just ignore...
+    // throw new IllegalStateException("Unable to addJar for '" + jar.getName() + "'.");
   }
 
   /**

@@ -24,54 +24,61 @@
  */
 package space.vectrix.ignite.mod;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.jar.Manifest;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.UnknownNullability;
 
 /**
- * Represents a mod resource.
+ * Represents a mod resource that may not be resolved.
  *
- * @author vectrix
- * @since 1.0.0
+ * @author Flowey
+ * @since 1.0.2
  */
-@ApiStatus.NonExtendable
-public interface ModResource {
-  /**
-   * Returns the resource locator type.
-   *
-   * @return the resource locator type
-   * @since 1.0.0
-   */
-  @NotNull String locator();
+public final class ModClassPathResourceImpl implements ModResource {
+  private final String locator;
 
-  /**
-   * Returns the resource path.
-   *
-   * @return the resource path
-   * @since 1.0.0
-   */
-  @Nullable Path path();
+  /* package */ ModClassPathResourceImpl(final @NotNull String locator) {
+    this.locator = locator;
+  }
 
-  /**
-   * Returns the {@link Manifest} for this resource.
-   *
-   * @return the manifest
-   * @since 1.0.0
-   */
-  @UnknownNullability Manifest manifest();
+  @Override
+  public @NotNull String locator() {
+    return this.locator;
+  }
 
-  /**
-   * Searches for a file within this resource.
-   *
-   * @param name The path/name of the resource
-   * @return an {@link InputStream} corresponding to the resource
-   * @throws IOException if the underlying operation fails
-   * @since 1.0.2
-   */
-  @Nullable InputStream loadResource(String name) throws IOException;
+  @Override
+  public @Nullable Path path() {
+    return null;
+  }
+
+  @Override
+  public @Nullable Manifest manifest() {
+    return null;
+  }
+
+  @Override
+  public @Nullable InputStream loadResource(final String path) {
+    return ClassLoader.getSystemClassLoader().getResourceAsStream(path);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.locator);
+  }
+
+  @Override
+  public boolean equals(final @Nullable Object other) {
+    if(this == other) return true;
+    if(!(other instanceof ModClassPathResourceImpl)) return false;
+    final ModClassPathResourceImpl that = (ModClassPathResourceImpl) other;
+    return Objects.equals(this.locator, that.locator);
+  }
+
+  @Override
+  public String toString() {
+    return "ModClassPathResourceImpl{locator='" + this.locator + "}";
+  }
 }

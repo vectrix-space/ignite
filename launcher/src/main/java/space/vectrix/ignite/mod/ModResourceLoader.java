@@ -27,11 +27,8 @@ package space.vectrix.ignite.mod;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 import org.jetbrains.annotations.NotNull;
 import org.tinylog.Logger;
 import space.vectrix.ignite.util.IgniteConstants;
@@ -57,12 +54,9 @@ public final class ModResourceLoader {
         continue;
       }
 
-      final Path resourcePath = resource.path();
-      try(final JarFile jarFile = new JarFile(resourcePath.toFile())) {
-        final JarEntry jarEntry = jarFile.getJarEntry(IgniteConstants.MOD_CONFIG);
-        if(jarEntry == null) continue;
+      try(final InputStream inputStream = resource.loadResource(IgniteConstants.MOD_CONFIG)) {
+        if(inputStream == null) continue;
 
-        final InputStream inputStream = jarFile.getInputStream(jarEntry);
         final ModConfig config = IgniteConstants.GSON.fromJson(new InputStreamReader(inputStream), ModConfig.class);
 
         containers.add(new ModContainerImpl(Logger.tag(config.id()), resource, config));

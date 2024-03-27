@@ -25,10 +25,13 @@
 package space.vectrix.ignite.launch.ember;
 
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.launch.platform.container.ContainerHandleURI;
 import org.spongepowered.asm.launch.platform.container.ContainerHandleVirtual;
+import org.spongepowered.asm.launch.platform.container.IContainerHandle;
 
 /**
  * Represents the root container.
@@ -56,6 +59,15 @@ public final class EmberMixinContainer extends ContainerHandleVirtual {
    */
   public void addResource(final @NotNull String name, final @NotNull Path path) {
     this.add(new ResourceContainer(name, path));
+  }
+
+  /**
+   * Adds a classpath resource to this container.
+   *
+   * @since 1.0.2
+   */
+  public void addClassPath() {
+    this.add(new ClassPathResourceContainer());
   }
 
   /**
@@ -95,6 +107,23 @@ public final class EmberMixinContainer extends ContainerHandleVirtual {
     @Override
     public @NotNull String toString() {
       return "ResourceContainer{name=" + this.name + ", path=" + this.path + "}";
+    }
+  }
+
+  static class ClassPathResourceContainer implements IContainerHandle {
+    @Override
+    public String getAttribute(final String s) {
+      return null;
+    }
+
+    @Override
+    public Collection<IContainerHandle> getNestedContainers() {
+      return Collections.emptyList();
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+      return obj instanceof ClassPathResourceContainer;
     }
   }
 }
