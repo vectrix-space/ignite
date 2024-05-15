@@ -25,6 +25,7 @@
 package space.vectrix.ignite.launch.transformer;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
@@ -82,14 +83,14 @@ public final class MixinTransformerImpl implements TransformerService {
   }
 
   @Override
-  public boolean transform(final @NotNull Type type, final @NotNull ClassNode node, final @NotNull TransformPhase phase) throws Throwable {
+  public @Nullable ClassNode transform(final @NotNull Type type, final @NotNull ClassNode node, final @NotNull TransformPhase phase) throws Throwable {
     // Generate the class if it is synthetic through mixin.
     if(this.shouldGenerateClass(type)) {
-      return this.generateClass(type, node);
+      return this.generateClass(type, node) ? node : null;
     }
 
     // Transform the class through mixin.
-    return this.transformer.transformClass(MixinEnvironment.getCurrentEnvironment(), type.getClassName(), node);
+    return this.transformer.transformClass(MixinEnvironment.getCurrentEnvironment(), type.getClassName(), node) ? node : null;
   }
 
   /**

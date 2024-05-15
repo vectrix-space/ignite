@@ -104,8 +104,9 @@ public final class EmberTransformer {
       return input;
     }
 
+    ClassNode node = new ClassNode(IgniteConstants.ASM_VERSION);
+
     final Type type = Type.getObjectType(internalName);
-    final ClassNode node = new ClassNode(IgniteConstants.ASM_VERSION);
     if(input.length > 0) {
       final ClassReader reader = new ClassReader(input);
       reader.accept(node, 0);
@@ -123,7 +124,11 @@ public final class EmberTransformer {
           // If the transformer should not transform the class, skip it.
           if(!service.shouldTransform(type, node)) continue;
           // Attempt to transform the class.
-          transformed |= service.transform(type, node, phase);
+          final ClassNode transformedNode = service.transform(type, node, phase);
+          if(transformedNode != null) {
+            node = transformedNode;
+            transformed = true;
+          }
         } catch(final Throwable throwable) {
           Logger.error(throwable, "Failed to transform {} with {}", type.getClassName(), service.getClass().getName());
         }
