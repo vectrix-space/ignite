@@ -93,7 +93,7 @@ public final class DummyGameLocator implements GameLocatorService {
         // will be closed as soon as we exit the try-catch block.
         libraries = stream
           .filter(Files::isRegularFile)
-          .filter(path -> path.getFileName().endsWith(".jar"))
+          .filter(path -> path.toString().endsWith(".jar"))
           .collect(Collectors.toList());
       } catch(final Throwable throwable) {
         return Stream.empty();
