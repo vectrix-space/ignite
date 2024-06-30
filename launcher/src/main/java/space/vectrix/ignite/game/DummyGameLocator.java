@@ -26,6 +26,9 @@ package space.vectrix.ignite.game;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 import org.tinylog.Logger;
@@ -84,13 +87,20 @@ public final class DummyGameLocator implements GameLocatorService {
     @Override
     public @NotNull Stream<Path> gameLibraries() {
       final Path libraryPath = Blackboard.raw(Blackboard.GAME_LIBRARIES);
+      final List<Path> libraries;
+      
       try(final Stream<Path> stream = Files.walk(libraryPath)) {
-        return stream
+        // We must .collect() to a list and re-stream() as Stream is AutoClosable, and thus
+        // will be closed as soon as we exit the try-catch block.
+        libraries = stream
           .filter(Files::isRegularFile)
-          .filter(path -> path.getFileName().endsWith(".jar"));
+          .filter(path -> path.getFileName().endsWith(".jar"))
+          .collect(Collectors.toList());
       } catch(final Throwable throwable) {
         return Stream.empty();
       }
+
+      return libraries.stream();
     }
 
     @Override
