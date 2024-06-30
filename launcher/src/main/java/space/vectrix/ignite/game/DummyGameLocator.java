@@ -87,7 +87,7 @@ public final class DummyGameLocator implements GameLocatorService {
     public @NotNull Stream<Path> gameLibraries() {
       final Path libraryPath = Blackboard.raw(Blackboard.GAME_LIBRARIES);
       final List<Path> libraries;
-      
+
       try(final Stream<Path> stream = Files.walk(libraryPath)) {
         // We must .collect() to a list and re-stream() as Stream is AutoClosable, and thus
         // will be closed as soon as we exit the try-catch block.
