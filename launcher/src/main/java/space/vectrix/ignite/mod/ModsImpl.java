@@ -25,6 +25,7 @@
 package space.vectrix.ignite.mod;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -112,7 +113,9 @@ public final class ModsImpl implements Mods {
 
       if(!resource.locator().equals(ModResourceLocator.LAUNCHER_LOCATOR) && !resource.locator().equals(ModResourceLocator.GAME_LOCATOR)) {
         try {
-          IgniteAgent.addJar(container.resource().path());
+          final Path path = container.resource().path();
+          if(path != null)
+            IgniteAgent.addJar(path);
         } catch(final IOException exception) {
           Logger.error(exception, "Unable to add container '{}' to the classpath!", container.id());
         }
@@ -135,21 +138,23 @@ public final class ModsImpl implements Mods {
    */
   public void resolveWideners(final @NotNull EmberTransformer transformer) {
     final AccessTransformerImpl accessTransformer = transformer.transformer(AccessTransformerImpl.class);
-    if(accessTransformer == null) return;
+    if (accessTransformer == null) return;
 
-    for(final ModContainer container : this.containers()) {
+    for (final ModContainer container : this.containers()) {
       final ModResource resource = container.resource();
 
       final List<String> wideners = ((ModContainerImpl) container).config().wideners();
-      if(wideners != null && !wideners.isEmpty()) {
-        for(final String widener : wideners) {
+      if (wideners != null && !wideners.isEmpty()) {
+        for (final String widener : wideners) {
           //noinspection resource
-          final Path path = resource.fileSystem().getPath(widener);
           try {
-            Logger.trace("Adding the access widener: {}", widener);
-            accessTransformer.addWidener(path);
-          } catch(final IOException exception) {
-            Logger.trace(exception, "Failed to configure widener: {}", widener);
+            // TODO: figure out how to sanely introduce logging
+            final InputStream path = resource.loadResource(widener);
+            // Logger.trace("Adding the access widener: {}", widener);
+            if (path != null)
+              accessTransformer.addWidener(path);
+          } catch (final IOException exception) {
+            // Logger.trace(exception, "Failed to configure widener: {}", widener);
             continue;
           }
 
@@ -172,7 +177,11 @@ public final class ModsImpl implements Mods {
     for(final ModContainer container : this.containers()) {
       final ModResource resource = container.resource();
 
-      handle.addResource(resource.path().getFileName().toString(), resource.path());
+      if(resource instanceof ModResourceImpl) {
+        handle.addResource(resource.path().getFileName().toString(), resource.path());
+      } else {
+        handle.addClassPath();
+      }
 
       final List<String> mixins = ((ModContainerImpl) container).config().mixins();
       if(mixins != null && !mixins.isEmpty()) {

@@ -141,16 +141,18 @@ public final class IgniteBootstrap {
 
     Logger.info("Preparing the game...");
 
-    // Add the game.
-    final Path gameJar = Blackboard.raw(Blackboard.GAME_JAR);
-    try {
-      IgniteAgent.addJar(gameJar);
+    // Add the game, only if the classes aren't already in the classpath.
+    if(!Blackboard.raw(Blackboard.IS_CLASS_PATH)) {
+      final Path gameJar = Blackboard.raw(Blackboard.GAME_JAR);
+      try {
+        IgniteAgent.addJar(gameJar);
 
-      Logger.trace("Added game jar: {}", gameJar);
-    } catch(final IOException exception) {
-      Logger.error(exception, "Failed to resolve game jar: {}", gameJar);
-      System.exit(1);
-      return;
+        Logger.trace("Added game jar: {}", gameJar);
+      } catch (final IOException exception) {
+        Logger.error(exception, "Failed to resolve game jar: {}", gameJar);
+        System.exit(1);
+        return;
+      }
     }
 
     // Add the game libraries.
