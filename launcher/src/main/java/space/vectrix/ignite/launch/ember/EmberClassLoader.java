@@ -32,11 +32,12 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLConnection;
 import java.nio.file.Path;
-import java.util.AbstractMap;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
+import java.security.cert.Certificate;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -85,6 +86,7 @@ public final class EmberClassLoader extends ClassLoader {
   private final EmberTransformer transformer;
 
   private Function<URLConnection, Manifest> manifestLocator;
+  private Function<URLConnection, CodeSource> sourceLocator;
   private Predicate<String> transformationFilter;
 
   /* package */ EmberClassLoader(final @NotNull EmberTransformer transformer) {
@@ -96,6 +98,7 @@ public final class EmberClassLoader extends ClassLoader {
     this.transformer = transformer;
 
     this.manifestLocator = connection -> this.locateManifest(connection).orElse(null);
+    this.sourceLocator = connection -> this.locateSource(connection).orElse(null);
     this.transformationFilter = name -> EmberClassLoader.EXCLUDE_PACKAGES.stream().noneMatch(name::startsWith);
   }
 
@@ -200,7 +203,7 @@ public final class EmberClassLoader extends ClassLoader {
     }
 
     // Grab the class bytes.
-    final Map.Entry<byte[], Manifest> transformed = this.transformData(name, phase);
+    final ClassData transformed = this.transformData(name, phase);
     if(transformed == null) return null;
 
     // Check if the class has already been loaded by the transform.
@@ -214,15 +217,16 @@ public final class EmberClassLoader extends ClassLoader {
     final int classIndex = name.lastIndexOf('.');
     if(classIndex > 0) {
       final String packageName = name.substring(0, classIndex);
-      this.findPackage(packageName, transformed.getValue());
+      this.findPackage(packageName, transformed.manifest());
     }
 
-    final byte[] bytes = transformed.getKey();
-    return this.defineClass(name, bytes, 0, bytes.length);
+    final byte[] bytes = transformed.data();
+    final ProtectionDomain domain = new ProtectionDomain(transformed.source(), null, this, null);
+    return this.defineClass(name, bytes, 0, bytes.length, domain);
   }
 
-  /* package */ Map.@Nullable Entry<byte@NotNull [], @Nullable Manifest> transformData(final @NotNull String name, final @NotNull TransformPhase phase) {
-    final Map.Entry<byte[], Manifest> data = this.classData(name, phase);
+  /* package */ @Nullable ClassData transformData(final @NotNull String name, final @NotNull TransformPhase phase) {
+    final ClassData data = this.classData(name, phase);
     if(data == null) return null;
 
     // Prevent transforming classes that are excluded from transformation.
@@ -232,11 +236,11 @@ public final class EmberClassLoader extends ClassLoader {
     }
 
     // Run the transformation.
-    final byte[] bytes = this.transformer.transform(name, data.getKey(), phase);
-    return new AbstractMap.SimpleEntry<>(bytes, data.getValue());
+    final byte[] bytes = this.transformer.transform(name, data.data(), phase);
+    return new ClassData(bytes, data.manifest(), data.source());
   }
 
-  /* package */ Map.@Nullable Entry<byte@NotNull [], @Nullable Manifest> classData(final @NotNull String name, final @NotNull TransformPhase phase) {
+  /* package */ @Nullable ClassData classData(final @NotNull String name, final @NotNull TransformPhase phase) {
     final String resourceName = name.replace('.', '/').concat(".class");
 
     URL url = this.findResource(resourceName);
@@ -246,7 +250,7 @@ public final class EmberClassLoader extends ClassLoader {
       if(url == null) return null;
     }
 
-    try(final ResourceConnection connection = new ResourceConnection(url, this.manifestLocator)) {
+    try(final ResourceConnection connection = new ResourceConnection(url, this.manifestLocator, this.sourceLocator)) {
       final int length = connection.contentLength();
       final InputStream stream = connection.stream();
       final byte[] bytes = new byte[length];
@@ -260,7 +264,8 @@ public final class EmberClassLoader extends ClassLoader {
       // @formatter:on
 
       final Manifest manifest = connection.manifest();
-      return new AbstractMap.SimpleEntry<>(bytes, manifest);
+      final CodeSource source = connection.source();
+      return new ClassData(bytes, manifest, source);
     } catch(final Exception exception) {
       Logger.trace(exception, "Failed to resolve class data: {}", resourceName);
       return null;
@@ -372,6 +377,15 @@ public final class EmberClassLoader extends ClassLoader {
     return Optional.empty();
   }
 
+  private @NotNull Optional<CodeSource> locateSource(final @NotNull URLConnection connection) {
+    if(connection instanceof JarURLConnection) {
+      final URL url = ((JarURLConnection) connection).getJarFileURL();
+      return Optional.of(new CodeSource(url, (Certificate[]) null));
+    }
+
+    return Optional.empty();
+  }
+
   private <I, O> @NotNull Function<I, O> alternate(final @Nullable Function<I, Optional<O>> first, final @Nullable Function<I, Optional<O>> second) {
     if(second == null && first != null) return input -> first.apply(input).orElse(null);
     if(first == null && second != null) return input -> second.apply(input).orElse(null);
@@ -379,4 +393,52 @@ public final class EmberClassLoader extends ClassLoader {
     return input -> null;
   }
   //</editor-fold>
+
+  /**
+   * Represents the data for a class.
+   *
+   * @author vectrix
+   * @since 1.0.2
+   */
+  public static final class ClassData {
+    private final byte[] data;
+    private final Manifest manifest;
+    private final CodeSource source;
+
+    private ClassData(final byte[] data, final @Nullable Manifest manifest, final @Nullable CodeSource source) {
+      this.data = data;
+      this.manifest = manifest;
+      this.source = source;
+    }
+
+    /**
+     * The class data as a byte array.
+     *
+     * @return the class data
+     * @since 1.0.2
+     */
+    public byte[] data() {
+      return this.data;
+    }
+
+    /**
+     * The jar manifest.
+     *
+     * @return the jar manifest
+     * @since 1.0.2
+     */
+    public @Nullable Manifest manifest() {
+      return this.manifest;
+    }
+
+    /**
+     * The jar code source.
+     *
+     * @return the jar code source
+     * @since 1.0.2
+     */
+    public @Nullable CodeSource source() {
+      return this.source;
+    }
+  }
 }
