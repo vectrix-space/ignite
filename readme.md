@@ -161,6 +161,9 @@ The following targets could use the following flags:
     - The classpath to the paperclip entry point. (e.g `-Dignite.paper.target=io.papermc.paperclip.Paperclip`)
     - The minecraft server version paperclip will be patching. (e.g `-Dignite.paper.version=1.12.2`)
 
+- Velocity:
+  - Service name: `velocity` (e.g `-Dignite.locator=velocity`)
+
 ## Building
 __Note:__ If you do not have [Gradle] installed then use `./gradlew` for Unix systems or Git Bash and gradlew.bat for Windows systems in 
 place of any 'gradle' command.
