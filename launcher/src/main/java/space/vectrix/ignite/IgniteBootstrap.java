@@ -142,7 +142,7 @@ public final class IgniteBootstrap {
     Logger.info("Preparing the game...");
 
     // Add the game.
-    final Path gameJar = Blackboard.raw(Blackboard.GAME_JAR);
+    final Path gameJar = gameProvider.gamePath();
     try {
       IgniteAgent.addJar(gameJar);
 

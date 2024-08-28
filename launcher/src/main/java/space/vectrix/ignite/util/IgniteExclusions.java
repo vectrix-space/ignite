@@ -54,6 +54,10 @@ public final class IgniteExclusions {
     "org.spongepowered.asm.",
     "com.llamalad7.mixinextras.",
 
+    // Logging
+    "org.slf4j.",
+    "org.apache.logging.log4j.",
+
     // Access Widener
     "net.fabricmc.accesswidener.",
   };
