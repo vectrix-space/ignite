@@ -100,15 +100,16 @@ public final class MixinTransformerImpl implements TransformerService {
    * @param canonicalName the canonical name
    * @param internalName the internal name
    * @param input the input class bytes
+   * @param readerFlags the reader flags
    * @return the class node
    * @throws ClassNotFoundException if the class could not be found
    * @since 1.0.0
    */
-  public @NotNull ClassNode classNode(final @NotNull String canonicalName, final @NotNull String internalName, final byte@NotNull [] input) throws ClassNotFoundException {
+  public @NotNull ClassNode classNode(final @NotNull String canonicalName, final @NotNull String internalName, final byte@NotNull [] input, final int readerFlags) throws ClassNotFoundException {
     if(input.length != 0) {
       final ClassNode node = new ClassNode(IgniteConstants.ASM_VERSION);
       final ClassReader reader = new MixinClassReader(input, canonicalName);
-      reader.accept(node, 0);
+      reader.accept(node, readerFlags);
       return node;
     }
 
