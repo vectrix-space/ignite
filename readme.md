@@ -40,14 +40,14 @@ To depend on the Ignite API in order to create your mod, you will need to add th
 repositories {
   mavenCentral()
   maven {
-    url = "https://repo.spongepowered.org/maven/"
+    url = "https://maven.fabricmc.net/"
   }
 }
 
 dependencies {
-  compileOnly "space.vectrix.ignite:ignite-api:1.0.1"
-  compileOnly "org.spongepowered:mixin:0.8.5"
-  compileOnly "io.github.llamalad7:mixinextras-common:0.3.5"
+  compileOnly "space.vectrix.ignite:ignite-api:1.1.0"
+  compileOnly "net.fabricmc:sponge-mixin:0.15.2+mixin.0.8.7"
+  compileOnly "io.github.llamalad7:mixinextras-common:0.4.1"
 }
 ```
 
@@ -57,7 +57,7 @@ dependencies {
 ```xml
 <repositories>
   <repository>
-    <url>https://repo.spongepowered.org/maven/</url>
+    <url>https://maven.fabricmc.net/</url>
   </repository>
 </repositories>
 
@@ -65,17 +65,17 @@ dependencies {
   <dependency>
     <groupId>space.vectrix.ignite</groupId>
     <artifactId>ignite-api</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
   </dependency>
   <dependency>
-    <groupId>org.spongepowered</groupId>
-    <artifactId>mixin</artifactId>
-    <version>0.8.5</version>
+    <groupId>net.fabricmc</groupId>
+    <artifactId>sponge-mixin</artifactId>
+    <version>0.15.2+mixin.0.8.7</version>
   </dependency>
   <dependency>
     <groupId>io.github.llamalad7</groupId>
     <artifactId>mixinextras-common</artifactId>
-    <version>0.3.5</version>
+    <version>0.4.1</version>
   </dependency>
 </dependencies>
 ```

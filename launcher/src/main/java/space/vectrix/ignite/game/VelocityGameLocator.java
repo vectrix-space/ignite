@@ -37,7 +37,7 @@ import space.vectrix.ignite.IgniteBootstrap;
  * Provides a game locator for Velocity.
  *
  * @author vectrix
- * @since 1.0.2
+ * @since 1.1.0
  */
 public final class VelocityGameLocator implements GameLocatorService {
   private VelocityGameProvider provider;
