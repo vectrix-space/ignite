@@ -212,6 +212,11 @@ public final class EmberMixinService implements IMixinService, IClassProvider, I
 
   @Override
   public @NotNull ClassNode getClassNode(final @NotNull String name, final boolean runTransformers) throws ClassNotFoundException, IOException {
+    return this.getClassNode(name, runTransformers, 0);
+  }
+
+  @Override
+  public @NotNull ClassNode getClassNode(final @NotNull String name, final boolean runTransformers, final int readerFlags) throws ClassNotFoundException, IOException {
     if(!runTransformers) throw new IllegalStateException("ClassNodes must always be provided transformed!");
 
     final Ember ember = Ember.instance();
@@ -227,7 +232,7 @@ public final class EmberMixinService implements IMixinService, IClassProvider, I
     final @Nullable EmberClassLoader.ClassData entry = loader.classData(canonicalName, TransformPhase.MIXIN);
     if(entry == null) throw new ClassNotFoundException(canonicalName);
 
-    return mixinTransformer.classNode(canonicalName, internalName, entry.data());
+    return mixinTransformer.classNode(canonicalName, internalName, entry.data(), readerFlags);
   }
   //</editor-fold>
 
