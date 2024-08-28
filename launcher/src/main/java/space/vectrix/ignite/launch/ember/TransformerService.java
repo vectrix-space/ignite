@@ -79,7 +79,7 @@ public interface TransformerService {
    * @param node the class node
    * @param phase the transform phase
    * @return whether the class node if the class was transformed
-   * @since 1.0.2
+   * @since 1.1.0
    */
   @Nullable ClassNode transform(final @NotNull Type type, final @NotNull ClassNode node, final @NotNull TransformPhase phase) throws Throwable;
 }

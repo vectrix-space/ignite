@@ -398,7 +398,7 @@ public final class EmberClassLoader extends ClassLoader {
    * Represents the data for a class.
    *
    * @author vectrix
-   * @since 1.0.2
+   * @since 1.1.0
    */
   public static final class ClassData {
     private final byte[] data;
@@ -415,7 +415,7 @@ public final class EmberClassLoader extends ClassLoader {
      * The class data as a byte array.
      *
      * @return the class data
-     * @since 1.0.2
+     * @since 1.1.0
      */
     public byte[] data() {
       return this.data;
@@ -425,7 +425,7 @@ public final class EmberClassLoader extends ClassLoader {
      * The jar manifest.
      *
      * @return the jar manifest
-     * @since 1.0.2
+     * @since 1.1.0
      */
     public @Nullable Manifest manifest() {
       return this.manifest;
@@ -435,7 +435,7 @@ public final class EmberClassLoader extends ClassLoader {
      * The jar code source.
      *
      * @return the jar code source
-     * @since 1.0.2
+     * @since 1.1.0
      */
     public @Nullable CodeSource source() {
       return this.source;
