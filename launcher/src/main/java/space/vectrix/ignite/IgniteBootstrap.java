@@ -71,6 +71,11 @@ public final class IgniteBootstrap {
    * @since 1.0.0
    */
   public static void main(final String@NotNull [] arguments) {
+    try {
+      MangoBootstrap.main(arguments);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
     new IgniteBootstrap().run(arguments);
   }
 
