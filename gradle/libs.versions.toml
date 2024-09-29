@@ -3,7 +3,7 @@ metadata.format.version = "1.1"
 [versions]
 accessWidener = "2.1.0"
 asm = "9.7"
-checkstyle = "10.17.0"
+checkstyle = "10.18.2"
 gson = "2.11.0"
 jetbrains = "24.1.0"
 mixin = "0.15.2+mixin.0.8.7"
