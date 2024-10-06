@@ -2,11 +2,11 @@ metadata.format.version = "1.1"
 
 [versions]
 accessWidener = "2.1.0"
-asm = "9.7"
+asm = "9.7.1"
 checkstyle = "10.17.0"
 gson = "2.11.0"
 jetbrains = "24.1.0"
-mixin = "0.15.2+mixin.0.8.7"
+mixin = "0.15.3+mixin.0.8.7"
 mixinExtras = "0.4.1"
 nexus = "2.0.0"
 shadow = "8.1.1"
