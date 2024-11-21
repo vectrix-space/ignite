@@ -102,6 +102,7 @@ public final class IgniteBootstrap {
     Blackboard.compute(Blackboard.GAME_JAR, () -> Paths.get(System.getProperty(Blackboard.GAME_JAR.name())));
     Blackboard.compute(Blackboard.GAME_TARGET, () -> System.getProperty(Blackboard.GAME_TARGET.name()));
     Blackboard.compute(Blackboard.GAME_LIBRARIES, () -> Paths.get(System.getProperty(Blackboard.GAME_LIBRARIES.name())));
+    Blackboard.compute(Blackboard.PLUGINS_DIRECTORY, () -> Paths.get(System.getProperty(Blackboard.PLUGINS_DIRECTORY.name())));
     Blackboard.compute(Blackboard.MODS_DIRECTORY, () -> Paths.get(System.getProperty(Blackboard.MODS_DIRECTORY.name())));
 
     // Get a suitable game locator and game provider.

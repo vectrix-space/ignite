@@ -111,6 +111,11 @@ public final class ModsImpl implements Mods {
       final ModResource resource = container.resource();
 
       if(!resource.locator().equals(ModResourceLocator.LAUNCHER_LOCATOR) && !resource.locator().equals(ModResourceLocator.GAME_LOCATOR)) {
+        if(this.containers.containsKey(container.id())) {
+          Logger.error("Mod container with the identifier '{}' already exists!", container.id());
+          continue;
+        }
+
         try {
           IgniteAgent.addJar(container.resource().path());
         } catch(final IOException exception) {
