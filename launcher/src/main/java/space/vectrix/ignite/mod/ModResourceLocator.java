@@ -32,11 +32,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 import org.tinylog.Logger;
 import space.vectrix.ignite.Blackboard;
@@ -105,6 +107,7 @@ public final class ModResourceLocator {
       }
 
       final Path destinationPath = modDirectory.resolve("_plugins");
+      this.deleteModsFromPlugins(destinationPath);
 
       //noinspection resource
       for(final Path childDirectory : Files.walk(pluginDirectory, 1).collect(Collectors.toList())) {
@@ -156,6 +159,26 @@ public final class ModResourceLocator {
       return new ModResourceImpl(ModResourceLocator.GAME_LOCATOR, gameFile.toPath(), jarFile.getManifest());
     } catch(final Exception exception) {
       throw new RuntimeException("Failed to get game manifest!", exception);
+    }
+  }
+
+  private void deleteModsFromPlugins(final @NotNull Path destinationDirectory) {
+    try {
+      if(Files.exists(destinationDirectory)) {
+        try(final Stream<Path> paths = Files.walk(destinationDirectory)) {
+          paths
+            .sorted(Comparator.reverseOrder())
+            .forEach(path -> {
+              try {
+                Files.delete(path);
+              } catch(final IOException exception) {
+                Logger.debug("Failed to delete '{}'.", path, exception);
+              }
+            });
+        }
+      }
+    } catch(final IOException exception) {
+      Logger.debug("Error while cleaning directory '{}'.", destinationDirectory, exception);
     }
   }
 
