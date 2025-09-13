@@ -10,7 +10,7 @@ mixin = "0.16.4+mixin.0.8.7"
 mixinExtras = "0.4.1"
 nexus = "2.0.0"
 shadow = "9.1.0"
-spotless = "7.0.4"
+spotless = "7.2.1"
 tinylog = "2.7.0"
 
 [libraries]
