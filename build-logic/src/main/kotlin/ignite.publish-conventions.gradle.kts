@@ -48,14 +48,14 @@ publishing {
 signing {
   sign(publishing.publications["mavenJava"])
 
-  if(project.hasProperty("signingKey") && project.hasProperty("signingPassword")) {
+  if(project.hasProperty("vectrixSigningKey") && project.hasProperty("vectrixSigningPassword")) {
     useInMemoryPgpKeys(
-      project.property("signingKey").toString(),
-      project.property("signingPassword").toString()
+      project.property("vectrixSigningKey").toString(),
+      project.property("vectrixSigningPassword").toString()
     )
   }
 }
 
 tasks.withType(Sign::class) {
-  onlyIf { project.hasProperty("signingKey") && project.hasProperty("signingPassword") }
+  onlyIf { project.hasProperty("vectrixSigningKey") && project.hasProperty("vectrixSigningPassword") }
 }
