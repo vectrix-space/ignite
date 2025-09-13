@@ -17,7 +17,7 @@ group = rootProject.group
 version = rootProject.version
 
 java {
-  javaTarget(8)
+  javaTarget(17)
   withSourcesJar()
 }
 
@@ -31,7 +31,7 @@ spotless {
   fun FormatExtension.applyCommon() {
     trimTrailingWhitespace()
     endWithNewline()
-    indentWithSpaces(2)
+    leadingTabsToSpaces(2)
   }
 
   fun formatLicense(): String {
@@ -93,6 +93,9 @@ tasks {
   }
 
   compileJava {
+    sourceCompatibility = JavaVersion.VERSION_1_8.toString()
+    targetCompatibility = JavaVersion.VERSION_1_8.toString()
+
     options.encoding = "UTF-8"
     options.compilerArgs.addAll(listOf(
       "-nowarn",

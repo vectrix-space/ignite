@@ -32,7 +32,7 @@ mixinExtras = { module = "io.github.llamalad7:mixinextras-common", version.ref =
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
 # build
-stylecheck = "ca.stellardrift:stylecheck:0.1"
+stylecheck = "ca.stellardrift:stylecheck:0.2.1"
 
 build-nexus = { module = "io.github.gradle-nexus:publish-plugin", version.ref = "nexus" }
 build-shadow = { module = "com.github.johnrengelman:shadow", version.ref = "shadow" }
