@@ -10,7 +10,7 @@ val libs = extensions.getByType(org.gradle.accessors.dm.LibrariesForLibs::class)
 
 val implementationVersion = project.version.toString()
 val regexPattern = """(\d+\.\d+)""".toRegex()
-val apiVersion = regexPattern.find(implementationVersion)?.value
+val apiVersion = regexPattern.find(implementationVersion)?.value ?: "0.0"
 
 tasks.getByName<Jar>("jar") {
   manifest {
@@ -19,7 +19,7 @@ tasks.getByName<Jar>("jar") {
       "Agent-Class" to "space.vectrix.ignite.agent.IgniteAgent",
       "Launcher-Agent-Class" to "space.vectrix.ignite.agent.IgniteAgent",
       "Main-Class" to "space.vectrix.ignite.IgniteBootstrap",
-      "Multi-Release" to true,
+      "Multi-Release" to "true",
 
       "Specification-Title" to "ignite",
       "Specification-Version" to apiVersion,
