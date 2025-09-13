@@ -2,7 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
   id("ignite.base-conventions")
-  id("com.github.johnrengelman.shadow")
+  id("com.gradleup.shadow")
 }
 
 // Expose version catalog
@@ -43,25 +43,15 @@ tasks.getByName<ShadowJar>("shadowJar") {
   relocate("com.google.gson", "space.vectrix.ignite.libs.gson")
 }
 
-tasks.register("dist") {
-  dependsOn("shadowJar")
+tasks.register<Copy>("dist") {
+  group = "distribution"
+  description = "Copies the shadow jar to the root build/libs as ignite.jar"
 
-  doLast {
-    val sourceDir = project.layout.buildDirectory.asFile.map { it.resolve("libs") }.get()
-    val targetDir = rootProject.layout.buildDirectory.asFile.map { it.resolve("libs") }.get()
-
-    targetDir.mkdirs()
-
-    rootProject.copy {
-      from(sourceDir) {
-        include("*-all.jar")
-      }
-
-      into(targetDir)
-
-      rename { "ignite.jar" }
-    }
-  }
+  val shadow = tasks.named<ShadowJar>("shadowJar")
+  from(shadow)
+  into(rootProject.layout.buildDirectory.dir("libs"))
+  rename { "ignite.jar" }
+  outputs.file(rootProject.layout.buildDirectory.file("libs/ignite.jar"))
 }
 
 tasks.getByName("build") {

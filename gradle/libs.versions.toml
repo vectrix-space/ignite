@@ -9,7 +9,7 @@ jetbrains = "26.0.2"
 mixin = "0.16.1+mixin.0.8.7"
 mixinExtras = "0.4.1"
 nexus = "2.0.0"
-shadow = "8.1.1"
+shadow = "9.1.0"
 spotless = "7.0.4"
 tinylog = "2.7.0"
 
@@ -35,7 +35,7 @@ gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 stylecheck = "ca.stellardrift:stylecheck:0.2.1"
 
 build-nexus = { module = "io.github.gradle-nexus:publish-plugin", version.ref = "nexus" }
-build-shadow = { module = "com.github.johnrengelman:shadow", version.ref = "shadow" }
+build-shadow = { module = "com.gradleup.shadow:com.gradleup.shadow.gradle.plugin", version.ref = "shadow" }
 build-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
 
 # unused, for renovate
