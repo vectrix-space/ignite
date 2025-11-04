@@ -1,61 +1,17 @@
 plugins {
-  id("ignite.base-conventions")
-  `maven-publish`
-  signing
+  id("net.kyori.indra.publishing")
 }
 
-// Expose version catalog
-val libs = extensions.getByType(org.gradle.accessors.dm.LibrariesForLibs::class)
-
-java {
-  withJavadocJar()
-}
-
-publishing {
-  publications {
-    create<MavenPublication>("mavenJava") {
-      from(components["java"])
-
-      pom {
-        name.set(project.name)
-        description.set(project.description)
-        url.set("https://vectrix.space")
-
-        licenses {
-          license {
-            name.set("MIT License")
-            url.set("https://opensource.org/licenses/MIT")
-          }
-        }
-
-        developers {
-          developer {
-            id.set("vectrix")
-            name.set("Vectrix")
-          }
-        }
-
-        scm {
-          connection.set("scm:git:https://github.com/vectrix-space/ignite.git")
-          developerConnection.set("scm:git:https://github.com/vectrix-space/ignite.git")
-          url.set("https://github.com/vectrix-space/ignite.git")
+indra {
+  signWithKeyFromPrefixedProperties("vectrix")
+  configurePublications {
+    pom {
+      developers {
+        developer {
+          id.set("vectrix")
+          name.set("Vectrix")
         }
       }
     }
   }
-}
-
-signing {
-  sign(publishing.publications["mavenJava"])
-
-  if(project.hasProperty("vectrixSigningKey") && project.hasProperty("vectrixSigningPassword")) {
-    useInMemoryPgpKeys(
-      project.property("vectrixSigningKey").toString(),
-      project.property("vectrixSigningPassword").toString()
-    )
-  }
-}
-
-tasks.withType(Sign::class) {
-  onlyIf { project.hasProperty("vectrixSigningKey") && project.hasProperty("vectrixSigningPassword") }
 }

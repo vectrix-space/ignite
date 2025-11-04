@@ -1,42 +1,41 @@
-metadata.format.version = "1.1"
+[metadata]
+version = "1.0"
 
 [versions]
-accessWidener = "2.1.0"
-asm = "9.8"
-checkstyle = "11.0.1"
-gson = "2.13.2"
-jetbrains = "26.0.2-1"
-mixin = "0.16.4+mixin.0.8.7"
-mixinExtras = "0.5.0"
-nexus = "2.0.0"
-shadow = "9.1.0"
-spotless = "7.2.1"
+asm = "9.9"
+checkstyle = "12.1.1"
+indra = "4.0.0"
 tinylog = "2.7.0"
 
 [libraries]
-jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains" }
+jetbrains-annotations = { module = "org.jetbrains:annotations", version = "26.0.2-1" }
 
 # logger
 tinylog-api = { module = "org.tinylog:tinylog-api", version.ref = "tinylog" }
 tinylog-impl = { module = "org.tinylog:tinylog-impl", version.ref = "tinylog" }
 
 # loader
-accessWidener = { module = "net.fabricmc:access-widener", version.ref = "accessWidener" }
+accessWidener = { module = "net.fabricmc:access-widener", version = "2.1.0" }
 asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
 asm-analysis = { module = "org.ow2.asm:asm-analysis", version.ref = "asm" }
 asm-commons = { module = "org.ow2.asm:asm-commons", version.ref = "asm" }
 asm-tree = { module = "org.ow2.asm:asm-tree", version.ref = "asm" }
 asm-util = { module = "org.ow2.asm:asm-util", version.ref = "asm" }
-mixin = { module = "net.fabricmc:sponge-mixin", version.ref = "mixin" }
-mixinExtras = { module = "io.github.llamalad7:mixinextras-common", version.ref = "mixinExtras" }
-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+mixin = { module = "net.fabricmc:sponge-mixin", version = "0.16.5+mixin.0.8.7" }
+mixinExtras = { module = "io.github.llamalad7:mixinextras-common", version = "0.5.0" }
+gson = { module = "com.google.code.gson:gson", version = "2.13.2" }
 
 # build
 stylecheck = "ca.stellardrift:stylecheck:0.2.1"
 
-build-nexus = { module = "io.github.gradle-nexus:publish-plugin", version.ref = "nexus" }
-build-shadow = { module = "com.gradleup.shadow:com.gradleup.shadow.gradle.plugin", version.ref = "shadow" }
-build-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
+build-indra = { module = "net.kyori:indra-common", version.ref = "indra" }
+build-indra-sonatype = { module = "net.kyori:indra-publishing-sonatype", version.ref = "indra" }
+build-indra-spotless = { module = "net.kyori:indra-licenser-spotless", version.ref = "indra" }
+build-shadow = { module = "com.gradleup.shadow:com.gradleup.shadow.gradle.plugin", version = "9.2.2" }
 
 # unused, for renovate
 zCheckstyle = { module = "com.puppycrawl.tools:checkstyle", version.ref = "checkstyle" }
+
+[plugins]
+indra-sonatype = { id = "net.kyori.indra.publishing.sonatype", version.ref = "indra" }
+nexusPublish = { id = "io.github.gradle-nexus.publish-plugin", version = "2.0.0" }

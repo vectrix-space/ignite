@@ -25,12 +25,12 @@
 package space.vectrix.ignite.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import org.jetbrains.annotations.NotNull;
 import org.tinylog.Logger;
-import sun.misc.Unsafe;
 
 /**
  * Taken from <a href="https://github.com/cpw/grossjava9hacks/blob/1.3/src/main/java/cpw/mods/gross/Java9ClassLoaderUtil.java">grossjava9hacks</a>.
@@ -54,9 +54,13 @@ public final class ClassLoaders {
 
     if(classLoader.getClass().getName().startsWith("jdk.internal.loader.ClassLoaders$")) {
       try {
-        final Field field = Unsafe.class.getDeclaredField("theUnsafe");
-        field.setAccessible(true);
-        final Unsafe unsafe = (Unsafe) field.get(null);
+        final Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
+        final Method objectFieldOffsetMethod = unsafeClass.getDeclaredMethod("objectFieldOffset", Field.class);
+        final Method getObjectMethod = unsafeClass.getDeclaredMethod("getObject", Object.class, long.class);
+
+        final Field unsafeField = unsafeClass.getDeclaredField("theUnsafe");
+        unsafeField.setAccessible(true);
+        final Object unsafe = unsafeField.get(null);
 
         // jdk.internal.loader.ClassLoaders.AppClassLoader.ucp
         Field ucpField;
@@ -66,13 +70,13 @@ public final class ClassLoaders {
           ucpField = classLoader.getClass().getSuperclass().getDeclaredField("ucp");
         }
 
-        final long ucpFieldOffset = unsafe.objectFieldOffset(ucpField);
-        final Object ucpObject = unsafe.getObject(classLoader, ucpFieldOffset);
+        final long ucpFieldOffset = (long) objectFieldOffsetMethod.invoke(unsafe, ucpField);
+        final Object ucpObject = getObjectMethod.invoke(unsafe, classLoader, ucpFieldOffset);
 
         // jdk.internal.loader.URLClassPath.path
         final Field pathField = ucpField.getType().getDeclaredField("path");
-        final long pathFieldOffset = unsafe.objectFieldOffset(pathField);
-        final ArrayList<URL> path = (ArrayList<URL>) unsafe.getObject(ucpObject, pathFieldOffset);
+        final long pathFieldOffset = (long) objectFieldOffsetMethod.invoke(unsafe, pathField);
+        final ArrayList<URL> path = (ArrayList<URL>) getObjectMethod.invoke(unsafe, ucpObject, pathFieldOffset);
 
         return path.toArray(new URL[0]);
       } catch(final Exception exception) {
