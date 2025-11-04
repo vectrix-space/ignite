@@ -1,106 +1,24 @@
-import com.diffplug.gradle.spotless.FormatExtension
-import java.nio.charset.StandardCharsets
-import java.nio.file.Files
-import java.util.regex.Pattern
-import java.util.stream.Collectors
-
 plugins {
-  `java-library`
-  id("checkstyle")
-  id("com.diffplug.spotless")
+  id("net.kyori.indra")
 }
 
-// Expose version catalog
-val libs = extensions.getByType(org.gradle.accessors.dm.LibrariesForLibs::class)
+var libs = extensions.getByType(org.gradle.accessors.dm.LibrariesForLibs::class)
 
-group = rootProject.group
-version = rootProject.version
+indra {
+  javaVersions {
+    minimumToolchain(17)
+    target(8)
+  }
 
-java {
-  javaTarget(17)
-  withSourcesJar()
+  checkstyle(libs.versions.checkstyle.get())
+
+  github("vectrix-space", "ignite") {
+    ci(true)
+  }
+
+  mitLicense()
 }
 
 dependencies {
-  compileOnly(libs.jetbrains.annotations)
-
-  checkstyle(libs.stylecheck)
-}
-
-spotless {
-  fun FormatExtension.applyCommon() {
-    trimTrailingWhitespace()
-    endWithNewline()
-    leadingTabsToSpaces(2)
-  }
-
-  fun formatLicense(): String {
-    val splitPattern = Pattern.compile("\r?\n")
-    val lineSeparator = System.lineSeparator()
-    val headerPrefix = "/*$lineSeparator"
-    val linePrefix = " * "
-    val headerSuffix = "$lineSeparator */"
-
-    val headerText = String(Files.readAllBytes(rootProject.file("license_header.txt").toPath()), StandardCharsets.UTF_8)
-
-    return splitPattern.splitAsStream(headerText)
-      .map {
-        StringBuilder(it.length + 4)
-          .append(linePrefix)
-          .append(it)
-          .toString()
-      }
-      .collect(Collectors.joining(
-        lineSeparator,
-        headerPrefix,
-        headerSuffix
-      ))
-  }
-
-
-  java {
-    importOrderFile(rootProject.file(".spotless/ignite.importorder"))
-    licenseHeader(formatLicense())
-    applyCommon()
-  }
-
-  kotlin {
-    applyCommon()
-  }
-}
-
-val configPath: File = rootProject.file(".checkstyle")
-
-checkstyle {
-  toolVersion = libs.stylecheck.get().toString()
-  configDirectory.set(configPath)
-
-  setConfigProperties(
-    "configDirectory" to configPath,
-    "severity" to "error"
-  )
-}
-
-tasks {
-  javadoc {
-    val minimalOptions: MinimalJavadocOptions = options
-    options.encoding("UTF-8")
-
-    if (minimalOptions is StandardJavadocDocletOptions) {
-      val options: StandardJavadocDocletOptions = minimalOptions
-      options.addStringOption("Xdoclint:none", "-quiet")
-    }
-  }
-
-  compileJava {
-    sourceCompatibility = JavaVersion.VERSION_1_8.toString()
-    targetCompatibility = JavaVersion.VERSION_1_8.toString()
-
-    options.encoding = "UTF-8"
-    options.compilerArgs.addAll(listOf(
-      "-nowarn",
-      "-Xlint:-unchecked",
-      "-Xlint:-deprecation"
-    ))
-  }
+  compileOnlyApi(libs.jetbrains.annotations)
 }

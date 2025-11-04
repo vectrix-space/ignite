@@ -11,7 +11,7 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-blue)](license.txt)
 [![Discord](https://img.shields.io/discord/819522977586348052)](https://discord.gg/rYpaxPFQrj)
 [![Maven Central](https://img.shields.io/maven-central/v/space.vectrix.ignite/ignite-api?label=stable)](https://search.maven.org/search?q=g:space.vectrix.ignite%20AND%20a:ignite*)
-![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/space.vectrix.ignite/ignite-api?label=dev&server=https%3A%2F%2Fs01.oss.sonatype.org)
+![Maven Snapshot Version](https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fspace%2Fvectrix%2Fignite%2Fignite-api%2Fmaven-metadata.xml&query=%2Fmetadata%2Fversioning%2Flatest&label=dev)
 
 </div>
 
@@ -46,8 +46,8 @@ repositories {
 
 dependencies {
   compileOnly "space.vectrix.ignite:ignite-api:1.1.0"
-  compileOnly "net.fabricmc:sponge-mixin:0.15.2+mixin.0.8.7"
-  compileOnly "io.github.llamalad7:mixinextras-common:0.4.1"
+  compileOnly "net.fabricmc:sponge-mixin:0.16.5+mixin.0.8.7"
+  compileOnly "io.github.llamalad7:mixinextras-common:0.5.0"
 }
 ```
 
@@ -70,12 +70,12 @@ dependencies {
   <dependency>
     <groupId>net.fabricmc</groupId>
     <artifactId>sponge-mixin</artifactId>
-    <version>0.15.2+mixin.0.8.7</version>
+    <version>0.16.5+mixin.0.8.7</version>
   </dependency>
   <dependency>
     <groupId>io.github.llamalad7</groupId>
     <artifactId>mixinextras-common</artifactId>
-    <version>0.4.1</version>
+    <version>0.5.0</version>
   </dependency>
 </dependencies>
 ```

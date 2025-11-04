@@ -1,5 +1,12 @@
 {
   "extends": [
     "local>vectrix-space/.github:renovate-config"
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor"],
+      "matchPackageNames": ["ca.stellardrift:stylecheck"],
+      "enabled": false
+    }
   ]
 }

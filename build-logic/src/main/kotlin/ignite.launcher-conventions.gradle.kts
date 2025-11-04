@@ -1,12 +1,10 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
-  id("ignite.base-conventions")
   id("com.gradleup.shadow")
 }
 
-// Expose version catalog
-val libs = extensions.getByType(org.gradle.accessors.dm.LibrariesForLibs::class)
+var libs = extensions.getByType(org.gradle.accessors.dm.LibrariesForLibs::class)
 
 val implementationVersion = project.version.toString()
 val regexPattern = """(\d+\.\d+)""".toRegex()

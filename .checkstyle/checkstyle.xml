@@ -69,7 +69,7 @@
     <module name="EmptyForInitializerPad"/>
 
     <!-- https://checkstyle.org/config_whitespace.html#EmptyForIteratorPad -->
-    <module name="EmptyForIteratorPad"/>
+    <!-- <module name="EmptyForIteratorPad"/> -->
 
     <!-- https://checkstyle.org/config_whitespace.html#EmptyLineSeparator -->
     <module name="EmptyLineSeparator">
@@ -94,7 +94,7 @@
     </module>
 
     <!-- https://checkstyle.org/config_whitespace.html#GenericWhitespace -->
-    <module name="GenericWhitespace"/>
+    <!-- <module name="GenericWhitespace"/> -->
 
     <!-- https://checkstyle.org/config_design.html#HideUtilityClassConstructor -->
     <module name="HideUtilityClassConstructor"/>
@@ -148,9 +148,9 @@
     <module name="LeftCurly"/>
 
     <!-- https://checkstyle.org/config_naming.html#MethodName -->
-    <module name="MethodName">
+    <!-- <module name="MethodName">
       <property name="format" value="^(?:(?:.{1,3})|(?:[gs]et[^A-Z].*)|(?:(?:[^gsA-Z]..|.[^e].|..[^t]).+))$"/>
-    </module>
+    </module> -->
 
     <!-- https://checkstyle.org/config_whitespace.html#MethodParamPad -->
     <module name="MethodParamPad"/>
@@ -165,7 +165,7 @@
     <module name="MissingJavadocType"/>
 
     <!-- https://checkstyle.org/config_coding.html#MultipleVariableDeclarations -->
-    <module name="MultipleVariableDeclarations"/>
+    <!-- <module name="MultipleVariableDeclarations"/> -->
 
     <!-- https://checkstyle.org/config_coding.html#NoFinalizer -->
     <module name="NoFinalizer"/>
@@ -188,7 +188,7 @@
     </module>
 
     <!-- https://checkstyle.org/config_coding.html#OneStatementPerLine -->
-    <module name="OneStatementPerLine"/>
+    <!-- <module name="OneStatementPerLine"/> -->
 
     <!-- https://checkstyle.org/config_misc.html#OuterTypeFilename -->
     <module name="OuterTypeFilename"/>
@@ -256,6 +256,9 @@
     <!-- https://checkstyle.org/config_imports.html#UnusedImports -->
     <module name="UnusedImports"/>
 
+    <!-- https://checkstyle.org/config_whitespace.html#WhitespaceAfter -->
+    <!-- <module name="WhitespaceAfter"/> -->
+
     <!-- https://checkstyle.org/config_whitespace.html#WhitespaceAround -->
     <module name="WhitespaceAround">
       <property name="ignoreEnhancedForColon" value="false"/>
@@ -271,11 +274,9 @@
     -->
 
     <!-- https://gitlab.com/stellardrift/stylecheck/-/blob/trunk/src/main/java/ca/stellardrift/stylecheck/AnnotationsCloseToType.java -->
-    <!--
     <module name="AnnotationsCloseToType">
       <property name="typeUseAnnotations" value="NotNull, Nullable, RegExp"/>
     </module>
-    -->
 
     <!-- https://checkstyle.org/config_javadoc.html#WriteTag -->
     <!-- https://gitlab.com/stellardrift/stylecheck/-/blob/trunk/src/main/java/ca/stellardrift/stylecheck/FilteringWriteTag.java -->

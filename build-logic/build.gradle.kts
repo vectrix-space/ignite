@@ -5,24 +5,25 @@ plugins {
 }
 
 dependencies {
-  implementation(libs.build.nexus)
+  implementation(libs.build.indra)
+  implementation(libs.build.indra.sonatype)
+  implementation(libs.build.indra.spotless)
   implementation(libs.build.shadow)
-  implementation(libs.build.spotless)
 }
 
 dependencies {
-  compileOnly(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
+  compileOnly(files(libs::class.java.protectionDomain.codeSource.location))
 }
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_11
-  targetCompatibility = JavaVersion.VERSION_11
+  sourceCompatibility = JavaVersion.VERSION_17
+  targetCompatibility = JavaVersion.VERSION_17
 }
 
 kotlin {
   target {
     compilerOptions {
-      jvmTarget = JvmTarget.JVM_11
+      jvmTarget = JvmTarget.JVM_17
     }
   }
 }
