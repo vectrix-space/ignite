@@ -9,7 +9,7 @@
 
 ![Build Status](https://github.com/vectrix-space/ignite/actions/workflows/build.yml/badge.svg)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue)](license.txt)
-[![Discord](https://img.shields.io/discord/819522977586348052)](https://discord.gg/rYpaxPFQrj)
+[![Discord](https://img.shields.io/discord/819522977586348052)](https://discord.gg/chpEj5UC45)
 [![Maven Central](https://img.shields.io/maven-central/v/space.vectrix.ignite/ignite-api?label=stable)](https://search.maven.org/search?q=g:space.vectrix.ignite%20AND%20a:ignite*)
 ![Maven Snapshot Version](https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fspace%2Fvectrix%2Fignite%2Fignite-api%2Fmaven-metadata.xml&query=%2Fmetadata%2Fversioning%2Flatest&label=dev)
 
@@ -25,7 +25,7 @@ Run your original start command, but replace the normal server jar with `ignite.
 add `-javaagent:./ignite.jar` to your start command.
 
 If Ignite cannot start your server, you may need to add additional startup flags. See the Advanced Section below for more information.
-If you're still confused, be sure to [ask for help](https://discord.gg/rYpaxPFQrj).
+If you're still confused, be sure to [ask for help](https://discord.gg/chpEj5UC45).
 
 The mods can then be placed into the mods directory that will be created.
 
