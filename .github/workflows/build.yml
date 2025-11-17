@@ -5,8 +5,18 @@ on:
     branches: "**"
     tags-ignore: ["**"]
   pull_request:
+  release:
+    types: [released]
+
+permissions:
+  actions: "write"
+  contents: "write"
+  id-token: "write"
 
 jobs:
   call-build:
     uses: "vectrix-space/.github/.github/workflows/shared-ci.yaml@main"
+    with:
+      publish_releases: true
+      runtime_version: 21
     secrets: "inherit"
