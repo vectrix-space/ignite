@@ -3,7 +3,7 @@ version = "1.0"
 
 [versions]
 asm = "9.9"
-checkstyle = "12.1.1"
+checkstyle = "12.2.0"
 indra = "4.0.0"
 tinylog = "2.7.0"
 
