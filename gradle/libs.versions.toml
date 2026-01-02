@@ -2,7 +2,7 @@
 version = "1.0"
 
 [versions]
-asm = "9.9"
+asm = "9.9.1"
 checkstyle = "12.2.0"
 indra = "4.0.0"
 tinylog = "2.7.0"
@@ -22,7 +22,7 @@ asm-commons = { module = "org.ow2.asm:asm-commons", version.ref = "asm" }
 asm-tree = { module = "org.ow2.asm:asm-tree", version.ref = "asm" }
 asm-util = { module = "org.ow2.asm:asm-util", version.ref = "asm" }
 mixin = { module = "net.fabricmc:sponge-mixin", version = "0.16.5+mixin.0.8.7" }
-mixinExtras = { module = "io.github.llamalad7:mixinextras-common", version = "0.5.0" }
+mixinExtras = { module = "io.github.llamalad7:mixinextras-common", version = "0.5.2" }
 gson = { module = "com.google.code.gson:gson", version = "2.13.2" }
 
 # build
