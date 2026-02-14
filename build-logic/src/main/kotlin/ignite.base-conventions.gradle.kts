@@ -18,7 +18,3 @@ indra {
 
   mitLicense()
 }
-
-dependencies {
-  compileOnlyApi(libs.jetbrains.annotations)
-}

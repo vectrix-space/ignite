@@ -1,5 +1,5 @@
 plugins {
-  id("ignite.base-conventions")
+  id("ignite.common-conventions")
   id("ignite.launcher-conventions")
 }
 

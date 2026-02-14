@@ -229,7 +229,7 @@ public final class EmberMixinService implements IMixinService, IClassProvider, I
     final String canonicalName = name.replace('/', '.');
     final String internalName = name.replace('.', '/');
 
-    final @Nullable EmberClassLoader.ClassData entry = loader.classData(canonicalName, TransformPhase.MIXIN);
+    final EmberClassLoader.@Nullable ClassData entry = loader.classData(canonicalName, TransformPhase.MIXIN);
     if(entry == null) throw new ClassNotFoundException(canonicalName);
 
     return mixinTransformer.classNode(canonicalName, internalName, entry.data(), readerFlags);

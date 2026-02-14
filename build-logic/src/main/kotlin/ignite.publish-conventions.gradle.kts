@@ -8,8 +8,8 @@ indra {
     pom {
       developers {
         developer {
-          id.set("vectrix")
-          name.set("Vectrix")
+          id = "VectrixDevelops"
+          name = "Vectrix"
         }
       }
     }
