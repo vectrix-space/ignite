@@ -7,6 +7,11 @@
       "matchUpdateTypes": ["minor"],
       "matchPackageNames": ["ca.stellardrift:stylecheck"],
       "enabled": false
+    },
+    {
+      "description": "Prevent upgrade to Checkstyle 13+, that requires Java 21+.",
+      "matchPackageNames": ["com.puppycrawl.tools:checkstyle"],
+      "allowedVersions": "<13.0.0"
     }
   ]
 }
