@@ -45,9 +45,9 @@ repositories {
 }
 
 dependencies {
-  compileOnly "space.vectrix.ignite:ignite-api:1.1.0"
-  compileOnly "net.fabricmc:sponge-mixin:0.16.5+mixin.0.8.7"
-  compileOnly "io.github.llamalad7:mixinextras-common:0.5.0"
+  compileOnly "space.vectrix.ignite:ignite-api:1.2.0"
+  compileOnly "net.fabricmc:sponge-mixin:0.17.0+mixin.0.8.7"
+  compileOnly "io.github.llamalad7:mixinextras-common:0.5.3"
 }
 ```
 
@@ -65,17 +65,17 @@ dependencies {
   <dependency>
     <groupId>space.vectrix.ignite</groupId>
     <artifactId>ignite-api</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
   </dependency>
   <dependency>
     <groupId>net.fabricmc</groupId>
     <artifactId>sponge-mixin</artifactId>
-    <version>0.16.5+mixin.0.8.7</version>
+    <version>0.17.0+mixin.0.8.7</version>
   </dependency>
   <dependency>
     <groupId>io.github.llamalad7</groupId>
     <artifactId>mixinextras-common</artifactId>
-    <version>0.5.0</version>
+    <version>0.5.3</version>
   </dependency>
 </dependencies>
 ```
