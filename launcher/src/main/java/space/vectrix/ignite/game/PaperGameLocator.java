@@ -56,7 +56,7 @@ import space.vectrix.ignite.util.IgniteConstants;
 public final class PaperGameLocator implements GameLocatorService {
   private static final BlackboardMap.@NotNull Key<Path> PAPER_JAR = Blackboard.key("ignite.paper.jar", Path.class, Paths.get("./paper.jar"));
   private static final BlackboardMap.@NotNull Key<String> PAPER_TARGET = Blackboard.key("ignite.paper.target", String.class, "io.papermc.paperclip.Paperclip");
-  private static final BlackboardMap.@NotNull Key<String> PAPER_VERSION = Blackboard.key("ignite.paper.version", String.class, "1.20.4");
+  private static final BlackboardMap.@NotNull Key<String> PAPER_VERSION = Blackboard.key("ignite.paper.version", String.class, "1.21.11");
 
   private PaperGameProvider provider;
 
