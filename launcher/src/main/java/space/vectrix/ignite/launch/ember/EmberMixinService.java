@@ -178,7 +178,7 @@ public final class EmberMixinService implements IMixinService, IClassProvider, I
 
   @Override
   public MixinEnvironment.CompatibilityLevel getMaxCompatibilityLevel() {
-    return MixinEnvironment.CompatibilityLevel.JAVA_22;
+    return MixinEnvironment.CompatibilityLevel.JAVA_25;
   }
   //</editor-fold>
 
