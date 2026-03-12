@@ -8,7 +8,7 @@ indra = "4.0.0"
 tinylog = "2.7.0"
 
 [libraries]
-jetbrains-annotations = { module = "org.jetbrains:annotations", version = "26.0.2-1" }
+jetbrains-annotations = { module = "org.jetbrains:annotations", version = "26.1.0" }
 
 # logger
 tinylog-api = { module = "org.tinylog:tinylog-api", version.ref = "tinylog" }
