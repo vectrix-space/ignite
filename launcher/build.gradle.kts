@@ -26,4 +26,8 @@ dependencies {
   implementation(libs.asm.util)
 
   implementation(libs.gson)
+
+  testImplementation(platform(libs.junit.bom))
+  testImplementation(libs.junit.jupiter)
+  testRuntimeOnly(libs.junit.launcher)
 }
