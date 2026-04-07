@@ -31,7 +31,7 @@ stylecheck = "ca.stellardrift:stylecheck:0.2.1"
 build-indra = { module = "net.kyori:indra-common", version.ref = "indra" }
 build-indra-sonatype = { module = "net.kyori:indra-publishing-sonatype", version.ref = "indra" }
 build-indra-spotless = { module = "net.kyori:indra-licenser-spotless", version.ref = "indra" }
-build-shadow = { module = "com.gradleup.shadow:com.gradleup.shadow.gradle.plugin", version = "9.4.0" }
+build-shadow = { module = "com.gradleup.shadow:com.gradleup.shadow.gradle.plugin", version = "9.4.1" }
 
 # unused, for renovate
 zCheckstyle = { module = "com.puppycrawl.tools:checkstyle", version.ref = "checkstyle" }
