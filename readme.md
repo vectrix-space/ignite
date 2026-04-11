@@ -19,7 +19,7 @@
 
 Download the `ignite.jar` from the [releases page](https://github.com/vectrix-space/ignite/releases/latest).
 
-Place the `ignite.jar` into the same directory with your Minecraft Server jar (i.e `paper.jar`, `spigot.jar` or `server.jar`).
+Place the `ignite.jar` into the same directory with your server jar (i.e `HytaleServer.jar`, `paper.jar`, `spigot.jar` or `server.jar`).
 
 Run your original start command, but replace the normal server jar with `ignite.jar`. If you are using _Java 8_ you will need to 
 add `-javaagent:./ignite.jar` to your start command.
@@ -160,6 +160,9 @@ The following targets could use the following flags:
     - The path to the paperclip jar. (e.g `-Dignite.paper.jar=./paper.jar`)
     - The classpath to the paperclip entry point. (e.g `-Dignite.paper.target=io.papermc.paperclip.Paperclip`)
     - The minecraft server version paperclip will be patching. (e.g `-Dignite.paper.version=1.12.2`)
+
+- Hytale:
+  - Service name: `hytale` (e.g `-Dignite.locator=hytale`)
 
 - Velocity:
   - Service name: `velocity` (e.g `-Dignite.locator=velocity`)
