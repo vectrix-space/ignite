@@ -2,7 +2,7 @@
 version = "1.0"
 
 [versions]
-asm = "9.9.1"
+asm = "9.10.1"
 checkstyle = "12.3.1"
 indra = "4.0.0"
 tinylog = "2.7.0"
