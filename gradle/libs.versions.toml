@@ -21,8 +21,8 @@ asm-analysis = { module = "org.ow2.asm:asm-analysis", version.ref = "asm" }
 asm-commons = { module = "org.ow2.asm:asm-commons", version.ref = "asm" }
 asm-tree = { module = "org.ow2.asm:asm-tree", version.ref = "asm" }
 asm-util = { module = "org.ow2.asm:asm-util", version.ref = "asm" }
-mixin = { module = "net.fabricmc:sponge-mixin", version = "0.17.3+mixin.0.8.7" }
-mixinExtras = { module = "io.github.llamalad7:mixinextras-common", version = "0.5.4" }
+mixin = { module = "net.fabricmc:sponge-mixin", version = "0.17.4+mixin.0.8.7" }
+mixinExtras = { module = "io.github.llamalad7:mixinextras-common", version = "0.5.5" }
 gson = { module = "com.google.code.gson:gson", version = "2.14.0" }
 
 # build
