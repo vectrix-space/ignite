@@ -6,9 +6,13 @@ asm = "9.10.1"
 checkstyle = "12.3.1"
 indra = "4.1.0"
 tinylog = "2.7.0"
+junit = "5.13.4"
 
 [libraries]
 jetbrains-annotations = { module = "org.jetbrains:annotations", version = "26.1.0" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 
 # logger
 tinylog-api = { module = "org.tinylog:tinylog-api", version.ref = "tinylog" }
