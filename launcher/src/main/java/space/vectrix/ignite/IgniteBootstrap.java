@@ -71,6 +71,7 @@ public final class IgniteBootstrap {
    * @since 1.0.0
    */
   public static void main(final String@NotNull [] arguments) {
+    PreBoot.init();
     new IgniteBootstrap().run(arguments);
   }
 
