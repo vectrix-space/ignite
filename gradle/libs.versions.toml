@@ -5,7 +5,7 @@ version = "1.0"
 asm = "9.10.1"
 checkstyle = "12.3.1"
 indra = "4.1.0"
-tinylog = "2.7.0"
+tinylog = "2.8.1"
 
 [libraries]
 jetbrains-annotations = { module = "org.jetbrains:annotations", version = "26.1.0" }
