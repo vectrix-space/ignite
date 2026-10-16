@@ -24,13 +24,18 @@
  */
 package space.vectrix.ignite.util;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.tinylog.Logger;
+import space.vectrix.ignite.agent.IgniteAgent;
 
 /**
  * Taken from <a href="https://github.com/cpw/grossjava9hacks/blob/1.3/src/main/java/cpw/mods/gross/Java9ClassLoaderUtil.java">grossjava9hacks</a>.
@@ -45,47 +50,37 @@ public final class ClassLoaders {
    * @return the system class path urls
    * @since 1.0.0
    */
-  @SuppressWarnings({"restriction", "unchecked"})
   public static URL@NotNull [] systemClassPaths() {
+    final Set<URL> urls = new LinkedHashSet<>();
     final ClassLoader classLoader = ClassLoaders.class.getClassLoader();
     if(classLoader instanceof URLClassLoader) {
-      return ((URLClassLoader) classLoader).getURLs();
-    }
-
-    if(classLoader.getClass().getName().startsWith("jdk.internal.loader.ClassLoaders$")) {
-      try {
-        final Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
-        final Method objectFieldOffsetMethod = unsafeClass.getDeclaredMethod("objectFieldOffset", Field.class);
-        final Method getObjectMethod = unsafeClass.getDeclaredMethod("getObject", Object.class, long.class);
-
-        final Field unsafeField = unsafeClass.getDeclaredField("theUnsafe");
-        unsafeField.setAccessible(true);
-        final Object unsafe = unsafeField.get(null);
-
-        // jdk.internal.loader.ClassLoaders.AppClassLoader.ucp
-        Field ucpField;
-        try {
-          ucpField = classLoader.getClass().getDeclaredField("ucp");
-        } catch(final NoSuchFieldException | SecurityException e) {
-          ucpField = classLoader.getClass().getSuperclass().getDeclaredField("ucp");
+      urls.addAll(Arrays.asList(((URLClassLoader) classLoader).getURLs()));
+    } else {
+      final String classPath = System.getProperty("java.class.path", "");
+      for(final String entry : classPath.split(File.pathSeparator)) {
+        if(entry.isEmpty()) {
+          continue;
         }
 
-        final long ucpFieldOffset = (long) objectFieldOffsetMethod.invoke(unsafe, ucpField);
-        final Object ucpObject = getObjectMethod.invoke(unsafe, classLoader, ucpFieldOffset);
-
-        // jdk.internal.loader.URLClassPath.path
-        final Field pathField = ucpField.getType().getDeclaredField("path");
-        final long pathFieldOffset = (long) objectFieldOffsetMethod.invoke(unsafe, pathField);
-        final ArrayList<URL> path = (ArrayList<URL>) getObjectMethod.invoke(unsafe, ucpObject, pathFieldOffset);
-
-        return path.toArray(new URL[0]);
-      } catch(final Exception exception) {
-        Logger.error(exception, "Failed to retrieve system classloader paths!");
-        return new URL[0];
+        try {
+          urls.add(Paths.get(entry).toUri().toURL());
+        } catch(final MalformedURLException exception) {
+          Logger.warn(exception, "Skipping malformed class path entry: {}", entry);
+        }
       }
     }
 
-    return new URL[0];
+    // Instrumentation appends do not update java.class.path. These JARs must
+    // still be visible to Ember so game classes pass through its transformers.
+    for(final Path path : IgniteAgent.appendedSystemClassPaths()) {
+      try {
+        urls.add(path.toUri().toURL());
+      } catch(final MalformedURLException exception) {
+        Logger.warn(exception, "Skipping malformed appended class path entry: {}", path);
+      }
+    }
+
+    return urls.toArray(new URL[0]);
   }
 
   private ClassLoaders() {

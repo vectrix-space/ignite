@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.Instrumentation;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.jar.JarFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -43,6 +45,17 @@ import org.jetbrains.annotations.Nullable;
  */
 public final class IgniteAgent {
   private static Instrumentation INSTRUMENTATION = null;
+  private static final CopyOnWriteArrayList<Path> APPENDED_SYSTEM_CLASS_PATHS = new CopyOnWriteArrayList<>();
+
+  /**
+   * Returns the JAR paths appended to the system classloader by this agent.
+   *
+   * @return a snapshot of the appended paths
+   * @since 1.2.2
+   */
+  public static Path@NotNull [] appendedSystemClassPaths() {
+    return IgniteAgent.APPENDED_SYSTEM_CLASS_PATHS.toArray(new Path[0]);
+  }
 
   /**
    * Adds a {@link ClassFileTransformer} to this agent.
@@ -77,6 +90,7 @@ public final class IgniteAgent {
   public static void addJar(final @NotNull JarFile jar) {
     if(IgniteAgent.INSTRUMENTATION != null) {
       IgniteAgent.INSTRUMENTATION.appendToSystemClassLoaderSearch(jar);
+      IgniteAgent.APPENDED_SYSTEM_CLASS_PATHS.addIfAbsent(Paths.get(jar.getName()).toAbsolutePath().normalize());
       return;
     }
 
