@@ -11,10 +11,6 @@ dependencies {
   compileOnlyApi(libs.jetbrains.annotations)
 }
 
-tasks.withType<Test>().configureEach {
-  useJUnitPlatform()
-}
-
 spotless {
   java {
     importOrderFile(rootProject.file(".spotless/vectrix.importorder"))
