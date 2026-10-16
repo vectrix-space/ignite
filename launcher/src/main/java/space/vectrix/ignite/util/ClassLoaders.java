@@ -30,10 +30,12 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.tinylog.Logger;
+import space.vectrix.ignite.agent.IgniteAgent;
 
 /**
  * Taken from <a href="https://github.com/cpw/grossjava9hacks/blob/1.3/src/main/java/cpw/mods/gross/Java9ClassLoaderUtil.java">grossjava9hacks</a>.
@@ -49,28 +51,32 @@ public final class ClassLoaders {
    * @since 1.0.0
    */
   public static URL@NotNull [] systemClassPaths() {
+    final Set<URL> urls = new LinkedHashSet<>();
     final ClassLoader classLoader = ClassLoaders.class.getClassLoader();
     if(classLoader instanceof URLClassLoader) {
-      return ((URLClassLoader) classLoader).getURLs();
-    }
+      urls.addAll(Arrays.asList(((URLClassLoader) classLoader).getURLs()));
+    } else {
+      final String classPath = System.getProperty("java.class.path", "");
+      for(final String entry : classPath.split(File.pathSeparator)) {
+        if(entry.isEmpty()) {
+          continue;
+        }
 
-    final String classPath = System.getProperty("java.class.path", "");
-    if(classPath.isEmpty()) {
-      return new URL[0];
-    }
-
-    final String separator = System.getProperty("path.separator", File.pathSeparator);
-    final List<URL> urls = new ArrayList<>();
-    for(final String entry : classPath.split(java.util.regex.Pattern.quote(separator))) {
-      if(entry.isEmpty()) {
-        continue;
+        try {
+          urls.add(Paths.get(entry).toUri().toURL());
+        } catch(final MalformedURLException exception) {
+          Logger.warn(exception, "Skipping malformed class path entry: {}", entry);
+        }
       }
+    }
 
+    // Instrumentation appends do not update java.class.path. These JARs must
+    // still be visible to Ember so game classes pass through its transformers.
+    for(final Path path : IgniteAgent.appendedSystemClassPaths()) {
       try {
-        final Path path = Paths.get(entry);
         urls.add(path.toUri().toURL());
       } catch(final MalformedURLException exception) {
-        Logger.warn(exception, "Skipping malformed class path entry: {}", entry);
+        Logger.warn(exception, "Skipping malformed appended class path entry: {}", path);
       }
     }
 
