@@ -2,10 +2,10 @@
 version = "1.0"
 
 [versions]
-asm = "9.9.1"
+asm = "9.11"
 checkstyle = "12.3.1"
-indra = "4.0.0"
-tinylog = "2.7.0"
+indra = "4.1.0"
+tinylog = "2.8.1"
 junit = "5.13.4"
 
 [libraries]
@@ -25,9 +25,9 @@ asm-analysis = { module = "org.ow2.asm:asm-analysis", version.ref = "asm" }
 asm-commons = { module = "org.ow2.asm:asm-commons", version.ref = "asm" }
 asm-tree = { module = "org.ow2.asm:asm-tree", version.ref = "asm" }
 asm-util = { module = "org.ow2.asm:asm-util", version.ref = "asm" }
-mixin = { module = "net.fabricmc:sponge-mixin", version = "0.17.0+mixin.0.8.7" }
-mixinExtras = { module = "io.github.llamalad7:mixinextras-common", version = "0.5.3" }
-gson = { module = "com.google.code.gson:gson", version = "2.13.2" }
+mixin = { module = "net.fabricmc:sponge-mixin", version = "0.17.5+mixin.0.8.7" }
+mixinExtras = { module = "io.github.llamalad7:mixinextras-common", version = "0.5.5" }
+gson = { module = "com.google.code.gson:gson", version = "2.14.0" }
 
 # build
 stylecheck = "ca.stellardrift:stylecheck:0.2.1"
@@ -35,7 +35,7 @@ stylecheck = "ca.stellardrift:stylecheck:0.2.1"
 build-indra = { module = "net.kyori:indra-common", version.ref = "indra" }
 build-indra-sonatype = { module = "net.kyori:indra-publishing-sonatype", version.ref = "indra" }
 build-indra-spotless = { module = "net.kyori:indra-licenser-spotless", version.ref = "indra" }
-build-shadow = { module = "com.gradleup.shadow:com.gradleup.shadow.gradle.plugin", version = "9.4.0" }
+build-shadow = { module = "com.gradleup.shadow:com.gradleup.shadow.gradle.plugin", version = "9.6.1" }
 
 # unused, for renovate
 zCheckstyle = { module = "com.puppycrawl.tools:checkstyle", version.ref = "checkstyle" }
